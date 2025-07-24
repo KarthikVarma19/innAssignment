@@ -1,0 +1,77 @@
+<div class="filterContainer">
+  <div class="leftContainer">
+    <div class="iconContainer">
+      <lucide-icon
+        name="arrow-down-up"
+        [img]="ArrowDownUp"
+        [size]="15"
+        [strokeWidth]="2"
+      ></lucide-icon>
+    </div>
+    <div class="iconContainer">
+      <lucide-icon
+        name="funnel"
+        [img]="Funnel"
+        [size]="15"
+        [strokeWidth]="2"
+      ></lucide-icon>
+    </div>
+    <div class="iconContainer">
+      <lucide-icon
+        name="calendar"
+        [img]="Calendar"
+        [size]="15"
+        [strokeWidth]="2"
+      ></lucide-icon>
+    </div>
+    <div class="iconContainer iconSearchContainer">
+      <div class="searchContainer">
+        <div class="searchIcon">
+          <lucide-icon
+            name="search"
+            [img]="Search"
+            [size]="15"
+            [strokeWidth]="2"
+          ></lucide-icon>
+        </div>
+        <div class="searchInputContainer">
+          <input
+            type="text"
+            placeholder="Name, Employee Id, Phone"
+            [(ngModel)]="searchText"
+          />
+        </div>
+        <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
+          <lucide-icon
+            name="x"
+            [img]="X"
+            [size]="15"
+            [strokeWidth]="2"
+          ></lucide-icon>
+        </div>
+      </div>
+    </div>
+    <p>
+      {{ resultData }}
+    </p>
+  </div>
+  <div class="rightContainer">
+    <div class="iconContainer">
+      <lucide-icon
+        name="download"
+        [img]="Download"
+        [size]="15"
+        [strokeWidth]="2"
+      ></lucide-icon>
+    </div>
+    <div class="iconContainer addHelperButton">
+        <lucide-icon
+        name="play"
+        [img]="Plus"
+        [size]="15"
+        [strokeWidth]="2"
+      ></lucide-icon>
+      <p> Add Helper</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+.headingContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 25px 20px;
+    padding-bottom: 0px;
+    .headingName {
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .ellipsisVerticalIcon{
+        padding-top: 10px;
+        cursor: pointer;
+        height: inherit;
+    }
+}
+
+.headingHortizantalRule {
+  border: none; 
+  height: 1px;
+  background-color: lightgray;
+}
