@@ -1,0 +1,61 @@
+<div class="helperDataContainer">
+  <div class="headerContainer">
+    <mat-card class="matCardContainer">
+      <div class="helperContainer">
+        <div class="leftContainer">
+          <mat-card-header class="matCardHeader">
+            <div
+              mat-card-avatar
+              class="helperImage"
+              [ngStyle]="{
+                'background-image': 'url(' + helper.helperImage + ')',
+                'background-size': 'cover',
+                'background-position': 'center'
+              }"
+            ></div>
+            <mat-card-title class="helperName">{{
+              helper.helperName
+            }}</mat-card-title>
+            <mat-card-subtitle class="helperSubtitle">{{
+              helper.helperSubtitle
+            }}</mat-card-subtitle>
+          </mat-card-header>
+        </div>
+        <div class="rightContainer">
+           <div class="iconContainer">
+      <lucide-icon
+        name="pencil"
+        [img]="Pencil"
+        [size]="15"
+        [strokeWidth]="2"
+      ></lucide-icon>
+    </div>
+     <div class="iconContainer">
+      <lucide-icon
+        name="trash-2"
+        [img]="Trash2"
+        [size]="15"
+        [strokeWidth]="2"
+      ></lucide-icon>
+    </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <div class="headerDetailsContainer" *ngFor="let employee of employeeDetails">
+    
+  <div class="detailsContainer">
+    <span class="heading">{{employee.sectionTitle}}</span>
+    <hr/>    
+  </div>
+  <div class="detailsContainer detailsPropertyContainer" *ngFor="let sectionLabel of employee.fields">
+      <span class="helperProperty">
+       {{sectionLabel.label}}
+      </span>
+      <span class="helperPropertyValue">
+        {{sectionLabel.data}}
+      </span>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,84 @@
+.dashboardContainer {
+    padding: 10px;
+}
+
+
+.companyLogoContainer {
+    display: flex;
+    flex-direction: row;
+
+    .abslHomesLogo {
+        height: 50px;
+        width: 50px;
+        background-color: blue;
+        border-radius: 50%;
+    }
+
+    .companyDetails {
+        padding-left: 10px;
+
+        .companyTitle {
+            font-weight: bolder;
+            font-family: Verdana, Geneva, Tahoma, sans-serif
+        }
+
+        .companySubTitle {
+            margin-top: -20px;
+            font-size: x-small;
+        }
+    }
+}
+.redBanner {
+        background-color: red;
+        height: 30px;
+        width: 200px;
+        transform: rotate(330deg);
+        position: absolute;
+        margin-top: -70px;
+        margin-left: -35px;
+        p {
+            color: white;
+            font-size: large;
+            font-weight: bold;
+            padding-left: 35px;
+            padding-top: 5px;
+
+        }
+}
+
+
+
+.iconContainer {
+    
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 10px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+
+    .searchContainer {
+        display: flex;
+        flex-direction: row;
+
+        .searchInputContainer {
+            margin-top: -3px;
+
+            input {
+                background-color: whitesmoke;
+                border: none;
+                outline: none;
+                width: 140px;
+                padding-left: 10px;
+                height: inherit;
+            }
+        }
+    }
+}
+
+.iconSearchContainer {
+    width: 180px;
+    text-align: center;
+}

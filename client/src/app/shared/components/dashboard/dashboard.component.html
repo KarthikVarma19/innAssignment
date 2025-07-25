@@ -1,0 +1,46 @@
+<div class="dashboardContainer">
+    <div class="companyLogoContainer">
+    <div>
+        <img src="../../../assets/asbl_homes_logo.png" alt="asbl" class="abslHomesLogo">
+        <div class="redBanner">
+            <p>TEST</p>
+        </div>
+    </div>
+    <div class="companyDetails">
+        <h1 class="companyTitle">
+            Manage
+        </h1>
+        <p class="companySubTitle">
+            by ASBL Homes
+        </p>
+    </div>
+    
+    </div>
+    <div class="iconContainer iconSearchContainer">
+      <div class="searchContainer">
+        <div class="searchIcon">
+          <lucide-icon
+            name="search"
+            [img]="Search"
+            [size]="15"
+            [strokeWidth]="2"
+          ></lucide-icon>
+        </div>
+        <div class="searchInputContainer">
+          <input
+            type="text"
+            placeholder="Search"
+            [(ngModel)]="searchText"
+          />
+        </div>
+        <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
+          <lucide-icon
+            name="x"
+            [img]="X"
+            [size]="15"
+            [strokeWidth]="2"
+          ></lucide-icon>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+.appContainer {
+    display: flex;
+    flex-direction: row;
+    .appDashboardContainer{
+        width: 240px;
+        background-color: whitesmoke;
+    }
+    .appBodyContainer {
+        width: calc(100vw - 240px);
+    }
+}
