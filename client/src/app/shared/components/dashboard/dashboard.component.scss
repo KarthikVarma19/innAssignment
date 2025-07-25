@@ -1,9 +1,9 @@
 .dashboardContainer {
     padding: 10px;
-}
-
-
-.companyLogoContainer {
+    width: 240px;
+    background-color: #e7edf1 !important;
+    height: 100vh;
+    .companyLogoContainer {
     display: flex;
     flex-direction: row;
 
@@ -13,43 +13,38 @@
         background-color: blue;
         border-radius: 50%;
     }
-
     .companyDetails {
         padding-left: 10px;
 
         .companyTitle {
-            font-weight: bolder;
-            font-family: Verdana, Geneva, Tahoma, sans-serif
+            font-family: Tahoma, sans-serif;
         }
 
         .companySubTitle {
             margin-top: -20px;
-            font-size: x-small;
+            font-size:   x- dsmall;
         }
     }
 }
-.redBanner {
-        background-color: red;
-        height: 30px;
-        width: 200px;
-        transform: rotate(330deg);
+    .redBanner {
+        background-color: #ff4500;
         position: absolute;
-        margin-top: -70px;
-        margin-left: -35px;
+        height: 25px;
+        width: 200px;
+        transform: rotate(320deg);
+        margin-top: -125px;
+        margin-left: -50px;
         p {
             color: white;
             font-size: large;
             font-weight: bold;
-            padding-left: 35px;
-            padding-top: 5px;
-
+            padding-left: 40px;
+            padding-top: 2px;
         }
 }
-
-
+}
 
 .iconContainer {
-    
     text-align: center;
     border: 1px solid lightgray;
     border-radius: 6px;
@@ -58,16 +53,13 @@
     width: 15px;
     height: 15px;
     cursor: pointer;
-
     .searchContainer {
         display: flex;
         flex-direction: row;
-
         .searchInputContainer {
             margin-top: -3px;
-
             input {
-                background-color: whitesmoke;
+                background-color: #e7edf1 !important;
                 border: none;
                 outline: none;
                 width: 140px;
@@ -77,8 +69,101 @@
         }
     }
 }
-
 .iconSearchContainer {
     width: 180px;
     text-align: center;
+}
+
+.treeView {
+    overflow-y: auto;
+    height: 100vh;
+    scrollbar-color: #ECECEC;
+    scrollbar-width: thin;
+    .headingContainer {
+        display: flex;
+        flex-direction: row;
+        color: gray;
+        lucide-icon {
+            cursor: pointer;
+        }
+        h5 {
+            margin-left: 5px;
+        }
+    }
+    .childContainer {
+        a {
+            text-decoration: none;
+            p {
+            font-size: 15px;
+            margin: 0px;
+            margin-left: 10px;
+            color: black;
+            padding: 8px;
+            border-radius: 10px;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #e7f0f7;
+                color: 	#8993ff;
+            }
+        }
+        }   
+    }
+}
+
+
+.userDataContainer {
+    position: absolute;
+    bottom: 0;
+    width: inherit;
+}
+.matCardContainer {
+    border: 0px;
+    border-radius: 0;
+    border-bottom: 1px solid lightgray;
+    position: sticky;
+    &:hover {
+        background-color: #f0f0f0 !important;
+    }
+    .helperContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 5px 8px 0px 5px;
+        .active {
+            background-color: #89b5fa;
+        }
+        .helperImage {
+            background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+            background-size: cover;
+            height: 45px;
+            width: 45px;
+        }
+        .leftContainer {
+            text-align: left;
+            .matCardHeader {
+                padding: 0px;
+                margin: 0px;
+                .helperName {
+                    font-size: 14px;
+                    padding: 0px;
+                    padding-top: 5px;
+                    padding-left: 5px;
+                }
+                .helperSubtitle {
+                    font-size: small;
+                    padding-top: 5px;
+                    margin-left: -10px;
+                }
+            }
+        }
+        .rightContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            .rightIcons {
+                color: gray;
+            }
+        }
+    }
 }

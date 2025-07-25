@@ -2,10 +2,12 @@ import { NgIf } from '@angular/common';
 import { Component } from '@angular/core'
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, ArrowDownUp, Funnel, Calendar, Search, X, Download, Plus} from 'lucide-angular';
+
+import {RouterLink} from '@angular/router';
 @Component({
   selector: 'app-filters',
   standalone: true,
-  imports: [LucideAngularModule, NgIf, FormsModule],
+  imports: [LucideAngularModule, NgIf, FormsModule, RouterLink],
   templateUrl: './filters.component.html',
   styleUrl: './filters.component.scss'
 })

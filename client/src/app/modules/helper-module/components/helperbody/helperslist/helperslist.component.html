@@ -1,10 +1,12 @@
 <ng-container *ngFor="let helper of helpers">
-  <div class="helperCardContainer" >
+  <div class="helperCardContainer">
     <mat-card class="matCardContainer">
       <div class="helperContainer">
         <div class="leftContainer">
           <mat-card-header class="matCardHeader">
-            <div mat-card-avatar class="helperImage" [ngStyle]="{'background-image': 'url(' + helper.helperImage + ')', 'background-size': 'cover', 'background-position': 'center'}"></div>
+            <div mat-card-avatar class="helperImage"
+              [ngStyle]="{'background-image': 'url(' + helper.helperImage + ')', 'background-size': 'cover', 'background-position': 'center'}">
+            </div>
             <mat-card-title class="helperName">{{ helper.helperName }}</mat-card-title>
             <mat-card-subtitle class="helperSubtitle">{{ helper.helperSubtitle }}</mat-card-subtitle>
           </mat-card-header>

@@ -22,40 +22,41 @@
           </mat-card-header>
         </div>
         <div class="rightContainer">
-           <div class="iconContainer">
-      <lucide-icon
-        name="pencil"
-        [img]="Pencil"
-        [size]="15"
-        [strokeWidth]="2"
-      ></lucide-icon>
-    </div>
-     <div class="iconContainer">
-      <lucide-icon
-        name="trash-2"
-        [img]="Trash2"
-        [size]="15"
-        [strokeWidth]="2"
-      ></lucide-icon>
-    </div>
+          <div class="iconContainer">
+            <lucide-icon
+              name="pencil"
+              [img]="Pencil"
+              [size]="15"
+              [strokeWidth]="2"
+            ></lucide-icon>
+          </div>
+          <div class="iconContainer">
+            <lucide-icon
+              name="trash-2"
+              [img]="Trash2"
+              [size]="15"
+              [strokeWidth]="2"
+            ></lucide-icon>
+          </div>
         </div>
       </div>
     </mat-card>
   </div>
   <div class="headerDetailsContainer" *ngFor="let employee of employeeDetails">
-    
-  <div class="detailsContainer">
-    <span class="heading">{{employee.sectionTitle}}</span>
-    <hr/>    
-  </div>
-  <div class="detailsContainer detailsPropertyContainer" *ngFor="let sectionLabel of employee.fields">
+    <div class="detailsContainer">
+      <span class="heading">{{ employee.sectionTitle }}</span>
+      <hr />
+    </div>
+    <div
+      class="detailsContainer detailsPropertyContainer"
+      *ngFor="let sectionLabel of employee.fields"
+    >
       <span class="helperProperty">
-       {{sectionLabel.label}}
+        {{ sectionLabel.label }}
       </span>
       <span class="helperPropertyValue">
-        {{sectionLabel.data}}
+        {{ sectionLabel.data }}
       </span>
     </div>
-
   </div>
 </div>

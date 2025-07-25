@@ -1,46 +1,83 @@
 <div class="dashboardContainer">
-    <div class="companyLogoContainer">
+  <div class="companyLogoContainer">
     <div>
-        <img src="../../../assets/asbl_homes_logo.png" alt="asbl" class="abslHomesLogo">
-        <div class="redBanner">
-            <p>TEST</p>
-        </div>
+      <img
+        src="../../../assets/asbl_homes_logo.png"
+        alt="asbl"
+        class="abslHomesLogo"
+      />
     </div>
     <div class="companyDetails">
-        <h1 class="companyTitle">
-            Manage
-        </h1>
-        <p class="companySubTitle">
-            by ASBL Homes
-        </p>
+      <h1 class="companyTitle">Manage</h1>
+      <p class="companySubTitle">by ASBL Homes</p>
     </div>
-    
-    </div>
-    <div class="iconContainer iconSearchContainer">
-      <div class="searchContainer">
-        <div class="searchIcon">
-          <lucide-icon
-            name="search"
-            [img]="Search"
-            [size]="15"
-            [strokeWidth]="2"
-          ></lucide-icon>
-        </div>
-        <div class="searchInputContainer">
-          <input
-            type="text"
-            placeholder="Search"
-            [(ngModel)]="searchText"
-          />
-        </div>
-        <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
-          <lucide-icon
-            name="x"
-            [img]="X"
-            [size]="15"
-            [strokeWidth]="2"
-          ></lucide-icon>
-        </div>
+  </div>
+  <div class="iconContainer iconSearchContainer">
+    <div class="searchContainer">
+      <div class="searchIcon">
+        <lucide-icon
+          name="search"
+          [img]="Search"
+          [size]="15"
+          [strokeWidth]="2"
+        ></lucide-icon>
+      </div>
+      <div class="searchInputContainer">
+        <input type="text" placeholder="Search" [(ngModel)]="searchText" />
+      </div>
+      <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
+        <lucide-icon
+          name="x"
+          [img]="X"
+          [size]="15"
+          [strokeWidth]="2"
+        ></lucide-icon>
       </div>
     </div>
+  </div>
+  <div class="redBanner">
+        <p>TEST</p>
+  </div>
+  <!-- Tree View -->
+  <div class="treeView">
+    <ng-container *ngFor="let t of dashboard">
+    <div class="headingContainer">
+        <lucide-icon name="chevron-up" [img]="ChevronUp"
+        [size]="15"
+        [strokeWidth]="2">
+      </lucide-icon>
+      <h5>
+          {{t.heading}}
+      </h5>
+    </div>
+    <div *ngFor="let c of t.childs" class="childContainer">
+      <a [routerLink]="['dashboard', t.heading.split(' ').join('-').toLowerCase(), c.split(' ').join('-').toLowerCase()]">
+        <p>{{c}}</p>
+      </a>
+    </div>
+  </ng-container>
+  </div>
+  <div class="userDataContainer">
+    <mat-card class="matCardContainer">
+      <div class="helperContainer">
+        <div class="leftContainer">
+          <mat-card-header class="matCardHeader">
+            <div mat-card-avatar class="helperImage"
+              [ngStyle]="{'background-image': 'url(' + '' + ')', 'background-size': 'cover', 'background-position': 'center'}">
+            </div>
+            <mat-card-title class="helperName">Karthik</mat-card-title>
+            <mat-card-subtitle class="helperSubtitle">SDE Intern</mat-card-subtitle>
+          </mat-card-header>
+        </div>
+        <div class="rightContainer">
+          <p class="rightIcon">
+            <lucide-icon name="chevron-right" [img]="ChevronRight"
+        [size]="15"
+        [strokeWidth]="2"></lucide-icon>
+          </p>
+        </div>
+      </div>
+    </mat-card>
+  </div>
 </div>
+

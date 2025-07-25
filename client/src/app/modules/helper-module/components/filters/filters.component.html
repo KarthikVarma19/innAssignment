@@ -1,12 +1,14 @@
 <div class="filterContainer">
   <div class="leftContainer">
     <div class="iconContainer">
+      <ng-container>
       <lucide-icon
         name="arrow-down-up"
         [img]="ArrowDownUp"
         [size]="15"
         [strokeWidth]="2"
       ></lucide-icon>
+      </ng-container>
     </div>
     <div class="iconContainer">
       <lucide-icon
@@ -64,6 +66,7 @@
         [strokeWidth]="2"
       ></lucide-icon>
     </div>
+    <a routerLink="./add-helper">
     <div class="iconContainer addHelperButton">
         <lucide-icon
         name="play"
@@ -71,7 +74,8 @@
         [size]="15"
         [strokeWidth]="2"
       ></lucide-icon>
-      <p> Add Helper</p>
+      <p > Add Helper</p>
     </div>
+    </a>
   </div>
 </div>

@@ -1,10 +1,11 @@
+
+
+@layer reset, primeng;
 .appContainer {
     display: flex;
     flex-direction: row;
-    .appDashboardContainer{
-        width: 240px;
-        background-color: whitesmoke;
-    }
+    overflow-y: hidden;
+    scrollbar-width: none;
     .appBodyContainer {
         width: calc(100vw - 240px);
     }

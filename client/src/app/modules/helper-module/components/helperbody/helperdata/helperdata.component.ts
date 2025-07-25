@@ -21,28 +21,28 @@ export class HelperdataComponent {
   readonly Pencil = Pencil;
   employeeDetails = [
   {
-    sectionTitle: "Employee Identification",
+    sectionTitle: "EMPLOYEE ID",
     fields: [
-      { label: "ID Card", data: "View" },
+      { label: "Identification Card", data: "View" },
       { label: "Employee Code", data: 10999 }
     ]
   },
   {
-    sectionTitle: "Personal Information",
+    sectionTitle: "PERSONAL DETAILS",
     fields: [
       { label: "Gender", data: "Male" },
-      { label: "Languages Known", data: "English, Telugu" },
-      { label: "Mobile Number", data: "+91 96765 02330" },
-      { label: "Email Address", data: "-" },
+      { label: "Language(s)", data: "English, Telugu" },
+      { label: "Mobile No.", data: "+91 96765 02330" },
+      { label: "Email ID", data: "-" },
       { label: "KYC Document", data: "View" }
     ]
   },
   {
-    sectionTitle: "Employment Details",
+    sectionTitle: "SERVICE DETAILS",
     fields: [
-      { label: "Service Type", data: "None" },
+      { label: "Type", data: "None" },
       { label: "Organization", data: "ASBL" },
-      { label: "Date of Joining", data: "15 May, 2025" }
+      { label: "Joined On", data: "15 May, 2025" }
     ]
   }
   ];
