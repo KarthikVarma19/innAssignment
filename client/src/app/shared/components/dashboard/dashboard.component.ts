@@ -13,6 +13,7 @@ import { LucideAngularModule, Search, X, ChevronUp, ChevronRight} from 'lucide-a
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+  appEnvironment: string = "TEST";
   readonly Search = Search;
   readonly X = X;
   readonly ChevronUp = ChevronUp;
@@ -23,16 +24,55 @@ export class DashboardComponent {
   resultData: string = "5 of 8 results";
 
   dashboard = [
-    {heading: "RESIDENT MANAGEMENT", childs: ["Flats", "Helpdesk Setup", "Helpdesk Tickets", "Renovation Works", "Violation Setup", "Amenities"]},
-    {heading: "STAFF MANAGEMENT", childs: ["Roles & Departments", "Staff Directory", "Helpers"]}, 
-    {heading: "WORK MANAGEMENT", childs: ["Assets", "Locations", "Work Pacakages", "Work Scheduler", "Work Logs", "Issues"]},
-    {heading: "RESIDENT MANAGEMENT", childs: ["Flats", "Helpdesk Setup", "Helpdesk Tickets", "Renovation Works", "Violation Setup", "Amenities"]},
-    {heading: "STAFF MANAGEMENT", childs: ["Roles & Departments", "Staff Directory", "Helpers"]}, 
-  //  {heading: "SECURITY OPERATIONS", childs: ["Security"]},
-  // {heading: "RESIDENT MANAGEMENT", childs: ["Flats", "Helpdesk Setup", "Helpdesk Tickets", "Renovation Works", "Violation Setup", "Amenities"]},
-  //   {heading: "STAFF MANAGEMENT", childs: ["Roles & Departments", "Staff Directory", "Helpers"]}  ]
-]
+    {
+      heading: "RESIDENT MANAGEMENT",
+      childs: [
+        { name: "Flats", icon: "apartment" },
+        { name: "Helpdesk Setup", icon: "headset_mic" },
+        { name: "Helpdesk Tickets", icon: "confirmation_number" },
+        { name: "Renovation Works", icon: "construction" },
+        { name: "Violation Setup", icon: "gavel" },
+        { name: "Violation Tickets", icon: "report" },
+        { name: "Amenities", icon: "sports_handball" }
+      ]
+    },
+    {
+      heading: "STAFF MANAGEMENT",
+      childs: [
+        { name: "Roles & Departments", icon: "account_tree" },
+        { name: "Staff Directory", icon: "shield_person" },
+        { name: "Helpers", icon: "cleaning_services" }
+      ]
+    },
+    
+    {
+      heading: "WORK MANAGEMENT",
+      childs: [
+        { name: "Assets", icon: "inventory" },
+        { name: "Locations", icon: "location_on" },
+        { name: "Work Packages", icon: "check_box" },
+        { name: "Work Scheduler", icon: "schedule" },
+        { name: "Work Logs", icon: "history" },
+        { name: "Issues", icon: "warning" }
+      ]
+    }
+  ];
+
+    disabledItems: Set<any> = new Set();
+
+    toggleChildContainer(item: any): void {
+      if (this.disabledItems.has(item)) {
+        this.disabledItems.delete(item);
+      } else {
+        this.disabledItems.add(item);
+      }
+    }
+
+    isItemDisabled(item: any): boolean {
+      return this.disabledItems.has(item);
+    }
+
     removeSearchText(): void {
-    this.searchText = '';
+      this.searchText = '';
     }
 }

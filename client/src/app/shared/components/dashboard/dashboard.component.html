@@ -36,13 +36,14 @@
     </div>
   </div>
   <div class="redBanner">
-        <p>TEST</p>
+        <p>{{appEnvironment}}</p>
   </div>
   <!-- Tree View -->
   <div class="treeView">
     <ng-container *ngFor="let t of dashboard">
-    <div class="headingContainer">
-        <lucide-icon name="chevron-up" [img]="ChevronUp"
+    <div class="headingContainer" (click)="toggleChildContainer(t)">
+        <lucide-icon name="chevron-up" 
+        [img]="!isItemDisabled(t)?ChevronUp:ChevronRight"
         [size]="15"
         [strokeWidth]="2">
       </lucide-icon>
@@ -50,13 +51,19 @@
           {{t.heading}}
       </h5>
     </div>
+    <ng-container *ngIf="!isItemDisabled(t)">
     <div *ngFor="let c of t.childs" class="childContainer">
-      <a [routerLink]="['dashboard', t.heading.split(' ').join('-').toLowerCase(), c.split(' ').join('-').toLowerCase()]">
-        <p>{{c}}</p>
+      <a [routerLink]="['dashboard', t.heading.split(' ').join('-').toLowerCase(), c.name.split(' ').join('-').toLowerCase()]">
+        
+        <p>
+          <span class="material-symbols-outlined">{{c.icon}}</span>
+          {{c.name}}</p>
       </a>
     </div>
+    </ng-container>
   </ng-container>
   </div>
+  <!-- User Data Container -->
   <div class="userDataContainer">
     <mat-card class="matCardContainer">
       <div class="helperContainer">
