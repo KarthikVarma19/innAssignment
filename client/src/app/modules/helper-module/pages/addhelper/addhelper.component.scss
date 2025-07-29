@@ -1,10 +1,39 @@
 .add-helper-main-container {
-  margin: 15px;
   .add-helper-navbar-container {
-    div {
+    .headingContainer {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      padding: 25px 20px;
+      padding-bottom: 0px;
+      .heading-left-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        .heading-icons {
+          text-decoration: none;
+          color: black;
+          cursor: pointer;
+          margin-top: -14px;
+          font-size: 40px;
+        }
+        .headingName {
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+      }
+
+      .ellipsisVerticalIcon {
+        padding-top: 10px;
+        cursor: pointer;
+        height: inherit;
+      }
+    }
+
+    .headingHortizantalRule {
+      border: none;
+      height: 1px;
+      background-color: lightgray;
     }
   }
   .add-helper-body-container {
@@ -12,19 +41,114 @@
     flex-direction: row;
     position: relative;
     .add-helper-stages-container {
-      background-color: aqua;
+      display: flex;
+      flex-direction: row;
+      background-color: #dadfed;
       border-radius: 10px;
       margin: 10px;
-      height: calc(100vh - 100px);
-      width: calc(20vw - 10px);
+      height: 80vh;
+      width: var(--addhelper-stages-view-width);
+      padding: 20px;
+      .material-symbols-outlined {
+        font-size: 15px;
+        color: white;
+      }
+
+      .stage-stepper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+        .stage-dot-incomplete {
+          height: 15px;
+          width: 15px;
+          background-color: lightgray;
+          border-radius: 50%;
+        }
+        .stage-line-incomplete {
+          height: 75px;
+          width: 2px;
+          background-color: lightgray;
+        }
+        .stage-dot-complete {
+          height: 18px;
+          width: 18px;
+          background-color: var(--dashboard-treeview-child-hover-color);
+          border-radius: 50%;
+          text-align: center;
+          box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
+        }
+        .stage-line-complete {
+          height: 75px;
+          width: 2px;
+          background-color: var(--dashboard-treeview-child-hover-color);
+        }
+      }
+
+      .stages-container {
+        margin-left: 15px;
+        .stage-container {
+          margin-bottom: 50px;
+          .stage-heading {
+            font-family: "Inter", sans-serif;
+          }
+          .stage-description {
+            font-family: "Inter", sans-serif;
+            color: gray;
+            font-size: 13px;
+            margin-top: -17px;
+          }
+        }
+      }
     }
 
     .add-helper-form-container {
-      height: calc(100vh - 100px);
+      height: calc(90vh - 100px);
       margin: 30px;
       width: calc(80vw - 10px);
       overflow-y: scroll;
 
+      .add-helper-footer-horizontal-divider {
+        background-color: lightgray;
+        height: 1px;
+        width: 100%;
+        margin: 20px 0;
+        border: none;
+      }
+
+      .add-helper-footer-button-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: right;
+        button {
+          cursor: pointer;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          border-radius: 5px;
+          text-align: center;
+          border-width: 1px;
+          border-color: gray;
+          margin: 10px;
+          padding: 5px 20px;
+          span {
+            padding: 0px;
+            margin: 0px;
+          }
+        }
+        .previousButton {
+          color: black;
+          background-color: white;
+        }
+        .nextButton {
+          color: white;
+          background-color: black;
+        }
+        .add-helper-final-stage-submit-button {
+          background-color: blue;
+          color: white;
+        }
+      }
       .form-heading {
         font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande";
       }
@@ -40,13 +164,16 @@
         justify-content: center;
         text-align: center;
         border-radius: 50%;
-        border: 2px dotted blue;
-        color: blue;
-        background-color: lightskyblue;
+        border: 2px dashed #7587f1;
+        color: var(--dashboard-treeview-child-hover-color);
+        background-color: var(--dashboard-treeview-child-background-color);
         height: 80px;
         width: 80px;
         padding: 10px;
-        margin: 20px 0px 0px 0px;
+        margin: 10px 0px;
+        label {
+          cursor: pointer;
+        }
       }
       .photo-upload-description {
         font-size: 12px;
@@ -59,10 +186,12 @@
         justify-content: center;
         text-align: center;
         border-radius: 10px;
-        border: 2px dotted blue;
+        border: 2px dashed blue;
         height: 80px;
         width: 80px;
         padding: 10px;
+        margin: 10px 0px;
+        cursor: pointer;
       }
       .type-of-service-container {
         .type-of-service-form-field {
@@ -87,6 +216,16 @@
         padding: 10px;
         border-color: gray;
         border-radius: 10px;
+      }
+      .phone-number-container {
+        display: flex;
+        flex-direction: row;
+        .countrycode-container {
+          width: 100px;
+        }
+        .phone-number-value-container {
+          width: 100%;
+        }
       }
     }
   }

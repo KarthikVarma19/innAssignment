@@ -1,12 +1,7 @@
-
-
-@layer reset, primeng;
 .appContainer {
-    display: flex;
-    flex-direction: row;
-    overflow-y: hidden;
-    scrollbar-width: none;  
-    .appBodyContainer {
-        width: calc(100vw - 240px);
-    }
+  display: flex;
+  flex-direction: row;
+  .appBodyContainer {
+    width: 85vw;
+  }
 }

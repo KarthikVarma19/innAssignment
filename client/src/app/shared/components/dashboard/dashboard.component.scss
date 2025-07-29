@@ -1,218 +1,217 @@
 .dashboardContainer {
-    padding: 10px;
-    width: 240px;
-    background-color: #e7edf1 !important;
-    height: 100vh;
+  padding: 10px;
+  width: var(--dashboard-view-width);
+  background-color: var(--dashboard-backgroundcolor);
+  height: 95vh;
+  overflow: hidden;
 
-    .companyLogoContainer {
-        display: flex;
-        flex-direction: row;
+  .companyLogoContainer {
+    display: flex;
+    flex-direction: row;
 
-        .abslHomesLogo {
-            height: 50px;
-            width: 50px;
-            background-color: blue;
-            border-radius: 50%;
-        }
-
-        .companyDetails {
-            padding-left: 10px;
-
-            .companyTitle {
-                font-family: Tahoma, sans-serif;
-            }
-
-            .companySubTitle {
-                margin-top: -20px;
-                font-size: small;
-            }
-        }
+    .abslHomesLogo {
+      height: 50px;
+      width: 50px;
+      background-color: var(--dashboard-asbl-logo);
+      border-radius: 50%;
     }
 
-    .redBanner {
-        background-color: #ff4500;
-        position: absolute;
-        height: 20px;
-        width: 200px;
-        transform: rotate(320deg);
-        margin-top: -125px;
-        margin-left: -50px;
+    .companyDetails {
+      padding-left: 10px;
 
-        p {
-            color: white;
-            font-size: medium;
-            font-weight: bold;
-            padding-left: 48px;
-        }
+      .companyTitle {
+        font-family: Tahoma, sans-serif;
+      }
+
+      .companySubTitle {
+        margin-top: -20px;
+        font-size: small;
+      }
     }
+  }
+
+  .redBanner {
+    background-color: #ff4500;
+    position: absolute;
+    height: 20px;
+    width: 200px;
+    transform: rotate(320deg);
+    margin-top: -125px;
+    margin-left: -50px;
+
+    p {
+      color: white;
+      font-size: medium;
+      font-weight: bold;
+      padding-left: 48px;
+    }
+  }
 }
 
 .iconContainer {
-    text-align: center;
-    border: 1px solid lightgray;
-    border-radius: 6px;
-    padding: 10px;
-    margin: 10px;
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-    background-color: white;
+  text-align: center;
+  border: 1px solid lightgray;
+  border-radius: 6px;
+  padding: 10px;
+  margin: 10px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  background-color: white;
 
-    .searchContainer {
-        display: flex;
-        flex-direction: row;
+  .searchIconContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
 
-        .searchInputContainer {
-            margin-top: -3px;
+  .searchContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 
-            input {
-                border: none;
-                outline: none;
-                width: 140px;
-                padding-left: 10px;
-                height: inherit;
-            }
-        }
+    .searchInputContainer {
+      margin-top: -3px;
+      input {
+        border: none;
+        outline: none;
+        width: 7vw;
+        padding-left: 10px;
+      }
     }
+  }
 }
 
 .iconSearchContainer {
-    width: 180px;
-    text-align: center;
+  width: 10vw;
 }
 
 .treeView {
-    overflow-y: auto;
-    height: 90vh;
-    scrollbar-color: #ECECEC;
-    scrollbar-width: thin;
-    margin-left: 10px;
+  overflow-y: auto;
+  height: 90vh;
+  scrollbar-color: #ececec;
+  scrollbar-width: thin;
+  margin-left: 10px;
 
-    .headingContainer {
-        cursor: pointer;
+  .headingContainer {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    color: gray;
+    padding-top: 10px;
+
+    lucide-icon {
+      cursor: pointer;
+    }
+
+    h5 {
+      margin: 0px 0px 5px 5px;
+    }
+  }
+
+  .childContainer {
+    padding-left: 3px;
+    a {
+      text-decoration: none;
+
+      p {
         display: flex;
+        margin: 0px;
         flex-direction: row;
-        color: gray;
-        padding-top: 10px;
-
-        lucide-icon {
-            cursor: pointer;
+        align-items: center;
+        padding: 3px;
+        &:hover,
+        &.selected {
+          cursor: pointer;
+          .childName,
+          .material-symbols-outlined {
+            color: var(--dashboard-treeview-child-hover-color) !important;
+          }
+          background-color: var(
+            --dashboard-treeview-child-background-color
+          ) !important;
+        }
+        border-radius: 2px;
+        .childName {
+          padding: 3px;
+          font-size: 13px;
+          margin: 0px;
+          color: black;
+          border-radius: 6px;
         }
 
-        h5 {
-            margin: 0px 0px 5px 5px;
+        .material-symbols-outlined {
+          font-size: 18px;
+          color: #555;
+          margin-right: 5px;
         }
+      }
     }
-
-    .childContainer {
-        a {
-            text-decoration: none;
-
-            p {
-                &:hover {
-                    cursor: pointer;
-                    .childName, .material-symbols-outlined  {
-                        color: #2736d1 !important;
-                    }
-                    background-color: #ccddea !important;
-                    }
-                border-radius: 2px;
-                padding: 3px;
-                .childName {
-                    padding: 3px;
-                    font-size: 13px;
-                    margin: 0px;
-                    color: black;
-                    border-radius: 6px;
-                    
-                }
-
-                .material-symbols-outlined {
-                    font-size: 18px;
-                    color: #555;
-                    margin-right: 5px;
-
-                    &:hover {
-                        cursor: pointer;
-                        background-color: #ccddea !important;
-                        color: #2736d1 !important;
-                    }
-
-                }
-
-                &:hover {
-                    cursor: pointer;
-                    background-color: #ccddea !important;
-                    color: #2736d1 !important;
-                }
-            }
-
-        }
-    }
+  }
 }
 
-
 .userDataContainer {
-    margin: -10px;
-    position: absolute;
-    bottom: 0;
-    width: inherit;
-    background-color: #e7edf1 !important;
+  position: absolute;
+  bottom: 0;
+  width: inherit;
 }
 
 .matCardContainer {
-    border: 0px;
-    border-radius: 0;
-    position: sticky;
-    background-color: #e7edf1 !important;
+  background-color: var(--dashboard-backgroundcolor) !important;
+  margin: -10px;
+  border-top: #555;
 
-    .helperContainer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 5px 8px 0px 5px;
+  .helperContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
 
-        .active {
-            background-color: #89b5fa;
-        }
-
-        .helperImage {
-            background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-            background-size: cover;
-            height: 45px;
-            width: 45px;
-        }
-
-        .leftContainer {
-            text-align: left;
-
-            .matCardHeader {
-                padding: 0px;
-                margin: 0px;
-
-                .helperName {
-                    font-size: 14px;
-                    padding: 0px;
-                    padding-top: 5px;
-                    padding-left: 5px;
-                }
-
-                .helperSubtitle {
-                    font-size: small;
-                    padding-top: 5px;
-                    margin-left: -10px;
-                }
-            }
-        }
-
-        .rightContainer {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            .rightIcons {
-                color: gray;
-            }
-        }
+    .active {
+      background-color: #89b5fa;
     }
+
+    .helperImage {
+      background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
+      background-size: cover;
+      height: 45px;
+      width: 45px;
+    }
+
+    .leftContainer {
+      text-align: left;
+
+      .matCardHeader {
+        padding: 0px;
+        margin: 0px;
+
+        .mat-mdc-card {
+          border: 1px solid red;
+        }
+        .helperName {
+          font-size: 14px;
+          padding: 0px;
+          padding-top: 5px;
+          padding-left: 5px;
+        }
+
+        .helperSubtitle {
+          font-size: small;
+          padding-top: 5px;
+          margin-left: -10px;
+        }
+      }
+    }
+
+    .rightContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .rightIcon {
+        color: gray;
+        cursor: pointer;
+      }
+    }
+  }
 }

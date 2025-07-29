@@ -19,6 +19,7 @@ export class HelperdataComponent {
   };
   readonly Trash2 = Trash2;
   readonly Pencil = Pencil;
+  
   employeeDetails = [
   {
     sectionTitle: "EMPLOYEE ID",

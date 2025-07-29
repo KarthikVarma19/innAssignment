@@ -1,175 +1,337 @@
 <div class="add-helper-main-container">
   <!-- Navbar -->
   <div class="add-helper-navbar-container">
-    <div>
-      <h2 class="heading">
-        <span class="material-symbols-outlined">&lt;</span>
-        Add Helper
-      </h2>
-      <span class="material-symbols-outlined">more_vert</span>
-    </div>
-    <hr />
+    <header>
+      <div class="headingContainer">
+        <div class="heading-left-container">
+          <a
+            class="material-symbols-outlined heading-icons"
+            [routerLink]="'/dashboard/staff-management/helpers'"
+            >chevron_left</a
+          >
+          <h1 class="headingName">Add Helper</h1>
+        </div>
+        <span class="material-symbols-outlined heading-icons">more_vert</span>
+      </div>
+      <hr class="headingHortizantalRule" />
+    </header>
   </div>
   <!-- Body -->
   <div class="add-helper-body-container">
     <!-- Stages -->
-    <div class="add-helper-stages-container"></div>
+    <div class="add-helper-stages-container">
+      <div class="stage-stepper">
+        <div
+          [ngClass]="
+            currentStageOfAddingHelper > 1
+              ? 'stage-dot-complete'
+              : 'stage-dot-incomplete'
+          "
+        >
+          <span
+            *ngIf="currentStageOfAddingHelper > 1"
+            class="material-symbols-outlined"
+          >
+            check
+          </span>
+        </div>
+        <div
+          [ngClass]="
+            currentStageOfAddingHelper > 1
+              ? 'stage-line-complete'
+              : 'stage-line-incomplete'
+          "
+        ></div>
+
+        <div
+          [ngClass]="
+            currentStageOfAddingHelper > 2
+              ? 'stage-dot-complete'
+              : 'stage-dot-incomplete'
+          "
+        >
+          <span
+            *ngIf="currentStageOfAddingHelper > 2"
+            class="material-symbols-outlined"
+          >
+            check
+          </span>
+        </div>
+        <div
+          [ngClass]="
+            currentStageOfAddingHelper > 2
+              ? 'stage-line-complete'
+              : 'stage-line-incomplete'
+          "
+        ></div>
+
+        <div
+          [ngClass]="
+            currentStageOfAddingHelper === finalStageOfAddingHelper
+              ? 'stage-dot-complete'
+              : 'stage-dot-incomplete'
+          "
+        >
+          <span
+            *ngIf="currentStageOfAddingHelper === finalStageOfAddingHelper"
+            class="material-symbols-outlined"
+          >
+            check
+          </span>
+        </div>
+      </div>
+      <div class="stages-container">
+        <div class="stage-container">
+          <h4 class="stage-heading">Helper Details</h4>
+          <p class="stage-description">Add helper details</p>
+        </div>
+        <div class="stage-container">
+          <h4 class="stage-heading">Documents</h4>
+          <p class="stage-description">Upload related documents</p>
+        </div>
+        <div class="stage-container">
+          <h4 class="stage-heading">Review</h4>
+          <p class="stage-description">Check the information and confirm</p>
+        </div>
+      </div>
+    </div>
     <!-- Form Container -->
     <div class="add-helper-form-container">
-      <h1 class="form-heading">Helper Details</h1>
-      <p class="form-description">
-        Track, Add & Manage all your helpers at one place
-      </p>
-      <div class="photo-upload-icon-container">
-        <span class="material-symbols-outlined">cloud_upload</span>
-        <p>Upload Photo</p>
-      </div>
-      <span class="photo-upload-description"
-        >Upload photo (.png, .jpeg) size 5mb</span
-      >
-      <!-- Type of Service -->
-      <div class="type-of-service-container field-container">
-        <label>Type of Service*</label>
-        <div>
-          <mat-form-field class="type-of-service-form-field form-container">
-            <input
-              type="text"
-              placeholder="Select Type of Service"
-              aria-label="Type of Service"
-              matInput
-              [formControl]="selectTypeOfServiceControl"
-              [matAutocomplete]="auto"
-            />
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              @for (option of selectTypeOfServiceFilteredOptions | async; track
-              option.fieldName) {
-
-              <mat-option [value]="option.fieldName">
-                <span class="material-symbols-outlined">
-                  {{ option.fieldIcon }}
-                </span>
-                {{ option.fieldName }}</mat-option
-              >
-              }
-            </mat-autocomplete>
-          </mat-form-field>
+      <div *ngIf="currentStageOfAddingHelper === 1">
+        <h1 class="form-heading">Helper Details</h1>
+        <p class="form-description">
+          Track, Add & Manage all your helpers at one place
+        </p>
+        <div class="photo-upload-icon-container">
+          <label for="photo-upload">
+            <span class="material-symbols-outlined">cloud_upload</span>
+            <p>Upload Photo</p>
+          </label>
+          <input
+            type="file"
+            id="photo-upload"
+            style="display: none"
+            accept="image/*"
+          />
         </div>
-      </div>
-      <!-- Organization Name -->
-      <div class="field-container">
-        <label>Organization Name*</label>
-        <div>
+        <span class="photo-upload-description"
+          >Upload photo (.png, .jpeg) size 5mb</span
+        >
+        <!-- Type of Service -->
+        <div class="type-of-service-container field-container">
+          <label>Type of Service*</label>
+          <div>
+            <mat-form-field class="type-of-service-form-field form-container">
+              <input
+                type="text"
+                placeholder="Select Type of Service"
+                aria-label="Type of Service"
+                matInput
+                [formControl]="selectTypeOfServiceControl"
+                [matAutocomplete]="typeOfServiceAuto"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #typeOfServiceAuto="matAutocomplete"
+              >
+                @for (option of selectTypeOfServiceFilteredOptions | async;
+                track option.fieldName) {
+                <mat-option [value]="option.fieldName">
+                  <span class="material-symbols-outlined">{{
+                    option.fieldIcon
+                  }}</span>
+                  {{ option.fieldName }}
+                </mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- Organization Name -->
+        <div class="field-container">
+          <label>Organization Name*</label>
+          <div>
+            <mat-form-field class="form-container">
+              <input
+                type="text"
+                placeholder="Organization Name"
+                aria-label="Organization Name"
+                matInput
+                [formControl]="organizationNameControl"
+                [matAutocomplete]="orgNameAuto"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #orgNameAuto="matAutocomplete"
+              >
+                @for (option of organizationNameFilteredOptions | async; track
+                option) {
+                <mat-option [value]="option">{{ option }}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- Full Name -->
+        <div class="field-container">
+          <label>Full Name*</label>
           <mat-form-field class="form-container">
-            <input
-              type="text"
-              placeholder="Organization Name"
-              aria-label="Organization Name"
-              matInput
-              [formControl]="organizationNameControl"
-              [matAutocomplete]="auto"
-            />
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              @for (option of organizationNameFilteredOptions | async; track
-              option) {
-              <mat-option [value]="option"> {{ option }}</mat-option>
-              }
-            </mat-autocomplete>
+            <input matInput placeholder="Full Name" value="" />
           </mat-form-field>
         </div>
-      </div>
-      <!-- Full Name -->
-      <div class="field-container">
-        <label>Full Name*</label>
-        <mat-form-field class="form-container">
-          <input matInput placeholder="TG01AB1234" value="" />
-        </mat-form-field>
-      </div>
-      <!-- Languages -->
-      <div class="field-container">
-        <label>Languages*</label>
-        <mat-form-field class="form-container">
-          <mat-select [formControl]="toppings" multiple>
-            <mat-select-trigger>
-              {{toppings.value?.[0] || ''}}
-              @if ((toppings.value?.length || 0) > 1) {
-              <span class="example-additional-selection">
-                (+{{ (toppings.value?.length || 0) - 1 }}
-                {{ toppings.value?.length === 2 ? "other" : "others" }})
-              </span>
-              }
-            </mat-select-trigger>
-            @for (topping of toppingList; track topping) {
-            <mat-option [value]="topping">{{ topping }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <!-- Gender -->
-      <div class="field-container">
-        <label>Gender*</label>
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="male">Male</mat-radio-button>
-          <mat-radio-button value="female">Female</mat-radio-button>
-          <mat-radio-button value="other">Other</mat-radio-button>
-        </mat-radio-group>
-      </div>
-      <!-- Phone -->
-      <div class="field-container">
-        <label>Phone*</label>
-        <mat-form-field class="form-container">
-          <input matInput placeholder="TG01AB1234" value="" />
-        </mat-form-field>
-      </div>
-      <!-- Email -->
-      <div class="field-container">
-        <label>Email</label>
-        <mat-form-field class="form-container">
-          <input matInput placeholder="example@abc.com" value="" />
-        </mat-form-field>
-      </div>
-      <!-- Choose Vehicle Type -->
-      <div class="field-container">
-        <label>Choose Vehicle Type</label>
-        <div>
-          <mat-form-field class="type-of-service-form-field form-container">
-            <input
-              type="text"
-              placeholder="Pick one"
-              aria-label="Number"
-              matInput
-              [formControl]="selectTypeOfServiceControl"
-              [matAutocomplete]="auto"
-            />
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              @for (option of selectTypeOfServiceFilteredOptions | async; track
-              option.fieldName) {
-
-              <mat-option [value]="option.fieldName">
-                <span class="material-symbols-outlined">
-                  {{ option.fieldIcon }}
+        <!-- Languages -->
+        <div class="field-container">
+          <label>Languages*</label>
+          <mat-form-field class="form-container">
+            <mat-select
+              [formControl]="language"
+              multiple
+              placeholder="Select languages"
+            >
+              <mat-select-trigger>
+                {{language.value?.[0] || ''}}
+                @if ((language.value?.length || 0) > 1) {
+                <span class="example-additional-selection">
+                  (+{{ (language.value?.length || 0) - 1 }}
+                  {{ language.value?.length === 2 ? "other" : "others" }})
                 </span>
-                {{ option.fieldName }}</mat-option
-              >
+                }
+              </mat-select-trigger>
+              @for (lang of LangugagesList; track lang) {
+              <mat-option [value]="lang">{{ lang }}</mat-option>
               }
-            </mat-autocomplete>
+            </mat-select>
           </mat-form-field>
         </div>
+        <!-- Gender -->
+        <div class="field-container">
+          <label>Gender*</label>
+          <mat-radio-group aria-label="Select an option">
+            <mat-radio-button value="male">Male</mat-radio-button>
+            <mat-radio-button value="female">Female</mat-radio-button>
+            <mat-radio-button value="other">Other</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <!-- Phone -->
+        <div class="field-container">
+          <label>Phone*</label>
+          <div class="phone-number-container">
+            <div class="countrycode-container">
+              <mat-form-field class="form-container">
+                <mat-select>
+                  @for (countryCode of countryCallingCodes; track countryCode) {
+                  <mat-option [value]="countryCode"
+                    >+{{ countryCode }}</mat-option
+                  >
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="phone-number-value-container">
+              <mat-form-field class="form-container">
+                <input matInput placeholder="" value="" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <!-- Email -->
+        <div class="field-container">
+          <label>Email</label>
+          <mat-form-field class="form-container">
+            <input matInput placeholder="example@abc.com" value="" />
+          </mat-form-field>
+        </div>
+        <!-- Choose Vehicle Type -->
+        <div class="field-container">
+          <label>Choose Vehicle Type</label>
+          <div>
+            <mat-form-field class="type-of-service-form-field form-container">
+              <input
+                type="text"
+                placeholder="Pick one"
+                aria-label="Number"
+                matInput
+                [formControl]="vehicleTypeControl"
+                [matAutocomplete]="vehicleTypeAuto"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #vehicleTypeAuto="matAutocomplete"
+              >
+                @for (vehicle of vehicleTypeFilteredOptions | async; track
+                vehicle) {
+                <mat-option [value]="vehicle">
+                  {{ vehicle }}
+                </mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- Vehicle Number -->
+        <div class="field-container">
+          <label>Vehicle Number*</label>
+          <mat-form-field class="example-full-width form-container">
+            <input matInput placeholder="TG01AB1234" value="" />
+          </mat-form-field>
+        </div>
+        <!-- KYC Document -->
+        <div class="field-container">
+          <label>KYC Document*</label>
+          <div class="kyc-document-upload-container">
+            <div class="kyc-document-upload-icon-container">
+              <span class="material-symbols-outlined">add</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- Vehicle Number -->
-      <div class="field-container">
-        <label>Vehicle Number*</label>
-        <mat-form-field class="example-full-width form-container">
-          <input matInput placeholder="TG01AB1234" value="" />
-        </mat-form-field>
-      </div>
-      <!-- KYC Document -->29/07/29/07
-      <div class="field-container">
-        <label>KYC Document*</label>
+      <!-- Stage - 2  -->
+      <div *ngIf="currentStageOfAddingHelper === 2">
+        <h1 class="form-heading">Additional Documents</h1>
+        <p class="form-description">
+          Upload related documents. This step is optinal.
+        </p>
         <div class="kyc-document-upload-container">
           <div class="kyc-document-upload-icon-container">
             <span class="material-symbols-outlined">add</span>
           </div>
         </div>
+      </div>
+      <!-- Stage 3 -->
+      <div *ngIf="currentStageOfAddingHelper === 3">
+        <app-helperdata> </app-helperdata>
+      </div>
+
+      <!-- Footer Container -->
+      <hr class="add-helper-footer-horizontal-divider" />
+      <div class="add-helper-footer-button-container">
+        <ng-container>
+          <button
+            *ngIf="currentStageOfAddingHelper > 1"
+            (click)="goToPreviousStageOfAddingHelper()"
+            class="previousButton"
+          >
+            <span class="material-symbols-outlined">chevron_left</span>
+            Previous
+          </button>
+        </ng-container>
+        <ng-container>
+          <button
+            *ngIf="currentStageOfAddingHelper < finalStageOfAddingHelper"
+            (click)="goToNextStageOfAddingHelper()"
+            class="nextButton"
+          >
+            Next
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+          <button
+            *ngIf="currentStageOfAddingHelper === finalStageOfAddingHelper"
+            class="add-helper-final-stage-submit-button"
+          >
+            <span class="material-symbols-outlined">add</span>
+            Add Helper
+          </button>
+        </ng-container>
       </div>
     </div>
   </div>
