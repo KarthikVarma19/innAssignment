@@ -23,7 +23,12 @@
         ></lucide-icon>
       </div>
       <div class="searchInputContainer">
-        <input type="text" placeholder="Search" [(ngModel)]="searchText" />
+        <input 
+          type="text"
+          placeholder="Search" 
+          [(ngModel)]="searchText"
+          (input)="searchFilterInDashboard()"
+        />
       </div>
       <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
         <lucide-icon
@@ -40,24 +45,25 @@
   </div>
   <!-- Tree View -->
   <div class="treeView">
-    <ng-container *ngFor="let t of dashboard">
-    <div class="headingContainer" (click)="toggleChildContainer(t)">
+    <ng-container *ngFor="let section of filteredDashboard">
+    <div class="headingContainer" (click)="toggleChildContainer(section)">
         <lucide-icon name="chevron-up" 
-        [img]="!isItemDisabled(t)?ChevronUp:ChevronRight"
+        [img]="!isItemDisabled(section)?ChevronUp:ChevronRight"
         [size]="15"
         [strokeWidth]="2">
       </lucide-icon>
       <h5>
-          {{t.heading}}
+          {{section.heading}}
       </h5>
     </div>
-    <ng-container *ngIf="!isItemDisabled(t)">
-    <div *ngFor="let c of t.childs" class="childContainer">
-      <a [routerLink]="['dashboard', t.heading.split(' ').join('-').toLowerCase(), c.name.split(' ').join('-').toLowerCase()]">
+    <ng-container *ngIf="!isItemDisabled(section)">
+    <div *ngFor="let c of section.childs" class="childContainer">
+      <a [routerLink]="['dashboard', section.heading.split(' ').join('-').toLowerCase(), c.name.split(' ').join('-').toLowerCase()]">
         
         <p>
           <span class="material-symbols-outlined">{{c.icon}}</span>
-          {{c.name}}</p>
+          <span class="childName">{{c.name}}</span>
+        </p>
       </a>
     </div>
     </ng-container>

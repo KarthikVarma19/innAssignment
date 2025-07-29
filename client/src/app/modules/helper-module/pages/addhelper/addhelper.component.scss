@@ -1,0 +1,93 @@
+.add-helper-main-container {
+  margin: 15px;
+  .add-helper-navbar-container {
+    div {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+  .add-helper-body-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    .add-helper-stages-container {
+      background-color: aqua;
+      border-radius: 10px;
+      margin: 10px;
+      height: calc(100vh - 100px);
+      width: calc(20vw - 10px);
+    }
+
+    .add-helper-form-container {
+      height: calc(100vh - 100px);
+      margin: 30px;
+      width: calc(80vw - 10px);
+      overflow-y: scroll;
+
+      .form-heading {
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande";
+      }
+      .form-description {
+        font-size: 12px;
+        margin-top: -15px;
+        color: gray;
+      }
+
+      .photo-upload-icon-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        border-radius: 50%;
+        border: 2px dotted blue;
+        color: blue;
+        background-color: lightskyblue;
+        height: 80px;
+        width: 80px;
+        padding: 10px;
+        margin: 20px 0px 0px 0px;
+      }
+      .photo-upload-description {
+        font-size: 12px;
+        margin-top: -15px;
+        color: gray;
+      }
+      .kyc-document-upload-icon-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        border-radius: 10px;
+        border: 2px dotted blue;
+        height: 80px;
+        width: 80px;
+        padding: 10px;
+      }
+      .type-of-service-container {
+        .type-of-service-form-field {
+          border-radius: 10px;
+        }
+      }
+      .field-container {
+        margin-top: 15px;
+      }
+      .form-container {
+        width: 100%;
+        background-color: white !important;
+      }
+      .input-container {
+        width: 100%;
+        padding: 10px;
+        border-color: gray;
+        border-radius: 10px;
+      }
+      .option-container {
+        width: 100%;
+        padding: 10px;
+        border-color: gray;
+        border-radius: 10px;
+      }
+    }
+  }
+}

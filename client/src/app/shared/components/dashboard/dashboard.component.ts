@@ -8,10 +8,11 @@ import { LucideAngularModule, Search, X, ChevronUp, ChevronRight} from 'lucide-a
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [LucideAngularModule, FormsModule, NgIf, NgFor, RouterLink,MatCardModule, NgStyle],
+  imports: [LucideAngularModule, FormsModule, NgIf, NgFor, RouterLink, MatCardModule, NgStyle],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrls: ['./dashboard.component.scss']
 })
+
 export class DashboardComponent {
   appEnvironment: string = "TEST";
   readonly Search = Search;
@@ -23,7 +24,7 @@ export class DashboardComponent {
   // choice 2: show only filteredData : 5 of 8 results
   resultData: string = "5 of 8 results";
 
-  dashboard = [
+  dashboard: Dashboard[] = [
     {
       heading: "RESIDENT MANAGEMENT",
       childs: [
@@ -58,6 +59,23 @@ export class DashboardComponent {
     }
   ];
 
+  filteredDashboard: Dashboard[];
+
+  constructor() {
+    this.filteredDashboard = this.dashboard;
+  }
+
+
+
+    searchFilterInDashboard() {
+      this.filteredDashboard = this.filteredDashboard.map(section => ({
+        ...section,
+        childs: section.childs.filter(child =>
+          child.name.toLowerCase().includes(this.searchText.toLowerCase())
+        )
+      })).filter(section => section.childs.length > 0);
+    }
+
     disabledItems: Set<any> = new Set();
 
     toggleChildContainer(item: any): void {
@@ -74,5 +92,17 @@ export class DashboardComponent {
 
     removeSearchText(): void {
       this.searchText = '';
+      this.filteredDashboard = this.dashboard;
     }
+}
+
+
+export interface Child {
+  name: string;
+  icon: string;
+}
+
+export interface Dashboard {
+  heading: string;
+  childs: Child[];
 }
