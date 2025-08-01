@@ -16,6 +16,11 @@ import { HelperbodyComponent } from '../../components/helperbody/helperbody.comp
 import { HelperdataComponent } from '../../components/helperbody/helperdata/helperdata.component';
 import { RouterModule } from '@angular/router';
 
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
+import { HelperService } from '../../services/helper.services';
+import { create } from 'domain';
+
 @Component({
   selector: 'app-addhelper',
   standalone: true,
@@ -59,6 +64,304 @@ export class AddhelperComponent implements OnInit {
   vehicleTypeControl = new FormControl('');
   vehicleTypeOptions: string[] = ['None', 'Auto', 'Car', 'Bike'];
   vehicleTypeFilteredOptions: Observable<string[]> | undefined;
+
+  constructor(private helperService: HelperService) {
+    this.createHelper();
+  }
+
+  createHelper() {
+    const data = [
+      {
+        personalDetails: {
+          fullName: 'Riya Sharma',
+          gender: 'Female',
+          languages: ['Hindi', 'English'],
+          phone: '9876543210',
+          email: 'riya.sharma@example.com',
+          kycDocument: {
+            type: 'Aadhar Card',
+            url: 'https://kyc.example.com/riya_aadhar.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Nurse',
+          organization: 'CareWell Hospital',
+          joinedOn: '2023-09-01',
+          assignedHouseholds: ['HH-1001', 'HH-1012', 'HH-1023'],
+        },
+        vehicleDetails: { type: 'Bike', number: 'MH12AB1234' },
+        employeeDetails: {
+          employeeId: 'EMP-101',
+          employeeDepartment: 'Nursing',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/4.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp101.png',
+        },
+      },
+      {
+        personalDetails: {
+          fullName: 'Ananya Verma',
+          gender: 'Female',
+          languages: ['Marathi', 'English'],
+          phone: '9876543221',
+          email: 'ananya.verma@example.com',
+          kycDocument: {
+            type: 'Pan Card',
+            url: 'https://kyc.example.com/ananya_pan.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Maid',
+          organization: 'HappyHomes Services',
+          joinedOn: '2024-02-10',
+          assignedHouseholds: ['HH-1100', 'HH-1105'],
+        },
+        vehicleDetails: { type: 'None' },
+        employeeDetails: {
+          employeeId: 'EMP-102',
+          employeeDepartment: 'Housekeeping',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/5.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp102.png',
+        },
+      },
+      {
+        personalDetails: {
+          fullName: 'Kavya Patel',
+          gender: 'Female',
+          languages: ['Gujarati', 'English'],
+          phone: '9876543232',
+          email: 'kavya.patel@example.com',
+          kycDocument: {
+            type: 'Voter Id',
+            url: 'https://kyc.example.com/kavya_voter.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Cook',
+          organization: 'CityCare',
+          joinedOn: '2023-11-07',
+          assignedHouseholds: ['HH-1230', 'HH-1231', 'HH-1232'],
+        },
+        vehicleDetails: { type: 'None' },
+        employeeDetails: {
+          employeeId: 'EMP-103',
+          employeeDepartment: 'Culinary',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/6.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp103.png',
+        },
+      },
+      {
+        personalDetails: {
+          fullName: 'Sanya Iyer',
+          gender: 'Female',
+          languages: ['Tamil', 'English'],
+          phone: '9876543243',
+          email: 'sanya.iyer@example.com',
+          kycDocument: {
+            type: 'Passport',
+            url: 'https://kyc.example.com/sanya_passport.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Driver',
+          organization: 'Urban Helpers',
+          joinedOn: '2024-01-15',
+          assignedHouseholds: ['HH-1300', 'HH-1302', 'HH-1305', 'HH-1307'],
+        },
+        vehicleDetails: { type: 'Car', number: 'KA05JJ6789' },
+        employeeDetails: {
+          employeeId: 'EMP-104',
+          employeeDepartment: 'Transport',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/7.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp104.png',
+        },
+      },
+      {
+        personalDetails: {
+          fullName: 'Meera Reddy',
+          gender: 'Female',
+          languages: ['Telugu', 'English'],
+          phone: '9876543254',
+          email: 'meera.reddy@example.com',
+          kycDocument: {
+            type: 'Aadhar Card',
+            url: 'https://kyc.example.com/meera_aadhar.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Electrician',
+          organization: 'CareWell Hospital',
+          joinedOn: '2023-10-20',
+          assignedHouseholds: [
+            'HH-1400',
+            'HH-1402',
+            'HH-1403',
+            'HH-1404',
+            'HH-1405',
+          ],
+        },
+        vehicleDetails: { type: 'Auto', number: 'MH01CD2345' },
+        employeeDetails: {
+          employeeId: 'EMP-105',
+          employeeDepartment: 'Maintenance',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/8.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp105.png',
+        },
+      },
+      {
+        personalDetails: {
+          fullName: 'Divya Joshi',
+          gender: 'Female',
+          languages: ['Hindi', 'English'],
+          phone: '9876543265',
+          email: 'divya.joshi@example.com',
+          kycDocument: {
+            type: 'Pan Card',
+            url: 'https://kyc.example.com/divya_pan.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Cook',
+          organization: 'HappyHomes Services',
+          joinedOn: '2024-03-11',
+          assignedHouseholds: ['HH-1501', 'HH-1502'],
+        },
+        vehicleDetails: { type: 'None' },
+        employeeDetails: {
+          employeeId: 'EMP-106',
+          employeeDepartment: 'Culinary',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/9.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp106.png',
+        },
+      },
+      {
+        personalDetails: {
+          fullName: 'Neha Kulkarni',
+          gender: 'Female',
+          languages: ['Marathi', 'English'],
+          phone: '9876543276',
+          email: 'neha.kulkarni@example.com',
+          kycDocument: {
+            type: 'Voter Id',
+            url: 'https://kyc.example.com/neha_voter.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Plumber',
+          organization: 'CityCare',
+          joinedOn: '2023-12-05',
+          assignedHouseholds: ['HH-1600', 'HH-1601', 'HH-1602', 'HH-1603'],
+        },
+        vehicleDetails: { type: 'Auto', number: 'MH02EF6789' },
+        employeeDetails: {
+          employeeId: 'EMP-107',
+          employeeDepartment: 'Maintenance',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/10.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp107.png',
+        },
+      },
+      {
+        personalDetails: {
+          fullName: 'Ishita Singh',
+          gender: 'Female',
+          languages: ['Punjabi', 'English'],
+          phone: '9876543287',
+          email: 'ishita.singh@example.com',
+          kycDocument: {
+            type: 'Passport',
+            url: 'https://kyc.example.com/ishita_passport.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Nurse',
+          organization: 'Urban Helpers',
+          joinedOn: '2024-04-22',
+          assignedHouseholds: ['HH-1700', 'HH-1701', 'HH-1702'],
+        },
+        vehicleDetails: { type: 'Bike', number: 'MH03GH1234' },
+        employeeDetails: {
+          employeeId: 'EMP-108',
+          employeeDepartment: 'Nursing',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/11.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp108.png',
+        },
+      },
+      {
+        personalDetails: {
+          fullName: 'Tanya Mehta',
+          gender: 'Female',
+          languages: ['Gujarati', 'English'],
+          phone: '9876543298',
+          email: 'tanya.mehta@example.com',
+          kycDocument: {
+            type: 'Aadhar Card',
+            url: 'https://kyc.example.com/tanya_aadhar.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Maid',
+          organization: 'CareWell Hospital',
+          joinedOn: '2023-08-30',
+          assignedHouseholds: ['HH-1800'],
+        },
+        vehicleDetails: { type: 'None' },
+        employeeDetails: {
+          employeeId: 'EMP-109',
+          employeeDepartment: 'Housekeeping',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/12.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp109.png',
+        },
+      },
+      {
+        personalDetails: {
+          fullName: 'Pooja Thakur',
+          gender: 'Female',
+          languages: ['Hindi', 'English'],
+          phone: '9876543309',
+          email: 'pooja.thakur@example.com',
+          kycDocument: {
+            type: 'Pan Card',
+            url: 'https://kyc.example.com/pooja_pan.pdf',
+          },
+          additionalDocuments: [],
+        },
+        serviceDetails: {
+          type: 'Electrician',
+          organization: 'CityCare',
+          joinedOn: '2024-05-05',
+          assignedHouseholds: [
+            'HH-1900',
+            'HH-1901',
+            'HH-1902',
+            'HH-1903',
+            'HH-1904',
+            'HH-1905',
+          ],
+        },
+        vehicleDetails: { type: 'Car', number: 'MH04IJ6789' },
+        employeeDetails: {
+          employeeId: 'EMP-110',
+          employeeDepartment: 'Maintenance',
+          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/13.jpg',
+          identificationCardUrl: 'https://cdn.example.com/idcards/emp110.png',
+        },
+      },
+    ];
+
+    data.map((eachHelper) => {
+      this.helperService.createHelper(eachHelper).subscribe((res) => {
+        // console.log(res);
+      });
+    });
+  }
 
   ngOnInit() {
     this.selectTypeOfServiceFilteredOptions =
@@ -374,6 +677,7 @@ export class AddhelperComponent implements OnInit {
     '996',
     '998',
   ];
+
   goToPreviousStageOfAddingHelper() {
     this.currentStageOfAddingHelper -= 1;
   }

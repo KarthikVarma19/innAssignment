@@ -46,8 +46,8 @@ export class DashboardComponent {
         { name: 'Helpdesk Tickets', icon: 'confirmation_number' },
         { name: 'Renovation Works', icon: 'construction' },
         { name: 'Violation Setup', icon: 'gavel' },
-        { name: 'Violation Tickets', icon: 'report' },
-        { name: 'Amenities', icon: 'sports_handball' },
+        { name: 'Violation Tickets', icon: 'report_problem' },
+        { name: 'Amenities', icon: 'self_improvement' },
       ],
     },
     {
@@ -62,7 +62,29 @@ export class DashboardComponent {
     {
       heading: 'WORK MANAGEMENT',
       childs: [
-        { name: 'Assets', icon: 'inventory' },
+        { name: 'Assets', icon: 'inventory_2' },
+        { name: 'Locations', icon: 'location_on' },
+        { name: 'Work Packages', icon: 'check_box' },
+        { name: 'Work Scheduler', icon: 'schedule' },
+        { name: 'Work Logs', icon: 'history' },
+        { name: 'Issues', icon: 'warning' },
+      ],
+    },
+    {
+      heading: 'WORK MANAGEMENT',
+      childs: [
+        { name: 'Assets', icon: 'inventory_2' },
+        { name: 'Locations', icon: 'location_on' },
+        { name: 'Work Packages', icon: 'check_box' },
+        { name: 'Work Scheduler', icon: 'schedule' },
+        { name: 'Work Logs', icon: 'history' },
+        { name: 'Issues', icon: 'warning' },
+      ],
+    },
+    {
+      heading: 'WORK MANAGEMENT',
+      childs: [
+        { name: 'Assets', icon: 'inventory_2' },
         { name: 'Locations', icon: 'location_on' },
         { name: 'Work Packages', icon: 'check_box' },
         { name: 'Work Scheduler', icon: 'schedule' },

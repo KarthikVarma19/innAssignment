@@ -12,7 +12,8 @@
                 'background-size': 'cover',
                 'background-position': 'center'
               }"
-            ></div>
+            >
+          </div>
             <mat-card-title class="helperName">{{
               helper.helperName
             }}</mat-card-title>
@@ -22,14 +23,16 @@
           </mat-card-header>
         </div>
         <div class="rightContainer">
-          <div class="iconContainer">
-            <lucide-icon
-              name="pencil"
-              [img]="Pencil"
-              [size]="15"
-              [strokeWidth]="2"
-            ></lucide-icon>
-          </div>
+          <a [routerLink]="'./edit-helper'">
+            <div class="iconContainer">
+              <lucide-icon
+                name="pencil"
+                [img]="Pencil"
+                [size]="15"
+                [strokeWidth]="2"
+              ></lucide-icon>
+            </div>
+          </a>
           <div class="iconContainer">
             <lucide-icon
               name="trash-2"

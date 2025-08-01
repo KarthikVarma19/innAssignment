@@ -9,20 +9,19 @@ import {
 import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
-  selector: 'app-helperform',
+  selector: 'app-exampleform',
   standalone: true,
   imports: [NgSelectModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './helperform.component.html',
-  styleUrl: './helperform.component.scss',
+  templateUrl: './exampleform.component.html',
+  styleUrls: ['./exampleform.component.scss'],
 })
-export class HelperformComponent implements OnInit {
+export class ExampleformComponent implements OnInit {
   heroForm: FormGroup;
   ages = [
     { value: '<18', label: 'Under 18' },
     { value: '18', label: '18' },
     { value: '>18', label: 'More than 18' },
   ];
-  userInput: string = '';
 
   constructor(private fb: FormBuilder) {
     this.heroForm = this.fb.group({
@@ -34,19 +33,5 @@ export class HelperformComponent implements OnInit {
     this.heroForm = this.fb.group({
       age: [null, Validators.required],
     });
-  }
-  agesWithSelectAll = [{ value: 'all', label: 'Select All' }, ...this.ages];
-
-  form = this.fb.group({
-    age: this.fb.control<string[] | null>([]), // Explicitly define the type as string[] or null
-  });
-
-  onAgeChange(selectedValues: any[]) {
-    const isSelectAll = selectedValues.includes('all');
-
-    if (isSelectAll) {
-      // Remove 'all' and replace with actual values
-      this.form.get('age')?.setValue(this.ages.map((a) => a.value));
-    }
   }
 }

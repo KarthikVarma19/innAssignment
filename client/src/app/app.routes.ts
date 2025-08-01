@@ -3,6 +3,7 @@ import { DashboardComponent } from './shared/components/dashboard/dashboard.comp
 import { HelperhomeComponent } from './modules/helper-module/pages/helperhome/helperhome.component';
 import { PagenotfoundComponent } from './shared/components/pagenotfound/pagenotfound.component';
 import { AddhelperComponent } from './modules/helper-module/pages/addhelper/addhelper.component';
+import { EditHelperComponent } from './modules/helper-module/pages/edit-helper/edit-helper.component';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    title: 'Dashboard',
+    title: 'Manage By ASBL Homes',
     children: [
       {
         path: 'resident-management',
@@ -106,6 +107,10 @@ export const routes: Routes = [
               {
                 path: 'add-helper',
                 component: AddhelperComponent,
+              },
+              {
+                path: 'edit-helper',
+                component: EditHelperComponent,
               },
             ],
           },

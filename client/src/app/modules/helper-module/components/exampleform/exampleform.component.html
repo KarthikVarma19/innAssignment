@@ -1,0 +1,16 @@
+<form [formGroup]="heroForm" novalidate>
+  <div class="form-group">
+    <label for="age">Age</label>
+    <ng-select
+      class="custom"
+      #agesSelect
+      [items]="ages"
+      [selectOnTab]="true"
+      bindValue="value"
+      labelForId="age"
+      placeholder="Select age"
+      formControlName="age"
+    >
+    </ng-select>
+  </div>
+</form>

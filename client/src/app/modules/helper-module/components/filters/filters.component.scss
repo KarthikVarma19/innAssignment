@@ -1,64 +1,63 @@
 .filterContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .iconContainer {
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    padding: 13px;
+    margin: 10px;
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+  }
+  .leftContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    padding: 0px 15px;
-    .iconContainer {
-        text-align: center;
-        border: 1px solid lightgray;
-        border-radius: 6px;
-        padding: 15px;
-        margin: 10px;
-        width: 15px;
-        height: 15px;
-        cursor: pointer;
+    .searchContainer {
+      display: flex;
+      flex-direction: row;
+      .searchInputContainer {
+        margin-top: -3px;
+        input {
+          border: none;
+          outline: none;
+          width: 210px;
+          padding-left: 10px;
+        }
+      }
     }
-    .leftContainer {
+    .iconSearchContainer {
+      width: 250px;
+      text-align: center;
+    }
+    p {
+      padding: 10px;
+      padding-left: 0px;
+      margin: 10px;
+      margin-left: 0px;
+      color: gray;
+    }
+  }
+  .rightContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    a {
+      text-decoration: none;
+      .addHelperButton {
+        background-color: blue;
+        width: 100px;
+        color: white;
         display: flex;
         flex-direction: row;
-        .searchContainer {
-            display: flex;
-            flex-direction: row;
-            .searchInputContainer {
-                margin-top: -3px;
-                input {
-                    border: none;
-                    outline: none;
-                    width: 210px;
-                    padding-left: 10px;
-                }
-            }
-        }
-        .iconSearchContainer {
-            width: 250px;
-            text-align: center;
-        }
+        justify-content: space-evenly;
         p {
-            padding: 10px;
-            padding-left: 0px;
-            margin: 10px;
-            margin-left: 0px;
-            color: gray;
+          margin-top: -2px;
+          color: white;
         }
+      }
     }
-    .rightContainer {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        a{
-            text-decoration: none;
-            .addHelperButton {
-            background-color: blue;
-            width: 100px;
-            color: white;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            p {
-                margin-top: -2px;
-                color: white;
-            }
-        }
-        }
-    }
+  }
 }

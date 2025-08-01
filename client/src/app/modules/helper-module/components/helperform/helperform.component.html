@@ -1,1 +1,145 @@
-<p>helperform works!</p>
+<form [formGroup]="heroForm" novalidate>
+  <div class="form-group">
+    <!-- Form Container -->
+    <div class="add-helper-form-container">
+      <div>
+        <h1 class="form-heading">Helper Details</h1>
+        <p class="form-description">
+          Track, Add & Manage all your helpers at one place
+        </p>
+        <div class="photo-upload-icon-container">
+          <label for="photo-upload">
+            <span class="material-symbols-outlined">cloud_upload</span>
+            <p>Upload Photo</p>
+          </label>
+          <input
+            type="file"
+            id="photo-upload"
+            style="display: none"
+            accept="image/*"
+          />
+        </div>
+        <span class="photo-upload-description"
+          >Upload photo (.png, .jpeg) size 5mb</span
+        >
+        <!-- Type of Service -->
+        <div class="type-of-service-container field-container">
+          <label>Type of Service*</label>
+          <div>
+            <ng-select
+              class="custom"
+              #agesSelect
+              [items]="ages"
+              [selectOnTab]="true"
+              bindValue="value"
+              labelForId="age"
+              placeholder="Select age"
+              formControlName="age"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <!-- Organization Name -->
+        <div class="field-container">
+          <label>Organization Name*</label>
+          <div>
+            <ng-select
+              class="custom"
+              #agesSelect
+              [items]="ages"
+              [selectOnTab]="true"
+              bindValue="value"
+              labelForId="age"
+              placeholder="Select age"
+              formControlName="age"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <!-- Full Name -->
+        <div class="field-container">
+          <label>Full Name*</label>
+          <div>
+            <ng-select
+              [items]="[]"
+              [addTag]="true"
+              [multiple]="false"
+              [searchable]="true"
+              [hideSelected]="true"
+              [closeOnSelect]="true"
+              [loading]="false"
+              [clearable]="false"
+              [tabindex]="0"
+              [(ngModel)]="userInput"
+              placeholder="Type anything"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <!-- Languages -->
+        <div class="field-container">
+          <label>Languages*</label>
+          <div>
+             <ng-select
+              class="custom"
+              #agesSelect
+              [items]="ages"
+              [selectOnTab]="true"
+              bindValue="value"
+              labelForId="age"
+              placeholder="Select age"
+              formControlName="age"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <!-- Gender -->
+        <div class="field-container">
+          <label>Gender*</label>
+        </div>
+        <!-- Phone -->
+        <div class="field-container">
+          <label>Phone*</label>
+          <div class="phone-number-container">
+            <div class="countrycode-container"></div>
+            <div class="phone-number-value-container"></div>
+          </div>
+        </div>
+        <!-- Email -->
+        <div class="field-container">
+          <label>Email</label>
+        </div>
+        <!-- Choose Vehicle Type -->
+        <div class="field-container">
+          <label>Choose Vehicle Type</label>
+          <div>
+            <ng-select
+              class="custom"
+              #agesSelect
+              [items]="ages"
+              [selectOnTab]="true"
+              bindValue="value"
+              labelForId="age"
+              placeholder="Select age"
+              formControlName="age"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <!-- Vehicle Number -->
+        <div class="field-container">
+          <label>Vehicle Number*</label>
+        </div>
+        <!-- KYC Document -->
+        <div class="field-container">
+          <label>KYC Document*</label>
+          <div class="kyc-document-upload-container">
+            <div class="kyc-document-upload-icon-container">
+              <span class="material-symbols-outlined">add</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

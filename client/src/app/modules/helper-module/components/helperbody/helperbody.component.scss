@@ -1,26 +1,101 @@
 .helperBodyContainer {
-    display: flex;
-    flex-direction: row;
-    padding: 15px;
-    height: calc(100vh - 180px);
-    .helperListContainer {
-        margin: 10px;
-        width: 350px;
-        text-align: center;
-        border: 1px solid lightgray;
-        border-radius: 6px;
-        margin: 0px 10px;
-        overflow-y: auto;
-        scrollbar-width: none;
+  --helper-list-width: 30%;
+  --helper-data-width: 70%;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 75vh;
+
+  .helperListContainer {
+    margin: 10px;
+    width: var(--helper-list-width);
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    margin: 0px 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    .helperCardContainer {
+      cursor: pointer;
+
+      .matCardContainer {
+        border: 0px;
+        border-radius: 0;
+        border-bottom: 1px solid lightgray;
+
+        &:hover {
+          background-color: #f0f0f0 !important;
+        }
+
+        .helperContainer {
+          @media screen and (max-width: 480px) {
+            .matCardHeader,
+            .rightContainer {
+              display: none !important;
+            }
+          }
+
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          margin: 5px 8px 0px 5px;
+
+          .active {
+            background-color: #89b5fa;
+          }
+
+          .helperImage {
+            background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
+            background-size: cover;
+            height: 45px;
+            width: 45px;
+          }
+
+          .leftContainer {
+            text-align: left;
+
+            .matCardHeader {
+              padding: 0px;
+              margin: 0px;
+
+              .helperName {
+                font-size: 14px;
+                padding: 0px;
+                padding-top: 5px;
+                padding-left: 5px;
+              }
+
+              .helperSubtitle {
+                font-size: small;
+                padding-top: 5px;
+                margin-left: -10px;
+              }
+            }
+          }
+
+          .rightContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .households {
+              color: gray;
+              font-size: smaller;
+            }
+          }
+        }
+      }
     }
-    .helperDataContainer {
-        margin: 10px;
-        width: 1000px;
-        text-align: center;
-        border: 1px solid lightgray;
-        border-radius: 6px;
-        margin: 0px 10px;
-        overflow-y: auto;
-        scrollbar-width: none;
-    }
+  }
+
+  .helperDataContainer {
+    margin: 10px;
+    width: var(--helper-data-width);
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    margin: 0px 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
 }
