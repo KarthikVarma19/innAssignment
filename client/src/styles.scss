@@ -1,11 +1,20 @@
 :root {
   --dashboard-view-width: 15vw;
   --module-view-width: 75vw;
-  --addhelper-stages-view-width: 14vw;
+
+
+  --addhelper-stages-view-width: 20vw;
   --dashboard-backgroundcolor: #e2e9ee;
   --dashboard-asbl-logo: rgb(109, 109, 228);
-  --dashboard-treeview-child-hover-color: #687ced;
-  --dashboard-treeview-child-background-color: #dae0f5;
+  
+  --dashboard-treeview-child-background-color: #d5e1fb;
+
+  --dashboard-treeview-child-selected-hover-color: #687ced;
+  --dashboard-treeview-child-hover-background-color: lightgray;
+
+  --helperslist-container-selected-background-color: #dce6fd;
+  --helperslist-container-hover-background-color: #f5f5f5;
+  
 }
 
 html,

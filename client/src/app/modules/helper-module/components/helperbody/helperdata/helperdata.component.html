@@ -1,3 +1,4 @@
+<ng-container *ngIf="helperData">
 <div class="helperDataContainer">
   <div class="headerContainer">
     <mat-card class="matCardContainer">
@@ -12,8 +13,7 @@
                 'background-size': 'cover',
                 'background-position': 'center'
               }"
-            >
-          </div>
+            ></div>
             <mat-card-title class="helperName">{{
               helper.helperName
             }}</mat-card-title>
@@ -25,41 +25,44 @@
         <div class="rightContainer">
           <a [routerLink]="'./edit-helper'">
             <div class="iconContainer">
-              <lucide-icon
-                name="pencil"
-                [img]="Pencil"
-                [size]="15"
-                [strokeWidth]="2"
-              ></lucide-icon>
+              <span class="material-symbols-outlined">edit</span>
             </div>
           </a>
-          <div class="iconContainer">
-            <lucide-icon
-              name="trash-2"
-              [img]="Trash2"
-              [size]="15"
-              [strokeWidth]="2"
-            ></lucide-icon>
+          <div class="iconContainer" (click)="deleteHelper()">
+            <span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
           </div>
         </div>
       </div>
     </mat-card>
   </div>
-  <div class="headerDetailsContainer" *ngFor="let employee of employeeDetails">
+  <div class="headerDetailsContainer" *ngFor="let helper of helperDetails">
     <div class="detailsContainer">
-      <span class="heading">{{ employee.sectionTitle }}</span>
+      <span class="heading">{{ helper.sectionTitle }}</span>
       <hr />
     </div>
     <div
       class="detailsContainer detailsPropertyContainer"
-      *ngFor="let sectionLabel of employee.fields"
+      *ngFor="let sectionLabel of helper.fields"
     >
       <span class="helperProperty">
         {{ sectionLabel.label }}
       </span>
       <span class="helperPropertyValue">
-        {{ sectionLabel.data }}
+        <span class="helperPropertyValue">
+          <ng-container *ngIf="isDataIsValidUrl(sectionLabel.data); else plainText">
+            <a [href]="sectionLabel.data" target="_blank">
+              <span class="material-symbols-outlined visibility-view-icon">visibility</span>
+              View
+            </a>
+          </ng-container>
+        
+          <ng-template #plainText>
+            {{ sectionLabel.data }}
+          </ng-template>
+        </span>
+        
       </span>
     </div>
   </div>
 </div>
+</ng-container>

@@ -10,12 +10,12 @@ export class HelperService {
 
   constructor(private http: HttpClient) {}
 
-  getAllHelpersMetaData(): Observable<any> {
+  getAllHelpers(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
   }
 
-  getHelperById(id: string, data: any): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`, data);
+  getHelperById(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${id}`);
   }
 
   createHelper(data: any): Observable<any> {

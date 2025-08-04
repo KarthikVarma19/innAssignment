@@ -29,12 +29,12 @@
             <ng-select
               class="custom"
               #agesSelect
-              [items]="ages"
+              [items]="typeOfService"
               [selectOnTab]="true"
               bindValue="value"
-              labelForId="age"
-              placeholder="Select age"
-              formControlName="age"
+              labelForId="typeOfService"
+              placeholder="Select Type of Service"
+              formControlName="typeOfService"
             >
             </ng-select>
           </div>
@@ -46,12 +46,12 @@
             <ng-select
               class="custom"
               #agesSelect
-              [items]="ages"
+              [items]="organizationName"
               [selectOnTab]="true"
               bindValue="value"
-              labelForId="age"
-              placeholder="Select age"
-              formControlName="age"
+              labelForId="typeOfService"
+              placeholder="Organization Name"
+              formControlName="organizationName"
             >
             </ng-select>
           </div>
@@ -59,39 +59,32 @@
         <!-- Full Name -->
         <div class="field-container">
           <label>Full Name*</label>
-          <div>
-            <ng-select
-              [items]="[]"
-              [addTag]="true"
-              [multiple]="false"
-              [searchable]="true"
-              [hideSelected]="true"
-              [closeOnSelect]="true"
-              [loading]="false"
-              [clearable]="false"
-              [tabindex]="0"
-              [(ngModel)]="userInput"
-              placeholder="Type anything"
-            >
-            </ng-select>
-          </div>
+          <input type="text" name="fullName" id="fullName" />
+          <div></div>
         </div>
         <!-- Languages -->
         <div class="field-container">
           <label>Languages*</label>
-          <div>
-             <ng-select
-              class="custom"
-              #agesSelect
-              [items]="ages"
-              [selectOnTab]="true"
-              bindValue="value"
-              labelForId="age"
-              placeholder="Select age"
-              formControlName="age"
-            >
-            </ng-select>
-          </div>
+          <ng-select
+          [items]="people"
+          [multiple]="true"
+          bindLabel="name"
+          groupBy="gender"
+          [selectableGroup]="true"
+          [closeOnSelect]="false"
+          bindValue="id"
+          [(ngModel)]="selectedPeople">
+          <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+            <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" /> {{ item.gender }}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+            <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" /> {{ item.name }}
+          </ng-template>
+        </ng-select>
+        </div>
+        
+        <br />
+        <small>{{ selectedPeople}}</small>
         </div>
         <!-- Gender -->
         <div class="field-container">
@@ -112,19 +105,7 @@
         <!-- Choose Vehicle Type -->
         <div class="field-container">
           <label>Choose Vehicle Type</label>
-          <div>
-            <ng-select
-              class="custom"
-              #agesSelect
-              [items]="ages"
-              [selectOnTab]="true"
-              bindValue="value"
-              labelForId="age"
-              placeholder="Select age"
-              formControlName="age"
-            >
-            </ng-select>
-          </div>
+          <div></div>
         </div>
         <!-- Vehicle Number -->
         <div class="field-container">
@@ -141,5 +122,4 @@
         </div>
       </div>
     </div>
-  </div>
 </form>

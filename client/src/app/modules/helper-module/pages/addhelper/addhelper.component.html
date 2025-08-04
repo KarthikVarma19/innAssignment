@@ -71,13 +71,8 @@
               ? 'stage-dot-complete'
               : 'stage-dot-incomplete'
           "
+          class="stage-dot-incomplete"
         >
-          <span
-            *ngIf="currentStageOfAddingHelper === finalStageOfAddingHelper"
-            class="material-symbols-outlined"
-          >
-            check
-          </span>
         </div>
       </div>
       <div class="stages-container">
@@ -114,9 +109,12 @@
             accept="image/*"
           />
         </div>
+
         <span class="photo-upload-description"
           >Upload photo (.png, .jpeg) size 5mb</span
         >
+        <br />
+        <span class="photo-upload-description">Upload photo (.png, .jpeg) size 5mb</span>
         <!-- Type of Service -->
         <div class="type-of-service-container field-container">
           <label>Type of Service*</label>

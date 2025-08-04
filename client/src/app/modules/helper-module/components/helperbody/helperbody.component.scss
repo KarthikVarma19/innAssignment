@@ -1,3 +1,110 @@
+// helper header 
+.headingContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 25px 20px;
+  padding-bottom: 0px;
+  .headingName {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .material-symbols-outlined{
+    cursor: pointer;
+  }
+}
+
+.headingHortizantalRule {
+border: none; 
+height: 1px;
+background-color: lightgray;
+}
+
+// helper filter 
+.filterContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .iconContainer {
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    margin: 10px;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    .material-symbols-outlined {
+      margin-top: 8px;
+      font-size: 20px;
+    }
+  }
+  .leftContainer {
+    display: flex;
+    flex-direction: row;
+    .searchContainer {
+      display: inline-flex;
+      flex-direction: row;
+      .searchInputContainer {
+        input {
+          margin-top: 6px;
+          border: none;
+          outline: none;
+          width: 190px;
+          padding-left: 10px;
+        }
+      }
+    }
+    .iconSearchContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      align-items: left;
+      width: 250px;
+      padding-left: 5px;
+      text-align: center;
+      .material-symbols-outlined {
+        margin-top: 4px;
+      }
+    }
+    .helperResultData {
+      padding: 5px;
+      padding-left: 0px;
+      margin: 15px;
+      margin-left: 0px;
+      color: gray;
+    }
+  }
+  .rightContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    a {
+      text-decoration: none;
+      .addHelperButton {
+        background-color: blue;
+        width: 120px;
+        color: white;
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        text-align: center;
+        .material-symbols-outlined {
+          margin-top: 2px;
+          font-size: 20px;
+        }
+        p {
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+// helper body 
 .helperBodyContainer {
   --helper-list-width: 30%;
   --helper-data-width: 70%;
@@ -24,7 +131,16 @@
         border-bottom: 1px solid lightgray;
 
         &:hover {
-          background-color: #f0f0f0 !important;
+          background-color: var(
+            --helperslist-container-hover-background-color
+          ) !important;
+        }
+        
+        &.selected {
+          cursor: pointer;
+          background-color: var(
+            --helperslist-container-selected-background-color
+          ) !important;
         }
 
         .helperContainer {
@@ -99,3 +215,5 @@
     scrollbar-width: none;
   }
 }
+
+

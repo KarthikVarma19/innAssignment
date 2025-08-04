@@ -39,6 +39,11 @@
     margin-top: -125px;
     margin-left: -50px;
 
+    @media (max-width: 1000px) {
+      margin-top: -145px;
+      margin-left: -50px;
+    }
+
     p {
       color: white;
       font-size: medium;
@@ -120,12 +125,18 @@
         flex-direction: row;
         align-items: center;
         padding: 3px;
-        &:hover,
+        border-radius: 10px;
+        &:hover {
+          cursor: pointer;
+          background-color: var(
+            --dashboard-treeview-child-hover-background-color
+          ) !important;
+        }
         &.selected {
           cursor: pointer;
           .childName,
           .material-symbols-outlined {
-            color: var(--dashboard-treeview-child-hover-color) !important;
+            color: var(--dashboard-treeview-child-selected-hover-color) !important;
           }
           background-color: var(
             --dashboard-treeview-child-background-color
@@ -137,7 +148,6 @@
           font-size: 13px;
           margin: 0px;
           color: black;
-          border-radius: 6px;
         }
 
         .material-symbols-outlined {

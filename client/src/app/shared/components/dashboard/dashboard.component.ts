@@ -70,28 +70,6 @@ export class DashboardComponent {
         { name: 'Issues', icon: 'warning' },
       ],
     },
-    {
-      heading: 'WORK MANAGEMENT',
-      childs: [
-        { name: 'Assets', icon: 'inventory_2' },
-        { name: 'Locations', icon: 'location_on' },
-        { name: 'Work Packages', icon: 'check_box' },
-        { name: 'Work Scheduler', icon: 'schedule' },
-        { name: 'Work Logs', icon: 'history' },
-        { name: 'Issues', icon: 'warning' },
-      ],
-    },
-    {
-      heading: 'WORK MANAGEMENT',
-      childs: [
-        { name: 'Assets', icon: 'inventory_2' },
-        { name: 'Locations', icon: 'location_on' },
-        { name: 'Work Packages', icon: 'check_box' },
-        { name: 'Work Scheduler', icon: 'schedule' },
-        { name: 'Work Logs', icon: 'history' },
-        { name: 'Issues', icon: 'warning' },
-      ],
-    },
   ];
 
   filteredDashboard: Dashboard[];
