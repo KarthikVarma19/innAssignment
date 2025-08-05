@@ -1,4 +1,4 @@
-<form [formGroup]="heroForm" novalidate>
+<form [formGroup]="helperForm" (ngSubmit)="onSubmit()" *ngIf="helperForm">
   <div class="form-group">
     <!-- Form Container -->
     <div class="add-helper-form-container">
@@ -7,119 +7,185 @@
         <p class="form-description">
           Track, Add & Manage all your helpers at one place
         </p>
-        <div class="photo-upload-icon-container">
-          <label for="photo-upload">
-            <span class="material-symbols-outlined">cloud_upload</span>
-            <p>Upload Photo</p>
-          </label>
-          <input
-            type="file"
-            id="photo-upload"
-            style="display: none"
-            accept="image/*"
-          />
+        <div class="photo-upload-main-container">
+          <!-- Upload Input Photo -->
+          <div class="photo-upload-icon-container">
+            <label for="photo-upload">
+              <span class="material-symbols-outlined">cloud_upload</span>
+              <p>Upload Photo</p>
+            </label>
+            <input type="file" id="photo-upload" style="display: none" accept="image/*"
+              formControlName="profilePic"
+              (change)="profilePicUploaded($event)"
+              onchange="document.getElementById('photo-uploaded').src = window.URL.createObjectURL(this.files[0])" />
+          </div>
+          <!-- Uploaded Photo -->
+          <div [ngClass]="(photoUploadedDetails.fileName !== '' )? 'photo-uploaded-active' : 'photo-uploaded-inactive'">
+            <img  alt="" id="photo-uploaded" height="100" width="100" class="photo-uploaded-icon-container">
+          </div>
+          <span class="photo-upload-description" *ngIf="photoUploadedDetails.fileName !== ''">{{photoUploadedDetails.fileName + " (" + (photoUploadedDetails.size / 1024 / 1024).toFixed(2) + " MB)"}}</span>
         </div>
         <span class="photo-upload-description"
-          >Upload photo (.png, .jpeg) size 5mb</span
-        >
-        <!-- Type of Service -->
-        <div class="type-of-service-container field-container">
-          <label>Type of Service*</label>
-          <div>
-            <ng-select
-              class="custom"
-              #agesSelect
-              [items]="typeOfService"
-              [selectOnTab]="true"
-              bindValue="value"
-              labelForId="typeOfService"
-              placeholder="Select Type of Service"
-              formControlName="typeOfService"
-            >
+          *ngIf="photoUploadedDetails.size >= 0 && photoUploadedDetails.size <= PHOTO_LIMIT">Upload photo (.png, .jpeg)
+          max-size 5mb</span>
+        <span class="photo-upload-error"
+          *ngIf="!(photoUploadedDetails.size >= 0 && photoUploadedDetails.size <= PHOTO_LIMIT)">Please Upload Photo size
+          of &lt; 5mb</span>
+      </div>
+
+
+
+      <!-- Type of Service -->
+      <div class="field-container">
+        <label for="type-of-service-label">Type of Service<span class="asterisk">*</span></label>
+          <ng-select class="custom" #servicesSelect [items]="typeOfServiceOptions" [selectOnTab]="true"
+            bindValue="value" labelForId="type-of-service-label" placeholder="Select Type of Service"
+            formControlName="typeOfService" [searchable]="false" [clearable]="false">
+          </ng-select>
+          <div
+          *ngIf="helperForm.get('typeOfService')?.invalid && (helperForm.get('typeOfService')?.dirty || helperForm.get('typeOfService')?.touched)"
+          class="alert-error-message">
+          <span *ngIf="helperForm.get('typeOfService')?.errors?.['required']">Type of Service is required.</span>
+        </div>
+      </div>
+      <!-- Organization Name -->
+      <div class="field-container">
+        <label for="organization-name-label">Organization Name<span class="asterisk">*</span></label>
+        <div>
+          <ng-select class="custom" #organizationSelect [items]="organizationNameOptions" [selectOnTab]="true"
+            bindValue="value" labelForId="organization-name-label" placeholder="Select Organization Name"
+            formControlName="organizationName" [clearable]="false" [clearOnBackspace]="true">
+          </ng-select>
+        </div>
+        <div
+          *ngIf="helperForm.get('organizationName')?.invalid && (helperForm.get('organizationName')?.dirty || helperForm.get('organizationName')?.touched)"
+          class="alert-error-message">
+          <span *ngIf="helperForm.get('organizationName')?.errors?.['required']">Organization Name is required.</span>
+        </div>
+      </div>
+      <!-- Full Name -->
+      <div class="field-container">
+        <label for="full-name-label">Full Name<span class="asterisk">*</span></label>
+        <input type="text" formControlName="fullName" id="full-name-label" class="custom-input" placeholder="Full Name"
+          required />
+        <div
+          *ngIf="helperForm.get('fullName')?.invalid && (helperForm.get('fullName')?.dirty || helperForm.get('fullName')?.touched)"
+          class="alert-error-message">
+          <span *ngIf="helperForm.get('fullName')?.errors?.['required']">Name is required.</span>
+          <span *ngIf="helperForm.get('fullName')?.errors?.['minlength']">Name must be at least 4 characters
+            long.</span>
+        </div>
+      </div>
+      <!-- Languages -->
+        <div class="field-container">
+          <label for="languages-label">Languages<span class="asterisk">*</span></label>
+          <ng-select class="custom" #languagesSelect [items]="languagesOptions" [selectOnTab]="true" bindValue="value"
+            labelForId="languages-label" placeholder="Select languages" formControlName="languages" [multiple]="true"
+            [searchable]="true" [clearOnBackspace]="true" [maxSelectedItems]="3">
+          </ng-select>
+          <div
+          *ngIf="helperForm.get('languages')?.invalid && (helperForm.get('languages')?.dirty || helperForm.get('languages')?.touched)"
+          class="alert-error-message">
+          <span *ngIf="helperForm.get('languages')?.errors?.['required']">Languages are required.</span>
+          <span *ngIf="helperForm.get('languages')?.errors?.['minlength']">Select at least 1 language.</span>
+          <span *ngIf="helperForm.get('languages')?.errors?.['maxlength']">You can select up to 3 languages only.</span>
+        </div>
+        </div>
+      <!-- Gender -->
+      <div class="field-container">
+        <label for="gender-label">Gender<span class="asterisk">*</span></label>
+        <div class="gender-radio-group">
+          <label>
+            <input type="radio" name="gender" value="male"  formControlName="gender"/> Male
+          </label>
+          <label>
+            <input type="radio" name="gender" value="female"  formControlName="gender"/> Female
+          </label>
+          <label>
+            <input type="radio" name="gender" value="other"  formControlName="gender"/> Other
+          </label>
+        </div>
+        <div
+          *ngIf="helperForm.get('gender')?.invalid && (helperForm.get('gender')?.dirty || helperForm.get('gender')?.touched)"
+          class="alert-error-message">
+          <span *ngIf="helperForm.get('gender')?.errors?.['required']">Gender is required.</span>
+        </div>
+      </div>
+      <!-- Phone -->
+      <div class="field-container">
+        <label for="phone-label">Phone<span class="asterisk">*</span></label>
+        <div class="phone-number-container">
+          <div class="countrycode-container">
+            <label for="country-calling-code-label"></label>
+            <ng-select class="custom" #countryCallingCodeSelect [items]="countryCallingCodeOptions" [selectOnTab]="true"
+              bindLabel="label" bindValue="value" labelForId="country-calling-code-label"
+              placeholder="Select Country Code" formControlName="countryCode" [clearable]="false">
             </ng-select>
           </div>
-        </div>
-        <!-- Organization Name -->
-        <div class="field-container">
-          <label>Organization Name*</label>
-          <div>
-            <ng-select
-              class="custom"
-              #agesSelect
-              [items]="organizationName"
-              [selectOnTab]="true"
-              bindValue="value"
-              labelForId="typeOfService"
-              placeholder="Organization Name"
-              formControlName="organizationName"
-            >
-            </ng-select>
+          <div class="phone-number-value-container">
+            <label for="phone-number-label"></label>
+            <input type="text" formControlName="phone" placeholder="Phone number" id="phone-number-label" class="custom-input" inputmode="numeric" pattern="[0-9]*" />
           </div>
         </div>
-        <!-- Full Name -->
-        <div class="field-container">
-          <label>Full Name*</label>
-          <input type="text" name="fullName" id="fullName" />
-          <div></div>
+        <div
+          *ngIf="helperForm.get('countryCode')?.invalid && (helperForm.get('countryCode')?.dirty || helperForm.get('countryCode')?.touched)"
+          class="alert-error-message">
+          <span *ngIf="helperForm.get('countryCode')?.errors?.['required']">Country Code is required.</span>
         </div>
-        <!-- Languages -->
-        <div class="field-container">
-          <label>Languages*</label>
-          <ng-select
-          [items]="people"
-          [multiple]="true"
-          bindLabel="name"
-          groupBy="gender"
-          [selectableGroup]="true"
-          [closeOnSelect]="false"
-          bindValue="id"
-          [(ngModel)]="selectedPeople">
-          <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
-            <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" /> {{ item.gender }}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-            <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" /> {{ item.name }}
-          </ng-template>
-        </ng-select>
+        <div
+          *ngIf="helperForm.get('phone')?.invalid && (helperForm.get('phone')?.dirty || helperForm.get('phone')?.touched)"
+          class="alert-error-message">
+          <span *ngIf="helperForm.get('phone')?.errors?.['required']">Phone number is required.</span>
+          
+          <span *ngIf="helperForm.get('phone')?.errors?.['minlength']">Phone Number must be at least 10 digits.</span>
+          <span *ngIf="helperForm.get('phone')?.errors?.['maxlength']">Phone Number cannot exceed 15 digits.</span>
         </div>
-        
-        <br />
-        <small>{{ selectedPeople}}</small>
+      </div>
+      <!-- Email -->
+      <div class="field-container">
+        <label for="email-label">Email<span class="asterisk">*</span></label>
+        <input type="email" formControlName="email" id="email-label" placeholder="example@abc.com"
+          class="custom-input" />
+          <div
+          *ngIf="helperForm.get('email')?.invalid && (helperForm.get('email')?.dirty || helperForm.get('email')?.touched)"
+          class="alert-error-message">
+          <span *ngIf="helperForm.get('email')?.errors?.['required']">Email is required.</span>
+            <span *ngIf="helperForm.get('email')?.errors?.['email']">Please enter a valid email address.</span>
         </div>
-        <!-- Gender -->
-        <div class="field-container">
-          <label>Gender*</label>
+      </div>
+      <!-- Choose Vehicle Type -->
+      <div class="field-container">
+        <label for="vehicle-type-label">Choose Vehicle Type</label>
+        <div>
+          <ng-select class="custom" #vehicleTypeSelect [items]="vehicleTypeOptions" [selectOnTab]="true"
+            bindLabel="label" bindValue="value" labelForId="vehicle-type-label" placeholder="Select Vehicle Type"
+            formControlName="vehicleType">
+          </ng-select>
         </div>
-        <!-- Phone -->
+      </div>
+      <!-- Vehicle Number -->
+      <ng-container *ngIf="helperForm.get('vehicleType')?.value != 'None'">
         <div class="field-container">
-          <label>Phone*</label>
-          <div class="phone-number-container">
-            <div class="countrycode-container"></div>
-            <div class="phone-number-value-container"></div>
+          <label for="vehicle-number-label">Vehilce Number<span class="asterisk">*</span></label>
+          <input type="text" formControlName="vehicleNumber" id="vehicle-number-label" class="custom-input"
+            placeholder="AP31TG5649" required/>
+            <div *ngIf="helperForm.get('vehicleNumber')?.invalid && (helperForm.get('vehicleNumber')?.dirty || helperForm.get('vehicleNumber')?.touched)"
+            class="alert-error-message">
+            <span *ngIf="helperForm.get('vehicleNumber')?.errors?.['required']">Vehicle Number is required.</span>
+            <span *ngIf="!(helperForm.get('vehicleNumber')?.errors?.['minlength']) && helperForm.get('vehicleNumber')?.errors?.['pattern']">Please enter a valid vehicle number.</span>
           </div>
         </div>
-        <!-- Email -->
-        <div class="field-container">
-          <label>Email</label>
-        </div>
-        <!-- Choose Vehicle Type -->
-        <div class="field-container">
-          <label>Choose Vehicle Type</label>
-          <div></div>
-        </div>
-        <!-- Vehicle Number -->
-        <div class="field-container">
-          <label>Vehicle Number*</label>
-        </div>
-        <!-- KYC Document -->
-        <div class="field-container">
-          <label>KYC Document*</label>
-          <div class="kyc-document-upload-container">
-            <div class="kyc-document-upload-icon-container">
-              <span class="material-symbols-outlined">add</span>
-            </div>
+      </ng-container>
+
+      <!-- KYC Document -->
+      <div class="field-container">
+        <label>KYC Document<span class="asterisk">*</span></label>
+        <div class="kyc-document-upload-container">
+          <div class="kyc-document-upload-icon-container">
+            <span class="material-symbols-outlined">add</span>
           </div>
         </div>
       </div>
     </div>
-</form>
+  </div>
+</form> 

@@ -1,9 +1,4 @@
 .add-helper-form-container {
-  height: calc(90vh - 100px);
-  margin: 30px;
-  width: calc(80vw - 10px);
-  overflow-y: scroll;
-
   .add-helper-footer-horizontal-divider {
     background-color: lightgray;
     height: 1px;
@@ -54,28 +49,57 @@
     color: gray;
   }
 
-  .photo-upload-icon-container {
+  .photo-upload-main-container {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    border-radius: 50%;
-    border: 2px dashed #7587f1;
-    color: var(--dashboard-treeview-child-hover-color);
-    background-color: var(--dashboard-treeview-child-background-color);
-    height: 80px;
-    width: 80px;
-    padding: 10px;
-    margin: 10px 0px;
-    label {
-      cursor: pointer;
+    flex-direction: row;
+    align-items: center;
+    .photo-upload-icon-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      border-radius: 50%;
+      border: 2px dashed #7587f1;
+      background-color: var(--dashboard-treeview-child-background-color);
+      height: 80px;
+      width: 80px;
+      padding: 10px;
+      margin: 10px 10px;
+      label {
+        cursor: pointer;
+      }
+    }
+    .photo-uploaded-icon-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      border-radius: 50%;
+      border: 2px dashed #7587f1;
+      background-color: var(--dashboard-treeview-child-background-color);
+      height: 100px;
+      width: 100px;
+      margin: 10px 0px;
+    }
+    .photo-uploaded-active {
+      display: flex;
+    }
+    .photo-uploaded-inactive {
+      display: none;
     }
   }
   .photo-upload-description {
+    margin: 0px 10px;
     font-size: 12px;
-    margin-top: -15px;
+    font-weight: bold;
     color: gray;
   }
+  .photo-upload-error {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
   .kyc-document-upload-icon-container {
     display: flex;
     flex-direction: column;
@@ -96,6 +120,12 @@
   }
   .field-container {
     margin-top: 15px;
+    .asterisk {
+      color: red;
+    }
+  }
+  .alert-error-message {
+    color: red;
   }
   .form-container {
     width: 100%;
@@ -124,3 +154,14 @@
     }
   }
 }
+
+
+.custom-input {
+  border: 1px solid #ced4da;
+  min-height: 33px;
+  border-radius: 4px;
+  padding-left: 10px;
+  width: 99%;
+  line-height: 1.5;
+}
+

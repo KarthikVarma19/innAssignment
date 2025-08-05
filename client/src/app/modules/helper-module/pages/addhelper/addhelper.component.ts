@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectorRef
+} from '@angular/core';
 
 import { CommonModule, NgIf } from '@angular/common';
 
@@ -19,7 +24,7 @@ import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { HelperService } from '../../services/helper.services';
-import { create } from 'domain';
+import { HelperformComponent } from '../../components/helperform/helperform.component';
 
 @Component({
   selector: 'app-addhelper',
@@ -37,6 +42,7 @@ import { create } from 'domain';
     AsyncPipe,
     HelperdataComponent,
     CommonModule,
+    HelperformComponent,
     RouterModule,
   ],
   templateUrl: './addhelper.component.html',
@@ -65,10 +71,16 @@ export class AddhelperComponent implements OnInit {
   vehicleTypeOptions: string[] = ['None', 'Auto', 'Car', 'Bike'];
   vehicleTypeFilteredOptions: Observable<string[]> | undefined;
 
-  constructor(private helperService: HelperService) {
+  constructor(
+    private helperService: HelperService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.createHelper();
   }
 
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges(); // Manually trigger a safe second check
+  }
   createHelper() {
     const data = [
       {
@@ -681,7 +693,22 @@ export class AddhelperComponent implements OnInit {
   goToPreviousStageOfAddingHelper() {
     this.currentStageOfAddingHelper -= 1;
   }
+
+  buttonClicked: number = 0;
+  helperData: any;
+
   goToNextStageOfAddingHelper() {
+    if (this.currentStageOfAddingHelper === 1) {
+      // call to the submit triggered
+      this.buttonClicked++;
+      return;
+    }
     this.currentStageOfAddingHelper += 1;
+  }
+  handleStageOneHelperFormData(data: any) {
+    this.helperData = data;
+    setTimeout(() => {
+      this.currentStageOfAddingHelper += 1;
+    });
   }
 }

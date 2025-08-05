@@ -43,10 +43,11 @@
     .add-helper-stages-container {
       display: flex;
       flex-direction: row;
-      background-color: #dadfed;
+      background-color:  var(--addhelper-stages-background-color);
+      border: 2px solid lightgray;
       border-radius: 10px;
       margin: 10px;
-      height: 80vh;
+      height: var(--addhelper-stages-form-container--height);
       width: var(--addhelper-stages-view-width);
       padding: 20px;
       .material-symbols-outlined {
@@ -107,10 +108,11 @@
     }
 
     .add-helper-form-container {
-      height: calc(90vh - 100px);
-      margin: 30px;
-      width: calc(80vw - 10px);
+      margin: 10px;
+      height: var(--addhelper-stages-form-container--height);
+      padding: 20px;
       overflow-y: scroll;
+      width: var(--addhelper-form-view-width);
 
       .add-helper-footer-horizontal-divider {
         background-color: lightgray;

@@ -92,7 +92,8 @@
     </div>
     <!-- Form Container -->
     <div class="add-helper-form-container">
-      <div *ngIf="currentStageOfAddingHelper === 1">
+      <!-- Noise Code Remove After Unuse -->
+      <div *ngIf="currentStageOfAddingHelper === 0">
         <h1 class="form-heading">Helper Details</h1>
         <p class="form-description">
           Track, Add & Manage all your helpers at one place
@@ -283,6 +284,12 @@
           </div>
         </div>
       </div>
+      <div *ngIf="currentStageOfAddingHelper === 1">
+        <app-helperform [helperData]="helperData" 
+        [buttonClicked]="buttonClicked" 
+        (helperFormDataStageOne)="handleStageOneHelperFormData($event)"
+        ></app-helperform>
+      </div>
       <!-- Stage - 2  -->
       <div *ngIf="currentStageOfAddingHelper === 2">
         <h1 class="form-heading">Additional Documents</h1>
@@ -315,7 +322,8 @@
         </ng-container>
         <ng-container>
           <button
-            *ngIf="currentStageOfAddingHelper < finalStageOfAddingHelper"
+          type="submit"
+          *ngIf="currentStageOfAddingHelper < finalStageOfAddingHelper"
             (click)="goToNextStageOfAddingHelper()"
             class="nextButton"
           >
