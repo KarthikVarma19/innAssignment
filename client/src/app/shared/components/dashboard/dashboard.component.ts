@@ -27,7 +27,7 @@ import {
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
-  appEnvironment: string = 'TEST';
+  appEnvironment: string = 'DEV';
   readonly Search = Search;
   readonly X = X;
   readonly ChevronUp = ChevronUp;

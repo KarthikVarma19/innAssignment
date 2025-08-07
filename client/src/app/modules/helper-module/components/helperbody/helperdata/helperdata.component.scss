@@ -1,6 +1,9 @@
 .helperDataContainer {
   background-color: #f0f0f0 !important;
+  border: 2px solid lightgray;
+  border-radius: 6px;
   height: 100%;
+  min-height: 70vh;
   position: relative;
   overflow: auto;
   .headerContainer {

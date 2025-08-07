@@ -113,6 +113,32 @@
     margin: 10px 0px;
     cursor: pointer;
   }
+
+  .kyc-document-uploaded-container {display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid gray;
+    background-color: #d5e1fb;
+    height: 80px;
+    width: 80px;
+    padding: 10px;
+    margin: 10px 0px;
+    cursor: pointer;
+    .kyc-document-uploaded-container-description {
+      display: inline-flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      .kyc-document-uploaded-file-name {
+        color: black;
+      }
+  }
+  .kyc-document-uploaded-file-size {
+    color: gray;
+    font-weight: bold;
+  }
+  }
   .type-of-service-container {
     .type-of-service-form-field {
       border-radius: 10px;
@@ -161,7 +187,7 @@
   min-height: 33px;
   border-radius: 4px;
   padding-left: 10px;
-  width: 99%;
+  width: 98%;
   line-height: 1.5;
 }
 

@@ -73,7 +73,7 @@
         class="helperCardContainer"
         (click)="getHelperDetails(helper._id)"
       >
-        <mat-card class="matCardContainer" [class.selected]="helper._id === helperDetails?._id">
+        <mat-card class="matCardContainer" [class.selected]="helper._id === helperDetails.data._id">
           <div class="helperContainer">
             <div class="leftContainer">
               <mat-card-header class="matCardHeader">
@@ -81,7 +81,7 @@
                   mat-card-avatar
                   class="helperImage"
                   [ngStyle]="{
-                    'background-image': 'url(' + helper.employee.employeephotoUrl + ')',
+                    'background-image': 'url(' + getSafeImageUrl(helper) + ')',
                     'background-size': 'cover',
                     'background-position': 'center'
                   }"
@@ -103,6 +103,6 @@
     </ng-container>
   </div>
   <div class="helperDataContainer">
-    <app-helperdata [helperData]="helperDetails"> </app-helperdata>
+    <app-helperdata [helperDisplayData]="helperDetails"> </app-helperdata>
   </div>
 </div>

@@ -33,8 +33,9 @@ export const routes: Routes = [
                 component: AddhelperComponent,
               },
               {
-                path: 'edit-helper',
+                path: 'edit-helper/:id',
                 component: EditHelperComponent,
+
               },
             ],
           }

@@ -1,11 +1,7 @@
 <div class="dashboardContainer">
-  <div class="companyLogoContainer">
+  <div class="companyLogoContainer" [routerLink]="['/']">
     <div>
-      <img
-        src="../../../assets/asbl_homes_logo.png"
-        alt="asbl"
-        class="abslHomesLogo"
-      />
+      <img src="../../../assets/asbl_homes_logo.png" alt="asbl" class="abslHomesLogo" />
     </div>
     <div class="companyDetails">
       <h1 class="companyTitle">Manage</h1>
@@ -16,29 +12,14 @@
     <div class="searchContainer">
       <div class="searchIconContainer">
         <div class="searchIcon">
-          <lucide-icon
-            name="search"
-            [img]="Search"
-            [size]="15"
-            [strokeWidth]="2"
-          ></lucide-icon>
+          <lucide-icon name="search" [img]="Search" [size]="15" [strokeWidth]="2"></lucide-icon>
         </div>
         <div class="searchInputContainer">
-          <input
-            type="text"
-            placeholder="Search"
-            [(ngModel)]="searchText"
-            (keyup)="searchFilterInDashboard()"
-          />
+          <input type="text" placeholder="Search" [(ngModel)]="searchText" (keyup)="searchFilterInDashboard()" />
         </div>
       </div>
       <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
-        <lucide-icon
-          name="x"
-          [img]="X"
-          [size]="15"
-          [strokeWidth]="2"
-        ></lucide-icon>
+        <lucide-icon name="x" [img]="X" [size]="15" [strokeWidth]="2"></lucide-icon>
       </div>
     </div>
   </div>
@@ -49,12 +30,8 @@
   <div class="treeView">
     <ng-container *ngFor="let section of filteredDashboard">
       <div class="headingContainer" (click)="toggleChildContainer(section)">
-        <lucide-icon
-          name="chevron-up"
-          [img]="!isItemDisabled(section) ? ChevronUp : ChevronRight"
-          [size]="15"
-          [strokeWidth]="2"
-        >
+        <lucide-icon name="chevron-up" [img]="!isItemDisabled(section) ? ChevronUp : ChevronRight" [size]="15"
+          [strokeWidth]="2">
         </lucide-icon>
         <h5>
           {{ section.heading }}
@@ -62,18 +39,12 @@
       </div>
       <ng-container *ngIf="!isItemDisabled(section)">
         <div *ngFor="let c of section.childs" class="childContainer">
-          <a
-            [routerLink]="[
+          <a [routerLink]="[
               'dashboard',
               section.heading.split(' ').join('-').toLowerCase(),
               c.name.split(' ').join('-').toLowerCase()
-            ]"
-            (click)="onChildClick(c.name)"
-          >
-            <p
-              class="child-inner-container"
-              [class.selected]="selectedChild === c.name"
-            >
+            ]" (click)="onChildClick(c.name)">
+            <p class="child-inner-container" [class.selected]="selectedChild === c.name">
               <span class="material-symbols-outlined">{{ c.icon }}</span>
               <span class="childName">{{ c.name }}</span>
             </p>
@@ -88,35 +59,22 @@
       <div class="helperContainer">
         <div class="leftContainer">
           <mat-card-header class="matCardHeader">
-            <div
-              mat-card-avatar
-              class="helperImage"
-              [ngStyle]="{
+            <div mat-card-avatar class="helperImage" [ngStyle]="{
                 'background-image': 'url(' + '' + ')',
                 'background-size': 'cover',
                 'background-position': 'center'
-              }"
-            >
+              }">
               <img
                 src="https://ui-avatars.com/api/?name=Karthik&background=random&color=fff&rounded=true&bold=true&size=32"
-                alt="John Doe Avatar"
-                class="avatar"
-              />
+                alt="John Doe Avatar" class="avatar" />
             </div>
             <mat-card-title class="helperName">Karthik</mat-card-title>
-            <mat-card-subtitle class="helperSubtitle"
-              >SDE Intern</mat-card-subtitle
-            >
+            <mat-card-subtitle class="helperSubtitle">SDE Intern</mat-card-subtitle>
           </mat-card-header>
         </div>
         <div class="rightContainer">
           <p class="rightIcon">
-            <lucide-icon
-              name="chevron-right"
-              [img]="ChevronRight"
-              [size]="15"
-              [strokeWidth]="2"
-            ></lucide-icon>
+            <lucide-icon name="chevron-right" [img]="ChevronRight" [size]="15" [strokeWidth]="2"></lucide-icon>
           </p>
         </div>
       </div>

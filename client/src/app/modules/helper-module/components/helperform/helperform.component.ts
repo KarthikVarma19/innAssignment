@@ -1,4 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,6 +19,8 @@ import {
 } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
+import { DialogboxComponent } from '../../../../shared/components/dialogbox/dialogbox.component';
+import IkycDocumentDetails, { KycdocumentComponent } from '../kycdocument/kycdocument.component';
 
 @Component({
   selector: 'app-helperform',
@@ -61,6 +73,10 @@ export class HelperformComponent implements OnInit {
         Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}'),
       ])
     ),
+    kycDocumentType: new FormControl('', Validators.required),
+    kycDocumentUrl: new FormControl('', Validators.required),
+    kycDocumentFileName: new FormControl('', Validators.required),
+    kycDocumentSize: new FormControl(0, Validators.required),
   });
 
   typeOfServiceOptions = [
@@ -256,23 +272,26 @@ export class HelperformComponent implements OnInit {
     { label: '+98', value: 98 },
   ];
 
-  photoUploadedDetails: PhotoUploadedDetails = {
-    fileName: '',
-    url: '',
-    size: 0,
-    uploadedAt: new Date(),
-    mimeType: '',
-    base64: '',
-  };
-  readonly PHOTO_LIMIT: number = 5242880;
-  userInput: string = '';
+  photoUploadedDetails: PhotoUploadedDetails;
 
-  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {}
+  readonly PHOTO_LIMIT: number = 5242880;
+
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
+    this.photoUploadedDetails = {
+      fileName: '',
+      url: '',
+      size: 0,
+      uploadedAt: new Date(),
+      mimeType: '',
+      base64: '',
+    };
+  }
 
   ngOnInit() {
     this.vehicleValidation();
     setTimeout(() => {
       this.helperForm.patchValue({
+        profilePic: this.helperData?.profilePic || '',
         typeOfService: this.helperData?.typeOfService || '',
         organizationName: this.helperData?.organizationName || '',
         fullName: this.helperData?.fullName || '',
@@ -283,10 +302,17 @@ export class HelperformComponent implements OnInit {
         email: this.helperData?.email || '',
         vehicleType: this.helperData?.vehicleType || 'None',
         vehicleNumber: this.helperData?.vehicleNumber || '',
+        kycDocumentType: this.helperData?.kycDocumentType || '',
+        kycDocumentUrl: this.helperData?.kycDocumentUrl || '',
+        kycDocumentFileName: this.helperData?.kycDocumentFileName || '',
+        kycDocumentSize: this.helperData?.kycDocumentSize || 0,
       });
+      this.photoUploadedDetails.url = this.helperData?.profilePic || '';
+      this.cdr.detectChanges(); // Force trigger change detection
     });
 
-  // convert base64 to the url
+    this.setBackendDataToFrontend();
+
   }
 
   @Output() helperFormDataStageOne: EventEmitter<any> = new EventEmitter();
@@ -299,62 +325,94 @@ export class HelperformComponent implements OnInit {
     }
   }
 
-  // profilePicUploaded(event: Event) {
-  //   const target = event.target as HTMLInputElement;
-  //   if (target && target.files && target.files.length === 1) {
-  //     const file = target.files[0];
-  //     this.photoUploadedDetails.size = file.size;
-  //     this.photoUploadedDetails.fileName = file.name;
-  //     this.photoUploadedDetails.url = URL.createObjectURL(file);
-  //     this.photoUploadedDetails.mimeType = file.type;
-  //     this.photoUploadedDetails.uploadedAt = new Date();
-  //     this.helperForm.get('profilePic')?.setValue(file.name);
-  //   } else {
-  //     console.error('Please upload only one file.');
-  //   }
-  // }
-
-
-
-
+  get documentSizeInMB(): string {
+    const size = Number(this.helperForm.get('kycDocumentSize')?.value);
+    return (size / 1024 / 1024).toFixed(2);
+  }
 
   profilePicUploaded(event: Event): void {
     const target = event.target as HTMLInputElement;
-
-    if (target && target.files && target.files.length === 1) {
+    if (target.files && target.files.length === 1) {
       const file = target.files[0];
-          this.photoUploadedDetails.size = file.size;
-          this.photoUploadedDetails.fileName = file.name;
-          // this.photoUploadedDetails.url = URL.createObjectURL(file);
-          this.photoUploadedDetails.mimeType = file.type;
-          this.photoUploadedDetails.uploadedAt = new Date();
+      if (file.size > this.PHOTO_LIMIT) {
+        return;
+      }
+      this.photoUploadedDetails.size = file.size;
+      this.photoUploadedDetails.fileName = file.name;
+      this.photoUploadedDetails.mimeType = file.type;
+      this.photoUploadedDetails.uploadedAt = new Date();
 
       const reader = new FileReader();
       reader.onload = () => {
-        const base64String = (reader.result as string).split(',')[1]; // remove data:image/...;base64, prefix
-
-        this.photoUploadedDetails.base64 = base64String;
-        console.log(base64String);
-        this.photoUploadedDetails.url = `data:${file.type};base64,${base64String}`;
-
-        // Save base64 string or filename to the form (choose what you need)
-        this.helperForm.patchValue({ profilePic: base64String });
+        setTimeout(() => {
+          const base64 = reader.result as string;
+          this.photoUploadedDetails.base64 = base64.split(',')[1];
+          this.photoUploadedDetails.url = base64;
+          setTimeout(() => {
+            this.helperForm.get('profilePic')?.setValue(base64);
+            console.log('uploaded to profilePic');
+          });
+        });
       };
 
-      reader.onerror = (error) => {
-        console.error('File reading error:', error);
-      };
+      reader.onerror = (err) => console.error('FileReader error:', err);
 
       reader.readAsDataURL(file);
-    } else {
-      console.error('Please upload only one file.');
     }
   }
 
   @Input() helperData: any;
   @Input() buttonClicked: number = 0;
 
+  @Input() helperBackendData: any;
+
+  setBackendDataToFrontend() {
+    if (!this.helperBackendData) return;
+
+    const personal = this.helperBackendData.personalDetails || {};
+    const service = this.helperBackendData.serviceDetails || {};
+    const vehicle = this.helperBackendData.vehicleDetails || {};
+    const kyc = personal.kycDocument || {};
+    const employee = this.helperBackendData.employee || {};
+
+    // Extract country code and phone number
+    let countryCode = 91;
+    let phone = personal.phone || '';
+    if (phone && phone.length > 5 && phone.startsWith('91')) {
+      countryCode = 91;
+      phone = phone.substring(2);
+    }
+
+
+    console.log(this.helperBackendData);
+
+    setTimeout(() => {
+      this.helperForm.patchValue({
+        profilePic: employee.employeephotoUrl || '', // Use employee photo if available
+        typeOfService: service.type || '',
+        organizationName: service.organization || '',
+        fullName: personal.fullName || '',
+        languages: personal.languages || [],
+        gender: personal.gender || '',
+        countryCode: countryCode,
+        phone: phone,
+        email: personal.email || '',
+        vehicleType: vehicle.type || '',
+        vehicleNumber: vehicle.number || '',
+        kycDocumentType: kyc.type || '',
+        kycDocumentUrl: kyc.url || '',
+        kycDocumentFileName: kyc.filename || '', // Extract file name from URL if available
+        kycDocumentSize: kyc.filesize || 0, // Not available in backend
+      });
+      this.photoUploadedDetails.url = employee.employeephotoUrl || '';
+    });
+    
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
+
+    this.setBackendDataToFrontend();
+
     this.vehicleValidation();
     if (
       changes['buttonClicked'] &&
@@ -372,8 +430,43 @@ export class HelperformComponent implements OnInit {
       this.helperForm.markAllAsTouched();
       return;
     }
-    console.log(this.helperForm.value);
+    this.setDefaultProfilePic();
     this.helperFormDataStageOne.emit(this.helperForm.value);
+  }
+
+  // if user did not upload the helper image we will call the ui avatar api using full name and set to that while submitting
+  setDefaultProfilePic(): void {
+    const userName = this.helperForm.get('fullName')?.value;
+    const userImageApiUrl = `https://ui-avatars.com/api/?name=${userName}&background=random&color=fff&rounded=true&bold=true&size=32`;
+    const profilePicControl = this.helperForm.get('profilePic');
+    if (profilePicControl && profilePicControl.value === '') {
+      console.log('profile pic setted');
+      profilePicControl.setValue(userImageApiUrl);
+    }
+  }
+
+  @ViewChild('dialogHost', { read: ViewContainerRef })
+  dialogHost!: ViewContainerRef;
+
+  openDialog() {
+    // DESTROY if there are any before's view cihld componente ref
+    this.dialogHost.clear();
+
+    const dialogRef = this.dialogHost.createComponent(DialogboxComponent);
+    dialogRef.setInput('componentType', KycdocumentComponent);
+    dialogRef.setInput('componentData', { name: 'Karthik Varma' });
+
+    dialogRef.instance.onClose.subscribe((data: IkycDocumentDetails) => {
+      this.helperForm.get('kycDocumentType')?.setValue(data.documentType);
+      this.helperForm.get('kycDocumentUrl')?.setValue(data.base64);
+      this.helperForm.get('kycDocumentFileName')?.setValue(data.fileName);
+      this.helperForm.get('kycDocumentSize')?.setValue(data.fileSize);
+      this.dialogHost.clear();
+    });
+  }
+
+  getEditHelperSaveButtonGetData() {
+    return this.helperForm.value;
   }
 }
 
@@ -385,3 +478,50 @@ interface PhotoUploadedDetails {
   mimeType: string;
   base64: string;
 }
+
+/* 
+
+Backend Data
+
+{
+  "personalDetails": {
+      "kycDocument": {
+          "type": "Voter Id",
+          "url": "https://kyc.example.com/kavya_voter.pdf"
+      },
+      "fullName": "Kavya Patel",
+      "gender": "Female",
+      "languages": [
+          "Gujarati",
+          "English"
+      ],
+      "phone": "9876543232",
+      "email": "kavya.patel@example.com",
+      "additionalDocuments": []
+  },
+  "serviceDetails": {
+      "type": "Cook",
+      "organization": "CityCare",
+      "assignedHouseholds": [
+          "HH-1230",
+          "HH-1231",
+          "HH-1232"
+      ],
+      "joinedOn": "2023-11-07T00:00:00.000Z"
+  },
+  "vehicleDetails": {
+      "type": "None"
+  },
+  "_id": "688c6b6b39a3dd9fdb50b439",
+  "employee": {
+      "_id": "688c6b6a39a3dd9fdb50b41d",
+      "employeeId": "EMP-103",
+      "employeephotoUrl": "https://randomuser.me/api/portraits/women/6.jpg",
+      "identificationCardUrl": "https://cdn.example.com/idcards/emp103.png"
+  },
+  "createdAt": "2025-08-01T07:23:23.319Z",
+  "updatedAt": "2025-08-01T07:23:23.319Z",
+  "__v": 0
+}
+
+*/

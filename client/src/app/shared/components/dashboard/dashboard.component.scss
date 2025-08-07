@@ -8,6 +8,7 @@
   .companyLogoContainer {
     display: flex;
     flex-direction: row;
+    cursor: pointer;
 
     .abslHomesLogo {
       height: 50px;
@@ -36,8 +37,8 @@
     height: 20px;
     width: 200px;
     transform: rotate(320deg);
-    margin-top: -125px;
-    margin-left: -50px;
+    margin-top: -130px;
+    margin-left: -45px;
 
     @media (max-width: 1000px) {
       margin-top: -145px;
@@ -136,7 +137,9 @@
           cursor: pointer;
           .childName,
           .material-symbols-outlined {
-            color: var(--dashboard-treeview-child-selected-hover-color) !important;
+            color: var(
+              --dashboard-treeview-child-selected-hover-color
+            ) !important;
           }
           background-color: var(
             --dashboard-treeview-child-background-color

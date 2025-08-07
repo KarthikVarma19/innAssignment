@@ -1,0 +1,118 @@
+.kyc-document-upload-icon-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px dashed blue;
+    height: 80px;
+    width: auto;
+    padding: 10px;
+    margin: 10px 0px;
+    background-color: #e3e7ff;
+    .cloud-upload {
+      cursor: pointer;
+        color: var(--dashboard-treeview-child-selected-hover-color);
+    }
+    .cloud-upload-description {
+      
+      cursor: pointer;
+        .normal {
+            color: black;
+        }
+        color: #687ced;
+        font-weight: bold;
+    }
+  }
+
+  .field-container {
+    margin-top: 15px;
+    .asterisk {
+      color: red;
+    }
+    .alert-error-message {
+      color: red;
+    }
+  }
+
+  .upload-box {
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+
+  
+  .file-uploaded-container {
+    margin: 20px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    .file-uploaded-left-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: center;
+      .file-uploaded-file-name {
+        margin: 0px;
+        text-align: center;
+      }
+    }
+    .material-symbols-outlined {
+      margin: 0px 4px;
+    }
+    
+    .delete-button-icon {
+      color: red;
+      cursor: pointer;
+    }
+    .view-button-icon {
+      color: blue;
+      cursor: pointer;
+    }
+  }
+
+
+
+  .add-helper-footer-horizontal-divider {
+    background-color: lightgray;
+    height: 1px;
+    width: 100%;
+    margin: 20px 0;
+    border: none;
+  }
+
+  .add-helper-footer-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+
+    button {
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      border-radius: 5px;
+      text-align: center;
+      border-width: 1px;
+      border-color: gray;
+      margin: 10px;
+      padding: 5px 20px;
+
+      span {
+        padding: 0px;
+        margin: 0px;
+      }
+    }
+
+    .cancel-button {
+      color: black;
+      background-color: white;
+    }
+    .save-button {
+      background-color: blue;
+      color: white;
+    }
+  }

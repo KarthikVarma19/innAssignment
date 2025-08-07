@@ -22,27 +22,51 @@ import { RouterLink } from '@angular/router';
   styleUrl: './helperbody.component.scss',
 })
 export class HelperbodyComponent implements OnInit {
-  helpersData: any[] = [];
-  filteredHelperData: any[] = [];
+  helpersData: any[];
+  filteredHelperData: any[];
   helperDetails: any;
 
 
-  constructor(private helperService: HelperService) {}
+  constructor(private helperService: HelperService) {
+    this.helpersData = [];
+    this.filteredHelperData = [];
+    this.helperDetails = {
+      context: 'admin',
+      data: null,
+    };
+  }
 
   getHelperDetails(_helperObjectId: string) {
     // if it is already the same data that is already in view
-    if (this.helperDetails?._id === _helperObjectId) return;
-    this.helperDetails = this.helpersData.find(
+    if (this.helperDetails.data._id === _helperObjectId) return;
+
+    const foundData = this.helpersData.find(
       (helper) => helper._id === _helperObjectId
     );
+
+    this.helperDetails = {
+      ...this.helperDetails,
+      data: foundData,
+    };
   }
 
   ngOnInit(): void {
-    this.helperService.getAllHelpers().subscribe((data) => {
-      this.helpersData = data;
-      this.helperDetails = this.helpersData[0];
+    this.helperService.getAllHelpers().subscribe((subdata) => {
+      this.helpersData = subdata;
+      this.helperDetails = { data: this.helpersData[0], context: 'admin' };
     });
   }
+
+  getSafeImageUrl(helper: any) {
+
+    const image = helper.employee?.employeephotoUrl;
+    if (!image || image.trim() === '') {
+      return `https://ui-avatars.com/api/?name=${helper.personalDetails.fullName}&background=random&color=fff&rounded=true&bold=true&size=32`;
+    }
+
+    return image;
+  }
+
 
   searchText: string = '';
   // choice 1: show total data initially : 8 helpers
@@ -50,7 +74,7 @@ export class HelperbodyComponent implements OnInit {
 
   removeSearchText(): void {
     this.searchText = '';
-    this.helperDetails = this.helpersData[0];
+    this.helperDetails = { data: this.helpersData[0], context: 'admin' };
   }
   searchForHelper(): void {
     this.filteredHelperData = this.helpersData.filter(
@@ -66,6 +90,6 @@ export class HelperbodyComponent implements OnInit {
           .includes(this.searchText.toLowerCase())
     );
     
-    this.helperDetails = this.filteredHelperData[0];
+    this.helperDetails = { data: this.filteredHelperData[0], context: 'admin' };
   }
 }

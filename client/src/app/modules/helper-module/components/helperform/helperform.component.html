@@ -7,108 +7,246 @@
         <p class="form-description">
           Track, Add & Manage all your helpers at one place
         </p>
+      
         <div class="photo-upload-main-container">
-          <!-- Upload Input Photo -->
           <div class="photo-upload-icon-container">
             <label for="photo-upload">
               <span class="material-symbols-outlined">cloud_upload</span>
               <p>Upload Photo</p>
             </label>
-            <input type="file" id="photo-upload" style="display: none" accept="image/*"
-              formControlName="profilePic"
+            <input
+              type="file"
+              id="photo-upload"
+              style="display: none"
+              accept="image/*"
               (change)="profilePicUploaded($event)"
-              onchange="document.getElementById('photo-uploaded').src = window.URL.createObjectURL(this.files[0])" />
+            />
           </div>
-          <!-- Uploaded Photo -->
-          <div [ngClass]="(photoUploadedDetails.fileName !== '' )? 'photo-uploaded-active' : 'photo-uploaded-inactive'">
-            <img  alt="" id="photo-uploaded" height="100" width="100" class="photo-uploaded-icon-container">
+        
+          <div
+            *ngIf="photoUploadedDetails.url"
+            [ngClass]="
+              photoUploadedDetails.url !== ''
+                ? 'photo-uploaded-active'
+                : 'photo-uploaded-inactive'
+            "
+          >
+            <img
+              [src]="photoUploadedDetails.url"
+              alt="Uploaded Photo"
+              height="100"
+              width="100"
+              class="photo-uploaded-icon-container"
+            />
           </div>
-          <span class="photo-upload-description" *ngIf="photoUploadedDetails.fileName !== ''">{{photoUploadedDetails.fileName + " (" + (photoUploadedDetails.size / 1024 / 1024).toFixed(2) + " MB)"}}</span>
+        
+          <span
+            class="photo-upload-description"
+            *ngIf="photoUploadedDetails.fileName !== ''"
+            >{{
+              photoUploadedDetails.fileName +
+                ' (' +
+                (photoUploadedDetails.size / 1024 / 1024).toFixed(2) +
+                ' MB)'
+            }}</span
+          >
         </div>
-        <span class="photo-upload-description"
-          *ngIf="photoUploadedDetails.size >= 0 && photoUploadedDetails.size <= PHOTO_LIMIT">Upload photo (.png, .jpeg)
-          max-size 5mb</span>
-        <span class="photo-upload-error"
-          *ngIf="!(photoUploadedDetails.size >= 0 && photoUploadedDetails.size <= PHOTO_LIMIT)">Please Upload Photo size
-          of &lt; 5mb</span>
+        
+        <span
+          class="photo-upload-description"
+          *ngIf="
+            photoUploadedDetails.size >= 0 &&
+            photoUploadedDetails.size <= PHOTO_LIMIT
+          "
+          >Upload photo (.png, .jpeg) max-size 5mb</span
+        >
+        <span
+          class="photo-upload-error"
+          *ngIf="
+            !(
+              photoUploadedDetails.size >= 0 &&
+              photoUploadedDetails.size <= PHOTO_LIMIT
+            )
+          "
+          >Please Upload Photo size of &lt; 5mb</span
+        >
       </div>
-
-
 
       <!-- Type of Service -->
       <div class="field-container">
-        <label for="type-of-service-label">Type of Service<span class="asterisk">*</span></label>
-          <ng-select class="custom" #servicesSelect [items]="typeOfServiceOptions" [selectOnTab]="true"
-            bindValue="value" labelForId="type-of-service-label" placeholder="Select Type of Service"
-            formControlName="typeOfService" [searchable]="false" [clearable]="false">
-          </ng-select>
-          <div
-          *ngIf="helperForm.get('typeOfService')?.invalid && (helperForm.get('typeOfService')?.dirty || helperForm.get('typeOfService')?.touched)"
-          class="alert-error-message">
-          <span *ngIf="helperForm.get('typeOfService')?.errors?.['required']">Type of Service is required.</span>
+        <label for="type-of-service-label"
+          >Type of Service<span class="asterisk">*</span></label
+        >
+        <ng-select
+          class="custom"
+          #servicesSelect
+          [items]="typeOfServiceOptions"
+          [selectOnTab]="true"
+          bindValue="value"
+          labelForId="type-of-service-label"
+          placeholder="Select Type of Service"
+          formControlName="typeOfService"
+          [searchable]="false"
+          [clearable]="false"
+        >
+        </ng-select>
+        <div
+          *ngIf="
+            helperForm.get('typeOfService')?.invalid &&
+            (helperForm.get('typeOfService')?.dirty ||
+              helperForm.get('typeOfService')?.touched)
+          "
+          class="alert-error-message"
+        >
+          <span *ngIf="helperForm.get('typeOfService')?.errors?.['required']"
+            >Type of Service is required.</span
+          >
         </div>
       </div>
       <!-- Organization Name -->
       <div class="field-container">
-        <label for="organization-name-label">Organization Name<span class="asterisk">*</span></label>
+        <label for="organization-name-label"
+          >Organization Name<span class="asterisk">*</span></label
+        >
         <div>
-          <ng-select class="custom" #organizationSelect [items]="organizationNameOptions" [selectOnTab]="true"
-            bindValue="value" labelForId="organization-name-label" placeholder="Select Organization Name"
-            formControlName="organizationName" [clearable]="false" [clearOnBackspace]="true">
+          <ng-select
+            class="custom"
+            #organizationSelect
+            [items]="organizationNameOptions"
+            [selectOnTab]="true"
+            bindValue="value"
+            labelForId="organization-name-label"
+            placeholder="Select Organization Name"
+            formControlName="organizationName"
+            [clearable]="false"
+            [clearOnBackspace]="true"
+          >
           </ng-select>
         </div>
         <div
-          *ngIf="helperForm.get('organizationName')?.invalid && (helperForm.get('organizationName')?.dirty || helperForm.get('organizationName')?.touched)"
-          class="alert-error-message">
-          <span *ngIf="helperForm.get('organizationName')?.errors?.['required']">Organization Name is required.</span>
+          *ngIf="
+            helperForm.get('organizationName')?.invalid &&
+            (helperForm.get('organizationName')?.dirty ||
+              helperForm.get('organizationName')?.touched)
+          "
+          class="alert-error-message"
+        >
+          <span *ngIf="helperForm.get('organizationName')?.errors?.['required']"
+            >Organization Name is required.</span
+          >
         </div>
       </div>
       <!-- Full Name -->
       <div class="field-container">
-        <label for="full-name-label">Full Name<span class="asterisk">*</span></label>
-        <input type="text" formControlName="fullName" id="full-name-label" class="custom-input" placeholder="Full Name"
-          required />
+        <label for="full-name-label"
+          >Full Name<span class="asterisk">*</span></label
+        >
+        <input
+          type="text"
+          formControlName="fullName"
+          id="full-name-label"
+          class="custom-input"
+          placeholder="Full Name"
+          required
+        />
         <div
-          *ngIf="helperForm.get('fullName')?.invalid && (helperForm.get('fullName')?.dirty || helperForm.get('fullName')?.touched)"
-          class="alert-error-message">
-          <span *ngIf="helperForm.get('fullName')?.errors?.['required']">Name is required.</span>
-          <span *ngIf="helperForm.get('fullName')?.errors?.['minlength']">Name must be at least 4 characters
-            long.</span>
+          *ngIf="
+            helperForm.get('fullName')?.invalid &&
+            (helperForm.get('fullName')?.dirty ||
+              helperForm.get('fullName')?.touched)
+          "
+          class="alert-error-message"
+        >
+          <span *ngIf="helperForm.get('fullName')?.errors?.['required']"
+            >Name is required.</span
+          >
+          <span *ngIf="helperForm.get('fullName')?.errors?.['minlength']"
+            >Name must be at least 4 characters long.</span
+          >
         </div>
       </div>
       <!-- Languages -->
-        <div class="field-container">
-          <label for="languages-label">Languages<span class="asterisk">*</span></label>
-          <ng-select class="custom" #languagesSelect [items]="languagesOptions" [selectOnTab]="true" bindValue="value"
-            labelForId="languages-label" placeholder="Select languages" formControlName="languages" [multiple]="true"
-            [searchable]="true" [clearOnBackspace]="true" [maxSelectedItems]="3">
-          </ng-select>
-          <div
-          *ngIf="helperForm.get('languages')?.invalid && (helperForm.get('languages')?.dirty || helperForm.get('languages')?.touched)"
-          class="alert-error-message">
-          <span *ngIf="helperForm.get('languages')?.errors?.['required']">Languages are required.</span>
-          <span *ngIf="helperForm.get('languages')?.errors?.['minlength']">Select at least 1 language.</span>
-          <span *ngIf="helperForm.get('languages')?.errors?.['maxlength']">You can select up to 3 languages only.</span>
+      <div class="field-container">
+        <label for="languages-label"
+          >Languages<span class="asterisk">*</span></label
+        >
+        <ng-select
+          class="custom"
+          #languagesSelect
+          [items]="languagesOptions"
+          [selectOnTab]="true"
+          bindValue="value"
+          labelForId="languages-label"
+          placeholder="Select languages"
+          formControlName="languages"
+          [multiple]="true"
+          [searchable]="true"
+          [clearOnBackspace]="true"
+          [maxSelectedItems]="3"
+        >
+        </ng-select>
+        <div
+          *ngIf="
+            helperForm.get('languages')?.invalid &&
+            (helperForm.get('languages')?.dirty ||
+              helperForm.get('languages')?.touched)
+          "
+          class="alert-error-message"
+        >
+          <span *ngIf="helperForm.get('languages')?.errors?.['required']"
+            >Languages are required.</span
+          >
+          <span *ngIf="helperForm.get('languages')?.errors?.['minlength']"
+            >Select at least 1 language.</span
+          >
+          <span *ngIf="helperForm.get('languages')?.errors?.['maxlength']"
+            >You can select up to 3 languages only.</span
+          >
         </div>
-        </div>
+      </div>
       <!-- Gender -->
       <div class="field-container">
         <label for="gender-label">Gender<span class="asterisk">*</span></label>
         <div class="gender-radio-group">
           <label>
-            <input type="radio" name="gender" value="male"  formControlName="gender"/> Male
+            <input
+              type="radio"
+              name="gender"
+              value="Male"
+              formControlName="gender"
+            />
+            Male
           </label>
           <label>
-            <input type="radio" name="gender" value="female"  formControlName="gender"/> Female
+            <input
+              type="radio"
+              name="gender"
+              value="Female"
+              formControlName="gender"
+            />
+            Female
           </label>
           <label>
-            <input type="radio" name="gender" value="other"  formControlName="gender"/> Other
+            <input
+              type="radio"
+              name="gender"
+              value="Other"
+              formControlName="gender"
+            />
+            Other
           </label>
         </div>
         <div
-          *ngIf="helperForm.get('gender')?.invalid && (helperForm.get('gender')?.dirty || helperForm.get('gender')?.touched)"
-          class="alert-error-message">
-          <span *ngIf="helperForm.get('gender')?.errors?.['required']">Gender is required.</span>
+          *ngIf="
+            helperForm.get('gender')?.invalid &&
+            (helperForm.get('gender')?.dirty ||
+              helperForm.get('gender')?.touched)
+          "
+          class="alert-error-message"
+        >
+          <span *ngIf="helperForm.get('gender')?.errors?.['required']"
+            >Gender is required.</span
+          >
         </div>
       </div>
       <!-- Phone -->
@@ -117,62 +255,138 @@
         <div class="phone-number-container">
           <div class="countrycode-container">
             <label for="country-calling-code-label"></label>
-            <ng-select class="custom" #countryCallingCodeSelect [items]="countryCallingCodeOptions" [selectOnTab]="true"
-              bindLabel="label" bindValue="value" labelForId="country-calling-code-label"
-              placeholder="Select Country Code" formControlName="countryCode" [clearable]="false">
+            <ng-select
+              class="custom"
+              #countryCallingCodeSelect
+              [items]="countryCallingCodeOptions"
+              [selectOnTab]="true"
+              bindLabel="label"
+              bindValue="value"
+              labelForId="country-calling-code-label"
+              placeholder="Select Country Code"
+              formControlName="countryCode"
+              [clearable]="false"
+            >
             </ng-select>
           </div>
           <div class="phone-number-value-container">
             <label for="phone-number-label"></label>
-            <input type="text" formControlName="phone" placeholder="Phone number" id="phone-number-label" class="custom-input" inputmode="numeric" pattern="[0-9]*" />
+            <input
+              type="text"
+              formControlName="phone"
+              placeholder="Phone number"
+              id="phone-number-label"
+              class="custom-input"
+              inputmode="numeric"
+              pattern="[0-9]*"
+            />
           </div>
         </div>
         <div
-          *ngIf="helperForm.get('countryCode')?.invalid && (helperForm.get('countryCode')?.dirty || helperForm.get('countryCode')?.touched)"
-          class="alert-error-message">
-          <span *ngIf="helperForm.get('countryCode')?.errors?.['required']">Country Code is required.</span>
+          *ngIf="
+            helperForm.get('countryCode')?.invalid &&
+            (helperForm.get('countryCode')?.dirty ||
+              helperForm.get('countryCode')?.touched)
+          "
+          class="alert-error-message"
+        >
+          <span *ngIf="helperForm.get('countryCode')?.errors?.['required']"
+            >Country Code is required.</span
+          >
         </div>
         <div
-          *ngIf="helperForm.get('phone')?.invalid && (helperForm.get('phone')?.dirty || helperForm.get('phone')?.touched)"
-          class="alert-error-message">
-          <span *ngIf="helperForm.get('phone')?.errors?.['required']">Phone number is required.</span>
-          
-          <span *ngIf="helperForm.get('phone')?.errors?.['minlength']">Phone Number must be at least 10 digits.</span>
-          <span *ngIf="helperForm.get('phone')?.errors?.['maxlength']">Phone Number cannot exceed 15 digits.</span>
+          *ngIf="
+            helperForm.get('phone')?.invalid &&
+            (helperForm.get('phone')?.dirty || helperForm.get('phone')?.touched)
+          "
+          class="alert-error-message"
+        >
+          <span *ngIf="helperForm.get('phone')?.errors?.['required']"
+            >Phone number is required.</span
+          >
+
+          <span *ngIf="helperForm.get('phone')?.errors?.['minlength']"
+            >Phone Number must be at least 10 digits.</span
+          >
+          <span *ngIf="helperForm.get('phone')?.errors?.['maxlength']"
+            >Phone Number cannot exceed 15 digits.</span
+          >
         </div>
       </div>
       <!-- Email -->
       <div class="field-container">
         <label for="email-label">Email<span class="asterisk">*</span></label>
-        <input type="email" formControlName="email" id="email-label" placeholder="example@abc.com"
-          class="custom-input" />
-          <div
-          *ngIf="helperForm.get('email')?.invalid && (helperForm.get('email')?.dirty || helperForm.get('email')?.touched)"
-          class="alert-error-message">
-          <span *ngIf="helperForm.get('email')?.errors?.['required']">Email is required.</span>
-            <span *ngIf="helperForm.get('email')?.errors?.['email']">Please enter a valid email address.</span>
+        <input
+          type="email"
+          formControlName="email"
+          id="email-label"
+          placeholder="example@abc.com"
+          class="custom-input"
+        />
+        <div
+          *ngIf="
+            helperForm.get('email')?.invalid &&
+            (helperForm.get('email')?.dirty || helperForm.get('email')?.touched)
+          "
+          class="alert-error-message"
+        >
+          <span *ngIf="helperForm.get('email')?.errors?.['required']"
+            >Email is required.</span
+          >
+          <span *ngIf="helperForm.get('email')?.errors?.['email']"
+            >Please enter a valid email address.</span
+          >
         </div>
       </div>
       <!-- Choose Vehicle Type -->
       <div class="field-container">
         <label for="vehicle-type-label">Choose Vehicle Type</label>
         <div>
-          <ng-select class="custom" #vehicleTypeSelect [items]="vehicleTypeOptions" [selectOnTab]="true"
-            bindLabel="label" bindValue="value" labelForId="vehicle-type-label" placeholder="Select Vehicle Type"
-            formControlName="vehicleType">
+          <ng-select
+            class="custom"
+            #vehicleTypeSelect
+            [items]="vehicleTypeOptions"
+            [selectOnTab]="true"
+            bindLabel="label"
+            bindValue="value"
+            labelForId="vehicle-type-label"
+            placeholder="Select Vehicle Type"
+            formControlName="vehicleType"
+            [searchable]="false"
+            [clearable]="false"
+          >
           </ng-select>
         </div>
       </div>
       <!-- Vehicle Number -->
       <ng-container *ngIf="helperForm.get('vehicleType')?.value != 'None'">
         <div class="field-container">
-          <label for="vehicle-number-label">Vehilce Number<span class="asterisk">*</span></label>
-          <input type="text" formControlName="vehicleNumber" id="vehicle-number-label" class="custom-input"
-            placeholder="AP31TG5649" required/>
-            <div *ngIf="helperForm.get('vehicleNumber')?.invalid && (helperForm.get('vehicleNumber')?.dirty || helperForm.get('vehicleNumber')?.touched)"
-            class="alert-error-message">
-            <span *ngIf="helperForm.get('vehicleNumber')?.errors?.['required']">Vehicle Number is required.</span>
-            <span *ngIf="!(helperForm.get('vehicleNumber')?.errors?.['minlength']) && helperForm.get('vehicleNumber')?.errors?.['pattern']">Please enter a valid vehicle number.</span>
+          <label for="vehicle-number-label"
+            >Vehilce Number<span class="asterisk">*</span></label
+          >
+          <input
+            type="text"
+            formControlName="vehicleNumber"
+            id="vehicle-number-label"
+            class="custom-input"
+            placeholder="AP31TG5649"
+            required
+          />
+          <div
+            *ngIf="
+              helperForm.get('vehicleNumber')?.invalid &&
+              (helperForm.get('vehicleNumber')?.dirty ||
+                helperForm.get('vehicleNumber')?.touched)
+            "
+            class="alert-error-message"
+          >
+            <span *ngIf="helperForm.get('vehicleNumber')?.errors?.['required']"
+              >Vehicle Number is required.</span
+            >
+            <span
+              *ngIf="!(helperForm.get('vehicleNumber')?.errors?.['minlength']) && helperForm.get('vehicleNumber')?.errors?.['pattern']"
+              >Please enter a valid vehicle number.</span
+            >
           </div>
         </div>
       </ng-container>
@@ -180,12 +394,40 @@
       <!-- KYC Document -->
       <div class="field-container">
         <label>KYC Document<span class="asterisk">*</span></label>
-        <div class="kyc-document-upload-container">
-          <div class="kyc-document-upload-icon-container">
-            <span class="material-symbols-outlined">add</span>
+        
+          
+          <ng-container *ngIf="helperForm.get('kycDocumentUrl')?.value !== ''; else showUpload">
+            <div class="kyc-document-uploaded-container" (click)="openDialog()">
+            <div>
+            <img src="../../../../../assets/pdf-icon.png" alt="PDF" height="30" width="30">
           </div>
+          <div class="kyc-document-uploaded-container-description">
+            <span class="kyc-document-uploaded-file-name">
+            {{helperForm.get('kycDocumentFileName')?.value?.substring(0, 5) + "..."}}
+            </span>
+            <span class="material-symbols-outlined">
+              autorenew
+            </span>
+          </div>
+          <p class="kyc-document-uploaded-file-size">
+            {{ documentSizeInMB }} MB</p>
         </div>
+          </ng-container>
+          <ng-template #showUpload>
+            <div class="kyc-document-upload-icon-container" (click)="openDialog()">
+            <span class="material-symbols-outlined">add</span>
+            </div>
+            <div *ngIf="
+              helperForm.get('kycDocumentUrl')?.invalid &&
+              (helperForm.get('kycDocumentUrl')?.dirty ||
+                helperForm.get('kycDocumentUrl')?.touched)
+            " class="alert-error-message">
+              <span *ngIf="helperForm.get('kycDocumentUrl')?.errors?.['required']">KYC Document is required.</span>
+            </div>
+          </ng-template>
+        
+        <ng-template #dialogHost></ng-template>
       </div>
     </div>
   </div>
-</form> 
+</form>

@@ -1,0 +1,146 @@
+.edit-helper-main-container {
+  width: 98%;
+  .edit-helper-navbar-container {
+    .headingContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 25px 20px;
+      padding-bottom: 0px;
+      .heading-left-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        .heading-icons {
+          text-decoration: none;
+          color: black;
+          cursor: pointer;
+          margin-top: -14px;
+          font-size: 40px;
+        }
+        .headingName {
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+      }
+
+      .ellipsisVerticalIcon {
+        padding-top: 10px;
+        cursor: pointer;
+        height: inherit;
+      }
+    }
+
+    .headingHortizantalRule {
+      border: none;
+      height: 1px;
+      background-color: lightgray;
+    }
+  }
+  .edit-helper-body-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    padding: 10px;
+    .edit-helper-stages-container {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--edithelper-stages-background-color);
+      border: 2px solid lightgray;
+      border-radius: 10px;
+      height: var(--edithelper-stages-form-container--height);
+      width: var(--edithelper-stages-view-width);
+      padding: 20px;
+      .child-container {
+        a {
+          text-decoration: none;
+          p {
+            display: flex;
+            margin: 0px;
+            flex-direction: row;
+            align-items: center;
+            padding: 3px;
+            color: black;
+            &:hover {
+              cursor: pointer;
+              background-color: lightgray !important;
+            }
+            &.selected {
+              cursor: pointer;
+              .childName,
+              .material-symbols-outlined {
+                color: white!important;
+              }
+              background-color: #56555c !important;
+            }
+            border-radius: 2px;
+            .childName {
+              padding: 3px;
+              font-size: 13px;
+              margin: 0px;
+              color: black;
+            }
+    
+            .material-symbols-outlined {
+              font-size: 18px;
+              color: #555;
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+      
+      }
+
+    .edit-helper-form-container {
+      height: var(--addhelper-stages-form-container--height);
+      overflow-y: scroll;
+      width: var(--addhelper-form-view-width);
+      margin: 0px 10px;
+      
+      .edit-helper-footer-horizontal-divider {
+        background-color: lightgray;
+        height: 1px;
+        width: 100%;
+        margin: 20px 0;
+        border: none;
+      }
+
+      .edit-helper-footer-button-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: right;
+        button {
+          cursor: pointer;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          border-radius: 5px;
+          text-align: center;
+          border-width: 1px;
+          border-color: gray;
+          margin: 10px;
+          padding: 5px 20px;
+          span {
+            padding: 0px;
+            margin: 0px;
+          }
+        }
+        
+        .edit-helper-final-stage-submit-button {
+          background-color: blue;
+          color: white;
+        }
+
+        .save-button {
+            color: white;
+            background-color: black;
+        }
+
+        .save-button:hover {
+          background-color: darkgreen;
+        }
+      }
+    }
+  }
+}

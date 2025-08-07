@@ -1,0 +1,11 @@
+<div class="backdrop" (click)="close()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <button class="close-btn" (click)="close()">×</button>
+    </div>
+    <div class="modal-body">
+      <ng-container #container>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -102,8 +102,6 @@ background-color: lightgray;
 }
 
 
-
-
 // helper body 
 .helperBodyContainer {
   --helper-list-width: 30%;
@@ -117,7 +115,7 @@ background-color: lightgray;
     margin: 10px;
     width: var(--helper-list-width);
     text-align: center;
-    border: 1px solid lightgray;
+    border: 2px solid lightgray;
     border-radius: 6px;
     margin: 0px 10px;
     overflow-y: auto;
@@ -208,8 +206,6 @@ background-color: lightgray;
     margin: 10px;
     width: var(--helper-data-width);
     text-align: center;
-    border: 1px solid lightgray;
-    border-radius: 6px;
     margin: 0px 10px;
     overflow-y: auto;
     scrollbar-width: none;

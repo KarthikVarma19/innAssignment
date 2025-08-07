@@ -1,45 +1,25 @@
 import {
   Component,
   OnInit,
-  Input,
   ChangeDetectorRef
 } from '@angular/core';
 
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-
-import { MatRadioModule } from '@angular/material/radio';
-import { HelperbodyComponent } from '../../components/helperbody/helperbody.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HelperdataComponent } from '../../components/helperbody/helperdata/helperdata.component';
 import { RouterModule } from '@angular/router';
-
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { HelperService } from '../../services/helper.services';
 import { HelperformComponent } from '../../components/helperform/helperform.component';
+import { ChevronsLeftRightEllipsis } from 'lucide-angular';
 
 @Component({
   selector: 'app-addhelper',
   standalone: true,
   imports: [
-    NgIf,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatAutocompleteModule,
     ReactiveFormsModule,
-    AsyncPipe,
     HelperdataComponent,
     CommonModule,
     HelperformComponent,
@@ -52,371 +32,196 @@ export class AddhelperComponent implements OnInit {
   currentStageOfAddingHelper: number = 1;
   finalStageOfAddingHelper: number = 3;
 
-  selectTypeOfServiceControl = new FormControl('');
   selectTypeOfServiceOptions: { fieldName: string; fieldIcon: string }[] = [
     { fieldName: 'Maid', fieldIcon: 'cleaning_services' },
     { fieldName: 'Cook', fieldIcon: 'restaurant' },
     { fieldName: 'Nurse', fieldIcon: 'medical_services' },
     { fieldName: 'Driver', fieldIcon: 'directions_car' },
   ];
-  selectTypeOfServiceFilteredOptions:
-    | Observable<{ fieldName: string; fieldIcon: string }[]>
-    | undefined;
-
-  organizationNameControl = new FormControl('');
   organizationNameOptions: string[] = ['ASBL', 'Springs Helper'];
-  organizationNameFilteredOptions: Observable<string[]> | undefined;
-
-  vehicleTypeControl = new FormControl('');
   vehicleTypeOptions: string[] = ['None', 'Auto', 'Car', 'Bike'];
-  vehicleTypeFilteredOptions: Observable<string[]> | undefined;
+
+  compiledHelperFormData: IHelperData;
+  helperPresentationData: any;
 
   constructor(
     private helperService: HelperService,
     private cdr: ChangeDetectorRef
   ) {
-    this.createHelper();
+    this.compiledHelperFormData = {
+      personalDetails: {
+        kycDocument: {
+          type: '', // Assuming no mapping for kycDocument in the provided data
+          url: '',
+          filename: '',
+          filesize: 0,
+        },
+        fullName: '',
+        gender: '',
+        languages: [],
+        phone: '',
+        email: '',
+        additionalDocuments: [], // Assuming no mapping for additionalDocuments in the provided data
+      },
+      serviceDetails: {
+        type: '',
+        organization: '',
+        assignedHouseholds: [], // Assuming no mapping for assignedHouseholds in the provided data
+        joinedOn: '', // Assuming no mapping for joinedOn in the provided data
+      },
+      vehicleDetails: {
+        type: '',
+        number: '',
+      },
+      employee: {
+        employeephotoUrl: '',
+      },
+    };
   }
 
   ngAfterViewInit(): void {
     this.cdr.detectChanges(); // Manually trigger a safe second check
   }
+
   createHelper() {
-    const data = [
-      {
-        personalDetails: {
-          fullName: 'Riya Sharma',
-          gender: 'Female',
-          languages: ['Hindi', 'English'],
-          phone: '9876543210',
-          email: 'riya.sharma@example.com',
-          kycDocument: {
-            type: 'Aadhar Card',
-            url: 'https://kyc.example.com/riya_aadhar.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Nurse',
-          organization: 'CareWell Hospital',
-          joinedOn: '2023-09-01',
-          assignedHouseholds: ['HH-1001', 'HH-1012', 'HH-1023'],
-        },
-        vehicleDetails: { type: 'Bike', number: 'MH12AB1234' },
-        employeeDetails: {
-          employeeId: 'EMP-101',
-          employeeDepartment: 'Nursing',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/4.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp101.png',
-        },
-      },
-      {
-        personalDetails: {
-          fullName: 'Ananya Verma',
-          gender: 'Female',
-          languages: ['Marathi', 'English'],
-          phone: '9876543221',
-          email: 'ananya.verma@example.com',
-          kycDocument: {
-            type: 'Pan Card',
-            url: 'https://kyc.example.com/ananya_pan.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Maid',
-          organization: 'HappyHomes Services',
-          joinedOn: '2024-02-10',
-          assignedHouseholds: ['HH-1100', 'HH-1105'],
-        },
-        vehicleDetails: { type: 'None' },
-        employeeDetails: {
-          employeeId: 'EMP-102',
-          employeeDepartment: 'Housekeeping',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/5.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp102.png',
-        },
-      },
-      {
-        personalDetails: {
-          fullName: 'Kavya Patel',
-          gender: 'Female',
-          languages: ['Gujarati', 'English'],
-          phone: '9876543232',
-          email: 'kavya.patel@example.com',
-          kycDocument: {
-            type: 'Voter Id',
-            url: 'https://kyc.example.com/kavya_voter.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Cook',
-          organization: 'CityCare',
-          joinedOn: '2023-11-07',
-          assignedHouseholds: ['HH-1230', 'HH-1231', 'HH-1232'],
-        },
-        vehicleDetails: { type: 'None' },
-        employeeDetails: {
-          employeeId: 'EMP-103',
-          employeeDepartment: 'Culinary',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/6.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp103.png',
-        },
-      },
-      {
-        personalDetails: {
-          fullName: 'Sanya Iyer',
-          gender: 'Female',
-          languages: ['Tamil', 'English'],
-          phone: '9876543243',
-          email: 'sanya.iyer@example.com',
-          kycDocument: {
-            type: 'Passport',
-            url: 'https://kyc.example.com/sanya_passport.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Driver',
-          organization: 'Urban Helpers',
-          joinedOn: '2024-01-15',
-          assignedHouseholds: ['HH-1300', 'HH-1302', 'HH-1305', 'HH-1307'],
-        },
-        vehicleDetails: { type: 'Car', number: 'KA05JJ6789' },
-        employeeDetails: {
-          employeeId: 'EMP-104',
-          employeeDepartment: 'Transport',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/7.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp104.png',
-        },
-      },
-      {
-        personalDetails: {
-          fullName: 'Meera Reddy',
-          gender: 'Female',
-          languages: ['Telugu', 'English'],
-          phone: '9876543254',
-          email: 'meera.reddy@example.com',
-          kycDocument: {
-            type: 'Aadhar Card',
-            url: 'https://kyc.example.com/meera_aadhar.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Electrician',
-          organization: 'CareWell Hospital',
-          joinedOn: '2023-10-20',
-          assignedHouseholds: [
-            'HH-1400',
-            'HH-1402',
-            'HH-1403',
-            'HH-1404',
-            'HH-1405',
-          ],
-        },
-        vehicleDetails: { type: 'Auto', number: 'MH01CD2345' },
-        employeeDetails: {
-          employeeId: 'EMP-105',
-          employeeDepartment: 'Maintenance',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/8.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp105.png',
-        },
-      },
-      {
-        personalDetails: {
-          fullName: 'Divya Joshi',
-          gender: 'Female',
-          languages: ['Hindi', 'English'],
-          phone: '9876543265',
-          email: 'divya.joshi@example.com',
-          kycDocument: {
-            type: 'Pan Card',
-            url: 'https://kyc.example.com/divya_pan.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Cook',
-          organization: 'HappyHomes Services',
-          joinedOn: '2024-03-11',
-          assignedHouseholds: ['HH-1501', 'HH-1502'],
-        },
-        vehicleDetails: { type: 'None' },
-        employeeDetails: {
-          employeeId: 'EMP-106',
-          employeeDepartment: 'Culinary',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/9.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp106.png',
-        },
-      },
-      {
-        personalDetails: {
-          fullName: 'Neha Kulkarni',
-          gender: 'Female',
-          languages: ['Marathi', 'English'],
-          phone: '9876543276',
-          email: 'neha.kulkarni@example.com',
-          kycDocument: {
-            type: 'Voter Id',
-            url: 'https://kyc.example.com/neha_voter.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Plumber',
-          organization: 'CityCare',
-          joinedOn: '2023-12-05',
-          assignedHouseholds: ['HH-1600', 'HH-1601', 'HH-1602', 'HH-1603'],
-        },
-        vehicleDetails: { type: 'Auto', number: 'MH02EF6789' },
-        employeeDetails: {
-          employeeId: 'EMP-107',
-          employeeDepartment: 'Maintenance',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/10.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp107.png',
-        },
-      },
-      {
-        personalDetails: {
-          fullName: 'Ishita Singh',
-          gender: 'Female',
-          languages: ['Punjabi', 'English'],
-          phone: '9876543287',
-          email: 'ishita.singh@example.com',
-          kycDocument: {
-            type: 'Passport',
-            url: 'https://kyc.example.com/ishita_passport.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Nurse',
-          organization: 'Urban Helpers',
-          joinedOn: '2024-04-22',
-          assignedHouseholds: ['HH-1700', 'HH-1701', 'HH-1702'],
-        },
-        vehicleDetails: { type: 'Bike', number: 'MH03GH1234' },
-        employeeDetails: {
-          employeeId: 'EMP-108',
-          employeeDepartment: 'Nursing',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/11.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp108.png',
-        },
-      },
-      {
-        personalDetails: {
-          fullName: 'Tanya Mehta',
-          gender: 'Female',
-          languages: ['Gujarati', 'English'],
-          phone: '9876543298',
-          email: 'tanya.mehta@example.com',
-          kycDocument: {
-            type: 'Aadhar Card',
-            url: 'https://kyc.example.com/tanya_aadhar.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Maid',
-          organization: 'CareWell Hospital',
-          joinedOn: '2023-08-30',
-          assignedHouseholds: ['HH-1800'],
-        },
-        vehicleDetails: { type: 'None' },
-        employeeDetails: {
-          employeeId: 'EMP-109',
-          employeeDepartment: 'Housekeeping',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/12.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp109.png',
-        },
-      },
-      {
-        personalDetails: {
-          fullName: 'Pooja Thakur',
-          gender: 'Female',
-          languages: ['Hindi', 'English'],
-          phone: '9876543309',
-          email: 'pooja.thakur@example.com',
-          kycDocument: {
-            type: 'Pan Card',
-            url: 'https://kyc.example.com/pooja_pan.pdf',
-          },
-          additionalDocuments: [],
-        },
-        serviceDetails: {
-          type: 'Electrician',
-          organization: 'CityCare',
-          joinedOn: '2024-05-05',
-          assignedHouseholds: [
-            'HH-1900',
-            'HH-1901',
-            'HH-1902',
-            'HH-1903',
-            'HH-1904',
-            'HH-1905',
-          ],
-        },
-        vehicleDetails: { type: 'Car', number: 'MH04IJ6789' },
-        employeeDetails: {
-          employeeId: 'EMP-110',
-          employeeDepartment: 'Maintenance',
-          employeePhotoUrl: 'https://randomuser.me/api/portraits/women/13.jpg',
-          identificationCardUrl: 'https://cdn.example.com/idcards/emp110.png',
-        },
-      },
-    ];
-
-    data.map((eachHelper) => {
-      this.helperService.createHelper(eachHelper).subscribe((res) => {
-        // console.log(res);
-      });
+    // first upload the image url and kycdocument url
+    const result = this.storeTheImagesAndDocumentsInTheCloud({
+      kycDocumentBase64:
+        this.compiledHelperFormData.personalDetails.kycDocument.url,
+      kycDocumentFileType:
+        this.compiledHelperFormData.personalDetails.kycDocument.type,
+      kycDocumentFileName:
+        this.compiledHelperFormData.personalDetails.kycDocument.filename,
+      profilePic: this.compiledHelperFormData.employee.employeephotoUrl,
+      profilePicName: this.compiledHelperFormData.personalDetails.fullName,
     });
+
+    result.subscribe((res) => {
+      this.compiledHelperFormData.employee.employeephotoUrl = res.uploaded.profilePic;
+      this.compiledHelperFormData.personalDetails.kycDocument.url = res.uploaded.kycDocument;
+
+      
+      this.helperService.createHelper(this.compiledHelperFormData).subscribe((res) => console.log(res));
+      
+    });
+    // this.helperService
+    //   .createHelper(this.compiledHelperFormData)
+    //   .subscribe((response) => {
+    //     console.log(response);
+    //   });
+    // this.compiledHelperFormData.employee.employeephotoUrl 
   }
 
-  ngOnInit() {
-    this.selectTypeOfServiceFilteredOptions =
-      this.selectTypeOfServiceControl.valueChanges.pipe(
-        startWith(''),
-        map((value) => this.filterForTypeOfService(value || ''))
+  storeTheImagesAndDocumentsInTheCloud({
+    kycDocumentBase64,
+    kycDocumentFileType,
+    kycDocumentFileName,
+    profilePic,
+    profilePicName,
+  }: {
+    kycDocumentBase64: string;
+    kycDocumentFileType: string;
+    kycDocumentFileName: string;
+    profilePic: string;
+    profilePicName: string;
+  }) {
+    const formData = new FormData();
+
+    // KYC Document (assuming PDF)
+    const kycFile = this.base64ToFile(
+      kycDocumentBase64,
+      kycDocumentFileName,
+      kycDocumentFileType
+    );
+    formData.append('kycDocument', kycFile);
+
+    // Profile Pic (assuming image)
+    if (!this.isValidHttpsUrl(profilePic)) {
+      const profilePicType = this.guessMimeType(profilePic);
+      const profilePicFile = this.base64ToFile(
+        profilePic,
+        profilePicName,
+        profilePicType
       );
+      formData.append('profilePic', profilePicFile);
+    }
 
-    this.organizationNameFilteredOptions =
-      this.organizationNameControl.valueChanges.pipe(
-        startWith(''),
-        map((value) => this.filterForOrganizationName(value || ''))
-      );
-
-    this.vehicleTypeFilteredOptions = this.vehicleTypeControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this.filterForVehicleType(value || ''))
-    );
+    return this.helperService.uploadMultipleFilesToCloud(formData);
   }
 
-  private filterForTypeOfService(
-    value: string
-  ): { fieldName: string; fieldIcon: string }[] {
-    const filterValue = value.toLowerCase();
-
-    return this.selectTypeOfServiceOptions.filter((option) =>
-      option.fieldName.toLowerCase().includes(filterValue)
-    );
-  }
-  private filterForOrganizationName(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.organizationNameOptions.filter((option) =>
-      option.toLowerCase().includes(filterValue)
-    );
-  }
-  private filterForVehicleType(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.vehicleTypeOptions.filter((option) =>
-      option.toLowerCase().includes(filterValue)
-    );
+  guessMimeType(base64: string): string {
+    try {
+      const actualBase64 = base64.includes(',') ? base64.split(',')[1] : base64;
+      const binary = atob(actualBase64.slice(0, 30)); // Decode slightly longer chunk
+      if (binary.startsWith('\x89PNG')) return 'image/png';
+      if (binary.startsWith('\xFF\xD8\xFF')) return 'image/jpeg';
+      if (binary.startsWith('GIF87a') || binary.startsWith('GIF89a'))
+        return 'image/gif';
+      if (binary.startsWith('BM')) return 'image/bmp';
+      if (binary.startsWith('RIFF') && binary.includes('WEBP'))
+        return 'image/webp';
+    } catch (err) {
+      console.error('Invalid base64 for MIME guessing:', err);
+    }
+    return 'application/octet-stream'; // Default fallback
   }
 
-  language = new FormControl('');
+  parseBase64DataUrl(dataUrl: string, defaultFilename = 'file'): Base64Meta {
+    const matches = dataUrl.match(/^data:(.+);base64,(.*)$/);
+
+    if (!matches || matches.length !== 3) {
+      throw new Error('Invalid base64 data URL');
+    }
+
+    const mimeType = matches[1];
+    const base64 = matches[2];
+    const extension = mimeType.split('/')[1];
+    const filename = `${defaultFilename}.${extension}`;
+
+    return { mimeType, base64, filename };
+  }
+
+  isValidHttpsUrl(url: string): boolean {
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === 'https:';
+    } catch (err) {
+      return false; // Invalid URL
+    }
+  }
+
+  base64ToFile(base64: string, filename: string, mimeType: string): File {
+    let actualBase64: string;
+
+    if (base64.includes(',')) {
+      // Data URL format: "data:image/png;base64,..."
+      actualBase64 = base64.split(',')[1];
+    } else {
+      // Raw base64 (no prefix)
+      actualBase64 = base64;
+    }
+
+    try {
+      const byteString = atob(actualBase64);
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+
+      if (!filename) {
+        filename = 'randomfile_' + Math.random().toFixed(10);
+      }
+
+      return new File([ab], filename, { type: mimeType });
+    } catch (err) {
+      console.error('Error decoding base64:', err);
+      throw new Error('Invalid base64 string');
+    }
+  }
+
+  ngOnInit() {}
+
   LangugagesList: string[] = ['English', 'Telugu', 'Hindi'];
 
   countryCallingCodes = [
@@ -705,10 +510,82 @@ export class AddhelperComponent implements OnInit {
     }
     this.currentStageOfAddingHelper += 1;
   }
+
   handleStageOneHelperFormData(data: any) {
     this.helperData = data;
+    this.compiledHelperFormData = {
+      personalDetails: {
+        kycDocument: {
+          type: this.helperData.kycDocumentType || '',
+          url: this.helperData.kycDocumentUrl || '',
+          filesize: this.helperData.kycDocumentSize || 0,
+          filename: this.helperData.kycDocumentFileName || '',
+        },
+        fullName: this.helperData.fullName || '',
+        gender: this.helperData.gender || '',
+        languages: this.helperData.languages || [],
+        phone: `${this.helperData.countryCode}${this.helperData.phone}` || '',
+        email: this.helperData.email || '',
+        additionalDocuments: [], // Assuming no mapping for additionalDocuments in the provided data
+      },
+      serviceDetails: {
+        type: this.helperData.typeOfService || '',
+        organization: this.helperData.organizationName || '',
+        assignedHouseholds: [], // Assuming no mapping for assignedHouseholds in the provided data
+        joinedOn: new Date().toLocaleDateString('en-GB'), // Using the current date as a placeholder
+      },
+      vehicleDetails: {
+        type: this.helperData.vehicleType || '',
+        number: this.helperData.vehicleNumber || '',
+      },
+      employee: {
+        employeephotoUrl: this.helperData.profilePic || '',
+      },
+    };
+    console.log(this.compiledHelperFormData);
+    this.helperPresentationData = {
+      context: 'preview',
+      data: this.compiledHelperFormData,
+    };
     setTimeout(() => {
       this.currentStageOfAddingHelper += 1;
     });
   }
+}
+
+
+interface IHelperData {
+  personalDetails: {
+    kycDocument: {
+      type: string;
+      url: string;
+      filesize: number;
+      filename: string;
+    };
+    fullName: string;
+    gender: string;
+    languages: string[];
+    phone: string;
+    email: string;
+    additionalDocuments: any[];
+  };
+  serviceDetails: {
+    type: string;
+    organization: string;
+    assignedHouseholds: string[];
+    joinedOn: string;
+  };
+  vehicleDetails: {
+    type: string;
+    number: string;
+  };
+  employee: {
+    employeephotoUrl: string;
+  };
+}
+
+interface Base64Meta {
+  mimeType: string;
+  base64: string;
+  filename?: string;
 }
