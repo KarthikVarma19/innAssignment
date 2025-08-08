@@ -1,12 +1,12 @@
 <!-- Header Component -->
 <header>
   <div class="headingContainer">
-      <h1 class="headingName">
-          Helpers
-      </h1>
-      <span class="material-symbols-outlined">more_vert</span>
+    <h1 class="headingName">
+      Helpers
+    </h1>
+    <span class="material-symbols-outlined">more_vert</span>
   </div>
-  <hr class="headingHortizantalRule"/>
+  <hr class="headingHortizantalRule" />
 </header>
 
 <!-- Filter Component -->
@@ -27,35 +27,33 @@
     </div>
     <div class="iconContainer iconSearchContainer">
       <ng-container>
-      <div class="searchContainer">
-        <div class="searchIcon">
-          <span class="material-symbols-outlined">search</span>
+        <div class="searchContainer">
+          <div class="searchIcon">
+            <span class="material-symbols-outlined">search</span>
+          </div>
+          <div class="searchInputContainer">
+            <input type="text" placeholder="Name, Employee Id, Phone" [(ngModel)]="searchText"
+              (keyup)="searchForHelper()" />
+          </div>
+          <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
+            <span class="material-symbols-outlined">close</span>
+          </div>
         </div>
-        <div class="searchInputContainer">
-          <input
-            type="text"
-            placeholder="Name, Employee Id, Phone"
-            [(ngModel)]="searchText"
-            (keyup)="searchForHelper()"
-          />
-        </div>
-        <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
-          <span class="material-symbols-outlined">close</span>
-        </div>
-      </div>
-    </ng-container>
+      </ng-container>
     </div>
     <span class="helperResultData">
       @if (searchText.length > 0) {
-        {{filteredHelperData.length + " of"}}
+      {{filteredHelperData.length + " of"}}
       }
       {{ helpersData.length + " helpers"  }}
     </span>
   </div>
   <div class="rightContainer">
-    <div class="iconContainer">
-      <span class="material-symbols-outlined">download</span>
-    </div>
+    <a (click)="downloadClicked()">
+      <div class="iconContainer">
+        <span class="material-symbols-outlined">download</span>
+      </div>
+    </a>
     <a routerLink="./add-helper">
       <div class="iconContainer addHelperButton">
         <span class="material-symbols-outlined">add</span>
@@ -69,23 +67,16 @@
 <div class="helperBodyContainer">
   <div class="helperListContainer">
     <ng-container *ngFor="let helper of searchText.length > 0 ? filteredHelperData : helpersData">
-      <div
-        class="helperCardContainer"
-        (click)="getHelperDetails(helper._id)"
-      >
+      <div class="helperCardContainer" (click)="getHelperDetails(helper._id)">
         <mat-card class="matCardContainer" [class.selected]="helper._id === helperDetails.data._id">
           <div class="helperContainer">
             <div class="leftContainer">
               <mat-card-header class="matCardHeader">
-                <div
-                  mat-card-avatar
-                  class="helperImage"
-                  [ngStyle]="{
+                <div mat-card-avatar class="helperImage" [ngStyle]="{
                     'background-image': 'url(' + getSafeImageUrl(helper) + ')',
                     'background-size': 'cover',
                     'background-position': 'center'
-                  }"
-                ></div>
+                  }"></div>
                 <mat-card-title class="helperName">{{
                   helper.personalDetails.fullName
                 }}</mat-card-title>

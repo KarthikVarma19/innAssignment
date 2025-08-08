@@ -1,4 +1,4 @@
-// helper header 
+// helper header
 .headingContainer {
   display: flex;
   flex-direction: row;
@@ -6,20 +6,20 @@
   padding: 25px 20px;
   padding-bottom: 0px;
   .headingName {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   }
-  .material-symbols-outlined{
+  .material-symbols-outlined {
     cursor: pointer;
   }
 }
 
 .headingHortizantalRule {
-border: none; 
-height: 1px;
-background-color: lightgray;
+  border: none;
+  height: 1px;
+  background-color: lightgray;
 }
 
-// helper filter 
+// helper filter
 .filterContainer {
   display: flex;
   flex-direction: row;
@@ -101,8 +101,7 @@ background-color: lightgray;
   }
 }
 
-
-// helper body 
+// helper body
 .helperBodyContainer {
   --helper-list-width: 30%;
   --helper-data-width: 70%;
@@ -133,7 +132,7 @@ background-color: lightgray;
             --helperslist-container-hover-background-color
           ) !important;
         }
-        
+
         &.selected {
           cursor: pointer;
           background-color: var(
@@ -159,7 +158,6 @@ background-color: lightgray;
           }
 
           .helperImage {
-            background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
             background-size: cover;
             height: 45px;
             width: 45px;
@@ -211,5 +209,3 @@ background-color: lightgray;
     scrollbar-width: none;
   }
 }
-
-

@@ -6,8 +6,7 @@
     <div>
       <ng-select class="custom" [items]="documentTypeOptions" bindLabel="label" bindValue="value"
         formControlName="documentType" [searchable]="false" [clearable]="false" placeholder="Document Type"
-        labelForId="document-type-label" #documentTypeSelect
-        >
+        labelForId="document-type-label" #documentTypeSelect>
       </ng-select>
       <div *ngIf="
             kycDocumentForm.get('documentType')?.invalid &&
@@ -54,7 +53,7 @@
       <span *ngIf="!kycDocumentViewClicked" (click)="kycDocumentViewClicked = true"
         class="material-symbols-outlined view-button-icon">visibility</span>
       <span *ngIf="kycDocumentViewClicked" class="material-symbols-outlined view-button-icon"
-        (click)="kycDocumentViewClicked = false" >visibility_off</span>
+        (click)="kycDocumentViewClicked = false">visibility_off</span>
     </div>
     <div (click)="deleteUploadedkycDocument()">
       <span class="material-symbols-outlined delete-button-icon">delete</span>
@@ -73,17 +72,12 @@
   <hr class="add-helper-footer-horizontal-divider" />
   <div class="add-helper-footer-button-container">
     <ng-container>
-      <button class="cancel-button"
-      (click)="clearThekycDocument()"
-      >
+      <button class="cancel-button" (click)="clearThekycDocument()">
         Cancel
       </button>
     </ng-container>
     <ng-container>
-      <button type="submit" 
-        class="save-button"
-        (click)="saveThekycDocument($event)"
-        >
+      <button type="submit" class="save-button" (click)="saveThekycDocument($event)">
         Save
       </button>
     </ng-container>

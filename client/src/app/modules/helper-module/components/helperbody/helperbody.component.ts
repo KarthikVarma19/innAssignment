@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { HelperService } from '../../services/helper.services';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { ExcelService } from '../../services/excel.services';
 
 @Component({
   selector: 'app-helperbody',
@@ -26,8 +27,10 @@ export class HelperbodyComponent implements OnInit {
   filteredHelperData: any[];
   helperDetails: any;
 
-
-  constructor(private helperService: HelperService) {
+  constructor(
+    private helperService: HelperService,
+    private excelService: ExcelService
+  ) {
     this.helpersData = [];
     this.filteredHelperData = [];
     this.helperDetails = {
@@ -58,7 +61,6 @@ export class HelperbodyComponent implements OnInit {
   }
 
   getSafeImageUrl(helper: any) {
-
     const image = helper.employee?.employeephotoUrl;
     if (!image || image.trim() === '') {
       return `https://ui-avatars.com/api/?name=${helper.personalDetails.fullName}&background=random&color=fff&rounded=true&bold=true&size=32`;
@@ -66,7 +68,10 @@ export class HelperbodyComponent implements OnInit {
 
     return image;
   }
-
+  downloadClicked() {
+    const fileName = 'helpers_data_' + new Date().toISOString() + '.xlsx';
+    this.excelService.downloadExcel(this.helpersData, fileName);
+  }
 
   searchText: string = '';
   // choice 1: show total data initially : 8 helpers
@@ -89,7 +94,7 @@ export class HelperbodyComponent implements OnInit {
           .toLowerCase()
           .includes(this.searchText.toLowerCase())
     );
-    
+
     this.helperDetails = { data: this.filteredHelperData[0], context: 'admin' };
   }
 }

@@ -4,8 +4,7 @@
     <header>
       <div class="headingContainer">
         <div class="heading-left-container">
-          <a class="material-symbols-outlined heading-icons"
-            [routerLink]="'/dashboard/staff-management/helpers'">
+          <a class="material-symbols-outlined heading-icons" [routerLink]="'/dashboard/staff-management/helpers'">
             chevron_left
           </a>
           <h1 class="headingName">Add Helper</h1>
@@ -20,58 +19,41 @@
     <!-- Stages -->
     <div class="add-helper-stages-container">
       <div class="stage-stepper">
-        <div
-          [ngClass]="
+        <div [ngClass]="
             currentStageOfAddingHelper > 1
               ? 'stage-dot-complete'
               : 'stage-dot-incomplete'
-          "
-        >
-          <span
-            *ngIf="currentStageOfAddingHelper > 1"
-            class="material-symbols-outlined"
-          >
+          ">
+          <span *ngIf="currentStageOfAddingHelper > 1" class="material-symbols-outlined">
             check
           </span>
         </div>
-        <div
-          [ngClass]="
+        <div [ngClass]="
             currentStageOfAddingHelper > 1
               ? 'stage-line-complete'
               : 'stage-line-incomplete'
-          "
-        ></div>
+          "></div>
 
-        <div
-          [ngClass]="
+        <div [ngClass]="
             currentStageOfAddingHelper > 2
               ? 'stage-dot-complete'
               : 'stage-dot-incomplete'
-          "
-        >
-          <span
-            *ngIf="currentStageOfAddingHelper > 2"
-            class="material-symbols-outlined"
-          >
+          ">
+          <span *ngIf="currentStageOfAddingHelper > 2" class="material-symbols-outlined">
             check
           </span>
         </div>
-        <div
-          [ngClass]="
+        <div [ngClass]="
             currentStageOfAddingHelper > 2
               ? 'stage-line-complete'
               : 'stage-line-incomplete'
-          "
-        ></div>
+          "></div>
 
-        <div
-          [ngClass]="
+        <div [ngClass]="
             currentStageOfAddingHelper === finalStageOfAddingHelper
               ? 'stage-dot-complete'
               : 'stage-dot-incomplete'
-          "
-          class="stage-dot-incomplete"
-        >
+          " class="stage-dot-incomplete">
         </div>
       </div>
       <div class="stages-container">
@@ -92,10 +74,8 @@
     <!-- Form Container -->
     <div class="add-helper-form-container">
       <div *ngIf="currentStageOfAddingHelper === 1">
-        <app-helperform [helperData]="helperData" 
-          [buttonClicked]="buttonClicked" 
-          (helperFormDataStageOne)="handleStageOneHelperFormData($event)"
-        ></app-helperform>
+        <app-helperform [helperData]="helperData" [buttonClicked]="buttonClicked"
+          (helperFormDataStageOne)="handleStageOneHelperFormData($event)"></app-helperform>
       </div>
       <!-- Stage - 2  -->
       <div *ngIf="currentStageOfAddingHelper === 2">
@@ -120,32 +100,22 @@
       <hr class="add-helper-footer-horizontal-divider" />
       <div class="add-helper-footer-button-container">
         <ng-container>
-          <button
-            *ngIf="currentStageOfAddingHelper > 1"
-            (click)="goToPreviousStageOfAddingHelper()"
-            class="previousButton"
-          >
+          <button *ngIf="currentStageOfAddingHelper > 1" (click)="goToPreviousStageOfAddingHelper()"
+            class="previousButton">
             <span class="material-symbols-outlined">chevron_left</span>
             Previous
           </button>
         </ng-container>
         <ng-container>
-          <button
-          type="submit"
-          *ngIf="currentStageOfAddingHelper < finalStageOfAddingHelper"
-            (click)="goToNextStageOfAddingHelper()"
-            class="nextButton"
-          >
+          <button type="submit" *ngIf="currentStageOfAddingHelper < finalStageOfAddingHelper"
+            (click)="goToNextStageOfAddingHelper()" class="nextButton">
             Next
             <span class="material-symbols-outlined">chevron_right</span>
           </button>
-          <button
-            *ngIf="currentStageOfAddingHelper === finalStageOfAddingHelper"
-            class="add-helper-final-stage-submit-button"
-            (click)="createHelper()"
-          >
+          <button *ngIf="currentStageOfAddingHelper === finalStageOfAddingHelper"
+            class="add-helper-final-stage-submit-button" (click)="createHelper()">
             <span class="material-symbols-outlined">add</span>
-            Add Helper
+            {{addHelperButtonContent}}
           </button>
         </ng-container>
       </div>

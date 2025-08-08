@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-
-import { HelperDataAdapter, IHelperDetailsDisplay } from '../adapters/helperdata-adapter';
-
-
+import {
+  HelperDataAdapter,
+  IHelperDetailsDisplay,
+} from '../adapters/helperdata-adapter';
 
 @Injectable({
   providedIn: 'root',
@@ -67,6 +67,6 @@ export class HelperService {
   }
 
   uploadMultipleFilesToCloud(data: any): Observable<any> {
-    return this.http.post(`${this.uploadUrl}/multiple`, data)
+    return this.http.post(`${this.uploadUrl}/multiple`, data);
   }
 }

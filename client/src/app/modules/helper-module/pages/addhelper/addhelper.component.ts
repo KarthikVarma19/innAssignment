@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
@@ -11,7 +7,6 @@ import { HelperdataComponent } from '../../components/helperbody/helperdata/help
 import { RouterModule } from '@angular/router';
 import { HelperService } from '../../services/helper.services';
 import { HelperformComponent } from '../../components/helperform/helperform.component';
-import { ChevronsLeftRightEllipsis } from 'lucide-angular';
 
 @Component({
   selector: 'app-addhelper',
@@ -83,64 +78,105 @@ export class AddhelperComponent implements OnInit {
     this.cdr.detectChanges(); // Manually trigger a safe second check
   }
 
+  addHelperButtonContent: string = 'ADD Helper';
   createHelper() {
-    // first upload the image url and kycdocument url
+    this.addHelperButtonContent = 'Loading';
+
     const result = this.storeTheImagesAndDocumentsInTheCloud({
       kycDocumentBase64:
         this.compiledHelperFormData.personalDetails.kycDocument.url,
-      kycDocumentFileType:
+      kycDocumentFileDivisionType:
         this.compiledHelperFormData.personalDetails.kycDocument.type,
       kycDocumentFileName:
         this.compiledHelperFormData.personalDetails.kycDocument.filename,
       profilePic: this.compiledHelperFormData.employee.employeephotoUrl,
-      profilePicName: this.compiledHelperFormData.personalDetails.fullName,
+      helperFullName: this.compiledHelperFormData.personalDetails.fullName,
     });
 
-    result.subscribe((res) => {
-      this.compiledHelperFormData.employee.employeephotoUrl = res.uploaded.profilePic;
-      this.compiledHelperFormData.personalDetails.kycDocument.url = res.uploaded.kycDocument;
+    result.subscribe({
+      next: (res) => {
+        if (
+          res.uploaded &&
+          res.uploaded.profilePic &&
+          res.uploaded.profilePic !== ''
+        ) {
+          this.compiledHelperFormData.employee.employeephotoUrl =
+            res.uploaded.profilePic;
+        } else {
+          this.compiledHelperFormData.employee.employeephotoUrl = `https://ui-avatars.com/api/?name=${this.compiledHelperFormData.personalDetails.fullName}&background=random&color=fff&rounded=true&bold=true&size=32`;
+        }
+        this.compiledHelperFormData.personalDetails.kycDocument.url =
+          res.uploaded.kycDocument;
 
-      
-      this.helperService.createHelper(this.compiledHelperFormData).subscribe((res) => console.log(res));
-      
+        this.helperService
+          .createHelper(this.compiledHelperFormData)
+          .subscribe();
+        this.addHelperButtonContent = 'Added';
+      },
+      error: (err) => {
+        // Handle error if needed
+        this.addHelperButtonContent = 'Error';
+      },
     });
-    // this.helperService
-    //   .createHelper(this.compiledHelperFormData)
-    //   .subscribe((response) => {
-    //     console.log(response);
-    //   });
-    // this.compiledHelperFormData.employee.employeephotoUrl 
   }
 
   storeTheImagesAndDocumentsInTheCloud({
     kycDocumentBase64,
-    kycDocumentFileType,
+    kycDocumentFileDivisionType,
     kycDocumentFileName,
     profilePic,
-    profilePicName,
+    helperFullName,
   }: {
     kycDocumentBase64: string;
-    kycDocumentFileType: string;
+    kycDocumentFileDivisionType: string;
     kycDocumentFileName: string;
     profilePic: string;
-    profilePicName: string;
+    helperFullName: string;
   }) {
     const formData = new FormData();
 
-    // KYC Document (assuming PDF)
+    const HELPER_NAME = helperFullName.replace(' ', '').toUpperCase();
+
+    const KYC_DOCUMENT_DIVISION_TYPE = kycDocumentFileDivisionType
+      .replaceAll(' ', '')
+      .toUpperCase();
+
+    const KYC_DOCUMENT_FILE_EXTENSION =
+      '.' + kycDocumentFileName.split('.').pop();
+
+    const UNIQUE_NO = Date.now();
+
+    const KYC_DOCUMENT_FILE_NAME =
+      UNIQUE_NO +
+      '-' +
+      HELPER_NAME +
+      '-' +
+      KYC_DOCUMENT_DIVISION_TYPE +
+      KYC_DOCUMENT_FILE_EXTENSION;
+
+    const PROFILE_PIC_FILE_NAME =
+      UNIQUE_NO + '-' + HELPER_NAME + '-' + 'PROFILEPIC';
+
     const kycFile = this.base64ToFile(
       kycDocumentBase64,
-      kycDocumentFileName,
-      kycDocumentFileType
+      KYC_DOCUMENT_FILE_NAME,
+      kycDocumentFileDivisionType
     );
     formData.append('kycDocument', kycFile);
 
     // Profile Pic (assuming image)
     if (!this.isValidHttpsUrl(profilePic)) {
-      const profilePicType = this.guessMimeType(profilePic);
+      const profilePicType = this.guessImageMimeType(profilePic);
+      // Get extension from MIME type
+      let profilePicExtension = '';
+      if (profilePicType && profilePicType.startsWith('image/')) {
+        profilePicExtension = '.' + profilePicType.split('/')[1];
+      }
+      const profilePicFileNameWithExt =
+        PROFILE_PIC_FILE_NAME + profilePicExtension;
       const profilePicFile = this.base64ToFile(
         profilePic,
-        profilePicName,
+        profilePicFileNameWithExt,
         profilePicType
       );
       formData.append('profilePic', profilePicFile);
@@ -149,7 +185,7 @@ export class AddhelperComponent implements OnInit {
     return this.helperService.uploadMultipleFilesToCloud(formData);
   }
 
-  guessMimeType(base64: string): string {
+  guessImageMimeType(base64: string): string {
     try {
       const actualBase64 = base64.includes(',') ? base64.split(',')[1] : base64;
       const binary = atob(actualBase64.slice(0, 30)); // Decode slightly longer chunk
@@ -163,7 +199,7 @@ export class AddhelperComponent implements OnInit {
     } catch (err) {
       console.error('Invalid base64 for MIME guessing:', err);
     }
-    return 'application/octet-stream'; // Default fallback
+    return 'application/stream'; // Default fallback
   }
 
   parseBase64DataUrl(dataUrl: string, defaultFilename = 'file'): Base64Meta {
@@ -552,7 +588,6 @@ export class AddhelperComponent implements OnInit {
     });
   }
 }
-
 
 interface IHelperData {
   personalDetails: {

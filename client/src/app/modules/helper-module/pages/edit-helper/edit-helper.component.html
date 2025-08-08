@@ -1,57 +1,45 @@
 <div class="edit-helper-main-container">
-    <!-- Navbar -->
-    <div class="edit-helper-navbar-container">
-      <header>
-        <div class="headingContainer">
-          <div class="heading-left-container">
-            <a
-              class="material-symbols-outlined heading-icons"
-              [routerLink]="'/dashboard/staff-management/helpers'"
-              >chevron_left</a
-            >
-            <h1 class="headingName">Edit Helper</h1>
-          </div>
-          <span class="material-symbols-outlined heading-icons">more_vert</span>
+  <!-- Navbar -->
+  <div class="edit-helper-navbar-container">
+    <header>
+      <div class="headingContainer">
+        <div class="heading-left-container">
+          <a class="material-symbols-outlined heading-icons"
+            [routerLink]="'/dashboard/staff-management/helpers'">chevron_left</a>
+          <h1 class="headingName">Edit Helper</h1>
         </div>
-        <hr class="headingHortizantalRule" />
-      </header>
-    </div>
-    <!-- Stages -->
-     <div class="edit-helper-body-container">
+        <span class="material-symbols-outlined heading-icons">more_vert</span>
+      </div>
+      <hr class="headingHortizantalRule" />
+    </header>
+  </div>
+  <!-- Stages -->
+  <div class="edit-helper-body-container">
     <div class="edit-helper-stages-container">
-        <div *ngFor="let c of editHelperSidebar" class="child-container">
-            <a
-              (click)="onChildClick(c.name)"
-            >
-              <p
-                class="child-inner-container"
-                [class.selected]="selectedChild === c.name"
-              >
-                <span class="material-symbols-outlined">{{ c.icon }}</span>
-                <span class="childName">{{ c.name }}</span>
-              </p>
-            </a>
-          </div>
+      <div *ngFor="let c of editHelperSidebar" class="child-container">
+        <a (click)="onChildClick(c.name)">
+          <p class="child-inner-container" [class.selected]="selectedChild === c.name">
+            <span class="material-symbols-outlined">{{ c.icon }}</span>
+            <span class="childName">{{ c.name }}</span>
+          </p>
+        </a>
+      </div>
     </div>
     <div class="edit-helper-form-container">
-        <ng-container *ngIf="selectedChild === 'Helper Details'">
-            <app-helperform [helperBackendData]="helperData"> </app-helperform>
-        </ng-container>
-        <!-- Footer Container -->
+      <ng-container *ngIf="selectedChild === 'Helper Details'">
+        <app-helperform [helperBackendData]="helperData"> </app-helperform>
+      </ng-container>
+      <!-- Footer Container -->
       <hr class="edit-helper-footer-horizontal-divider" />
       <div class="edit-helper-footer-button-container">
-        <ng-container >
-          <button
-          (click)="saveButtonClicked()"
-            class="save-button"
-          >
-          <span class="material-symbols-outlined">chevron_right</span>
+        <ng-container>
+          <button (click)="saveButtonClicked()" class="save-button">
+            <span class="material-symbols-outlined">chevron_right</span>
             Save
-        </button>
+          </button>
         </ng-container>
+      </div>
     </div>
-    </div>
-</div>
-   
-</div>
+  </div>
 
+</div>
