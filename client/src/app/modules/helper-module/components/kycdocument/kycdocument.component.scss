@@ -1,4 +1,8 @@
-.kyc-document-upload-icon-container {
+.kycBodyContainer {
+  overflow-y: auto;
+  height: 350px;
+  z-index: 1000;
+  .kyc-document-upload-icon-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -12,16 +16,15 @@
     background-color: #e3e7ff;
     .cloud-upload {
       cursor: pointer;
-        color: var(--dashboard-treeview-child-selected-hover-color);
+      color: var(--dashboard-treeview-child-selected-hover-color);
     }
     .cloud-upload-description {
-      
       cursor: pointer;
-        .normal {
-            color: black;
-        }
-        color: #687ced;
-        font-weight: bold;
+      .normal {
+        color: black;
+      }
+      color: #687ced;
+      font-weight: bold;
     }
   }
 
@@ -40,9 +43,7 @@
     cursor: pointer;
     transition: 0.3s ease;
   }
-  
 
-  
   .file-uploaded-container {
     margin: 20px 0px;
     display: flex;
@@ -63,7 +64,7 @@
     .material-symbols-outlined {
       margin: 0px 4px;
     }
-    
+
     .delete-button-icon {
       color: red;
       cursor: pointer;
@@ -73,9 +74,16 @@
       cursor: pointer;
     }
   }
+}
 
-
-
+.footer-button-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+  background: #fff;
   .add-helper-footer-horizontal-divider {
     background-color: lightgray;
     height: 1px;
@@ -116,3 +124,4 @@
       color: white;
     }
   }
+}

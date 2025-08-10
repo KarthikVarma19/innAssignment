@@ -23,7 +23,6 @@
     </div>
     <div class="iconContainer">
       <span class="material-symbols-outlined">calendar_today</span>
-
     </div>
     <div class="iconContainer iconSearchContainer">
       <ng-container>
@@ -40,6 +39,12 @@
           </div>
         </div>
       </ng-container>
+    </div>
+    <div>
+      <mat-paginator [length]="helpersData.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+        [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" (page)="onPageChange($event)"
+        [showFirstLastButtons]="false">
+      </mat-paginator>
     </div>
     <span class="helperResultData">
       @if (searchText.length > 0) {

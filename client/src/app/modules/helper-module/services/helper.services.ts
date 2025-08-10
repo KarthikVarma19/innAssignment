@@ -43,6 +43,11 @@ export class HelperService {
     return this.http.get(`${this.baseUrl}`);
   }
 
+  getHelpersPaged(offset: number, limit: number): Observable<any> {
+    const params = { offset: offset.toString(), limit: limit.toString() };
+    return this.http.get(`${this.baseUrl}/page`, { params });
+  }
+
   getHelperById(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
@@ -68,5 +73,10 @@ export class HelperService {
 
   uploadMultipleFilesToCloud(data: any): Observable<any> {
     return this.http.post(`${this.uploadUrl}/multiple`, data);
+  }
+  getIdCard(id: string): Observable<any> {
+    return this.http.get(
+      `${this.baseUrl}/${id}/id-card`
+    );
   }
 }

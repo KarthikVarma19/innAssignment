@@ -1,6 +1,9 @@
 .appContainer {
   display: flex;
   flex-direction: row;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
   .appBodyContainer {
     width: 85vw;
   }

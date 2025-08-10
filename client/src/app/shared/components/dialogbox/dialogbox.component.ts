@@ -23,7 +23,7 @@ export class DialogboxComponent implements OnInit, OnDestroy {
   container!: ViewContainerRef;
 
   @Input() componentType!: Type<any>;
-  @Input() componentData: any;
+  @Input() componentHeading!: string;
 
   @Output() onClose = new EventEmitter<IkycDocumentDetails>();
 
@@ -34,8 +34,8 @@ export class DialogboxComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.container.clear();
     this.componentRef = this.container.createComponent(this.componentType);
-    if (this.componentData) {
-      Object.assign(this.componentRef.instance, this.componentData);
+    if (this.componentHeading) {
+      Object.assign(this.componentRef.instance, this.componentHeading);
     }
     if (this.componentRef.instance.dataFromDialog instanceof EventEmitter) {
       this.componentRef.instance.dataFromDialog.subscribe((data: any) => {

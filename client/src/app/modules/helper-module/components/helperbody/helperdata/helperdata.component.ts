@@ -2,9 +2,13 @@ import { NgFor, NgStyle, NgIf } from '@angular/common';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HelperService } from '../../../services/helper.services';
-import { HelperSection, IHelperProfileSummary } from '../../../adapters/helperdata-adapter';
+import {
+  HelperSection,
+  IHelperProfileSummary,
+} from '../../../adapters/helperdata-adapter';
+
 @Component({
   selector: 'app-helperdata',
   standalone: true,
@@ -18,7 +22,7 @@ export class HelperdataComponent implements OnInit {
   helperSections: HelperSection[];
   helperHeaderInfo: IHelperProfileSummary;
 
-  constructor(private helperService: HelperService) {
+  constructor(private helperService: HelperService, private router: Router) {
     this.helperSections = [];
     this.helperHeaderInfo = {
       helperName: '',
@@ -55,7 +59,10 @@ export class HelperdataComponent implements OnInit {
   }
 
   deleteHelper(_helperObjectId: string): void {
-    this.helperService.deleteHelper(_helperObjectId).subscribe((res) => console.log(res));
+    this.helperService
+      .deleteHelper(_helperObjectId)
+      .subscribe((res) => console.log(res));
+    this.router.navigate([this.router.url]);
   }
 
   isDataIsValidUrl(data: string): boolean {
@@ -66,61 +73,9 @@ export class HelperdataComponent implements OnInit {
       return false;
     }
   }
-
 }
 
 interface IHelperDataComponentInput {
   context: 'edit' | 'preview' | 'admin';
   data: any;
 }
-
-
-
-/* 
-
-Backend Data
-
-{
-  "personalDetails": {
-      "kycDocument": {
-          "type": "Voter Id",
-          "url": "https://kyc.example.com/kavya_voter.pdf"
-      },
-      "fullName": "Kavya Patel",
-      "gender": "Female",
-      "languages": [
-          "Gujarati",
-          "English"
-      ],
-      "phone": "9876543232",
-      "email": "kavya.patel@example.com",
-      "additionalDocuments": []
-  },
-  "serviceDetails": {
-      "type": "Cook",
-      "organization": "CityCare",
-      "assignedHouseholds": [
-          "HH-1230",
-          "HH-1231",
-          "HH-1232"
-      ],
-      "joinedOn": "2023-11-07T00:00:00.000Z"
-  },
-  "vehicleDetails": {
-      "type": "None"
-  },
-  "_id": "688c6b6b39a3dd9fdb50b439",
-  "employee": {
-      "_id": "688c6b6a39a3dd9fdb50b41d",
-      "employeeId": "EMP-103",
-      "employeephotoUrl": "https://randomuser.me/api/portraits/women/6.jpg",
-      "identificationCardUrl": "https://cdn.example.com/idcards/emp103.png"
-  },
-  "createdAt": "2025-08-01T07:23:23.319Z",
-  "updatedAt": "2025-08-01T07:23:23.319Z",
-  "__v": 0
-}
-
-
-
-*/

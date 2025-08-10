@@ -70,6 +70,57 @@ export class DashboardComponent {
         { name: 'Issues', icon: 'warning' },
       ],
     },
+    {
+      heading: 'PROPERTY MANAGEMENT',
+      childs: [
+        { name: 'Apartments', icon: 'apartment' },
+        { name: 'Lease Agreements', icon: 'description' },
+        { name: 'Tenant Directory', icon: 'people' },
+        { name: 'Maintenance Requests', icon: 'build' },
+        { name: 'Parking Allocation', icon: 'local_parking' },
+        { name: 'Visitor Logs', icon: 'assignment_ind' },
+        { name: 'Utility Billing', icon: 'receipt' },
+      ],
+    },
+    {
+      heading: 'CONSTRUCTION PROJECTS',
+      childs: [
+        { name: 'Project Dashboard', icon: 'dashboard' },
+        { name: 'Site Inspections', icon: 'search' },
+        { name: 'Material Inventory', icon: 'inventory' },
+        { name: 'Contractor Directory', icon: 'engineering' },
+        { name: 'Work Orders', icon: 'assignment' },
+        { name: 'Safety Audits', icon: 'verified_user' },
+      ],
+    },
+    {
+      heading: 'FACILITY SERVICES',
+      childs: [
+        { name: 'Cleaning Schedules', icon: 'cleaning_services' },
+        { name: 'Security Staff', icon: 'security' },
+        { name: 'Lift Maintenance', icon: 'elevator' },
+        { name: 'Garden Management', icon: 'park' },
+        { name: 'Swimming Pool', icon: 'pool' },
+      ],
+    },
+    {
+      heading: 'FINANCIAL MANAGEMENT',
+      childs: [
+        { name: 'Expense Tracking', icon: 'account_balance_wallet' },
+        { name: 'Budget Planning', icon: 'pie_chart' },
+        { name: 'Vendor Payments', icon: 'payment' },
+        { name: 'Invoice Management', icon: 'request_quote' },
+      ],
+    },
+    {
+      heading: 'COMMUNITY ENGAGEMENT',
+      childs: [
+        { name: 'Event Calendar', icon: 'event' },
+        { name: 'Notice Board', icon: 'announcement' },
+        { name: 'Feedback & Suggestions', icon: 'feedback' },
+        { name: 'Resident Polls', icon: 'how_to_vote' },
+      ],
+    },
   ];
 
   filteredDashboard: Dashboard[];
@@ -84,7 +135,11 @@ export class DashboardComponent {
   }
 
   searchFilterInDashboard() {
-    this.filteredDashboard = this.filteredDashboard
+    if (!this.searchText.trim()) {
+      this.filteredDashboard = [...this.dashboard];
+      return;
+    }
+    this.filteredDashboard = this.dashboard
       .map((section) => ({
         ...section,
         childs: section.childs.filter((child) =>

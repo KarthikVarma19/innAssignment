@@ -100,8 +100,8 @@
       <hr class="add-helper-footer-horizontal-divider" />
       <div class="add-helper-footer-button-container">
         <ng-container>
-          <button *ngIf="currentStageOfAddingHelper > 1" (click)="goToPreviousStageOfAddingHelper()"
-            class="previousButton">
+          <button *ngIf="currentStageOfAddingHelper > 1 && !addHelperButtonClicked"
+            (click)="goToPreviousStageOfAddingHelper()" class="previousButton">
             <span class="material-symbols-outlined">chevron_left</span>
             Previous
           </button>
@@ -113,9 +113,15 @@
             <span class="material-symbols-outlined">chevron_right</span>
           </button>
           <button *ngIf="currentStageOfAddingHelper === finalStageOfAddingHelper"
-            class="add-helper-final-stage-submit-button" (click)="createHelper()">
-            <span class="material-symbols-outlined">add</span>
-            {{addHelperButtonContent}}
+            class="add-helper-final-stage-submit-button" [disabled]="addHelperButtonClicked"
+            (click)="createHelperUtil()">
+            <ng-container *ngIf="!addHelperButtonClicked">
+              <span class="material-symbols-outlined">add</span>
+              Add Helper
+            </ng-container>
+            <ng-container *ngIf="addHelperButtonClicked">
+              <div class="loader"></div>
+            </ng-container>
           </button>
         </ng-container>
       </div>

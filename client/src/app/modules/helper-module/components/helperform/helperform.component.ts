@@ -16,11 +16,15 @@ import {
   FormControl,
   ReactiveFormsModule,
   Validators,
+  Form,
 } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { DialogboxComponent } from '../../../../shared/components/dialogbox/dialogbox.component';
-import IkycDocumentDetails, { KycdocumentComponent } from '../kycdocument/kycdocument.component';
+import IkycDocumentDetails, {
+  KycdocumentComponent,
+} from '../kycdocument/kycdocument.component';
+import { HelperFormService } from '../../services/helper-form.services';
 
 @Component({
   selector: 'app-helperform',
@@ -30,55 +34,7 @@ import IkycDocumentDetails, { KycdocumentComponent } from '../kycdocument/kycdoc
   styleUrl: './helperform.component.scss',
 })
 export class HelperformComponent implements OnInit {
-  helperForm = new FormGroup({
-    profilePic: new FormControl(''),
-    typeOfService: new FormControl('', Validators.required),
-    organizationName: new FormControl('', Validators.required),
-    fullName: new FormControl(
-      '',
-      Validators.compose([
-        Validators.minLength(4),
-        Validators.pattern('[a-zA-Z ]*'),
-      ])
-    ),
-    languages: new FormControl(
-      [],
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(3),
-      ])
-    ),
-    gender: new FormControl('', Validators.required),
-    countryCode: new FormControl(91, Validators.required),
-    phone: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.maxLength(15),
-        Validators.minLength(10),
-        Validators.pattern('^[0-9]{10,15}$'),
-      ])
-    ),
-    email: new FormControl(
-      '',
-      Validators.compose([Validators.email, Validators.required])
-    ),
-    vehicleType: new FormControl('None', Validators.required),
-    vehicleNumber: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(10),
-        Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}'),
-      ])
-    ),
-    kycDocumentType: new FormControl('', Validators.required),
-    kycDocumentUrl: new FormControl('', Validators.required),
-    kycDocumentFileName: new FormControl('', Validators.required),
-    kycDocumentSize: new FormControl(0, Validators.required),
-  });
-
+  helperForm: FormGroup;
   typeOfServiceOptions = [
     { value: 'Maid', label: '🧹 Maid' },
     { value: 'Cook', label: '👨‍🍳 Cook' },
@@ -275,8 +231,14 @@ export class HelperformComponent implements OnInit {
   photoUploadedDetails: PhotoUploadedDetails;
 
   readonly PHOTO_LIMIT: number = 5242880;
+  isEditMode = false;
+  constructor(
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
+    private formService: HelperFormService
+  ) {
+    this.helperForm = this.formService.createHelperForm();
 
-  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.photoUploadedDetails = {
       fileName: '',
       url: '',
@@ -289,30 +251,20 @@ export class HelperformComponent implements OnInit {
 
   ngOnInit() {
     this.vehicleValidation();
-    setTimeout(() => {
-      this.helperForm.patchValue({
-        profilePic: this.helperData?.profilePic || '',
-        typeOfService: this.helperData?.typeOfService || '',
-        organizationName: this.helperData?.organizationName || '',
-        fullName: this.helperData?.fullName || '',
-        languages: this.helperData?.languages || [],
-        gender: this.helperData?.gender || '',
-        countryCode: this.helperData?.countryCode || 91,
-        phone: this.helperData?.phone || '',
-        email: this.helperData?.email || '',
-        vehicleType: this.helperData?.vehicleType || 'None',
-        vehicleNumber: this.helperData?.vehicleNumber || '',
-        kycDocumentType: this.helperData?.kycDocumentType || '',
-        kycDocumentUrl: this.helperData?.kycDocumentUrl || '',
-        kycDocumentFileName: this.helperData?.kycDocumentFileName || '',
-        kycDocumentSize: this.helperData?.kycDocumentSize || 0,
+    this.helperForm = this.formService.createHelperForm();
+    if (this.helperBackendData) {
+      this.formService.patchBackendData(
+        this.helperForm,
+        this.helperBackendData
+      );
+      this.setBackendDataProfilePicToBackend();
+    } else {
+      this.formService.patchHelperFormData(this.helperForm, this.helperData);
+      setTimeout(() => {
+        this.photoUploadedDetails.url = this.helperData?.profilePic || '';
       });
-      this.photoUploadedDetails.url = this.helperData?.profilePic || '';
-      this.cdr.detectChanges(); // Force trigger change detection
-    });
-
-    this.setBackendDataToFrontend();
-
+    }
+    this.cdr.detectChanges(); // Force trigger change detection
   }
 
   @Output() helperFormDataStageOne: EventEmitter<any> = new EventEmitter();
@@ -350,7 +302,8 @@ export class HelperformComponent implements OnInit {
           this.photoUploadedDetails.url = base64;
           setTimeout(() => {
             this.helperForm.get('profilePic')?.setValue(base64);
-            console.log('uploaded to profilePic');
+            this.helperForm.get('profilePic')?.markAsDirty();
+            this.cdr.detectChanges();
           });
         });
       };
@@ -366,54 +319,17 @@ export class HelperformComponent implements OnInit {
 
   @Input() helperBackendData: any;
 
-  setBackendDataToFrontend() {
-    if (!this.helperBackendData) return;
-
-    const personal = this.helperBackendData.personalDetails || {};
-    const service = this.helperBackendData.serviceDetails || {};
-    const vehicle = this.helperBackendData.vehicleDetails || {};
-    const kyc = personal.kycDocument || {};
-    const employee = this.helperBackendData.employee || {};
-
-    // Extract country code and phone number
-    let countryCode = 91;
-    let phone = personal.phone || '';
-    if (phone && phone.length > 5 && phone.startsWith('91')) {
-      countryCode = 91;
-      phone = phone.substring(2);
-    }
-
-
-    console.log(this.helperBackendData);
-
+  setBackendDataProfilePicToBackend() {
     setTimeout(() => {
-      this.helperForm.patchValue({
-        profilePic: employee.employeephotoUrl || '', // Use employee photo if available
-        typeOfService: service.type || '',
-        organizationName: service.organization || '',
-        fullName: personal.fullName || '',
-        languages: personal.languages || [],
-        gender: personal.gender || '',
-        countryCode: countryCode,
-        phone: phone,
-        email: personal.email || '',
-        vehicleType: vehicle.type || '',
-        vehicleNumber: vehicle.number || '',
-        kycDocumentType: kyc.type || '',
-        kycDocumentUrl: kyc.url || '',
-        kycDocumentFileName: kyc.filename || '', // Extract file name from URL if available
-        kycDocumentSize: kyc.filesize || 0, // Not available in backend
-      });
-      this.photoUploadedDetails.url = employee.employeephotoUrl || '';
+      const employee = this.helperBackendData?.employee || {};
+      this.photoUploadedDetails.url = employee?.employeephotoUrl || '';
     });
-    
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
-    this.setBackendDataToFrontend();
-
     this.vehicleValidation();
+    this.formService.patchBackendData(this.helperForm, this.helperBackendData);
+    this.setBackendDataProfilePicToBackend();
     if (
       changes['buttonClicked'] &&
       changes['buttonClicked'].currentValue !==
@@ -430,6 +346,18 @@ export class HelperformComponent implements OnInit {
       this.helperForm.markAllAsTouched();
       return;
     }
+    // If form did not change compared to backend data, do nothing
+    console.log(
+      'Is form changed?',
+      this.formService.isFormChanged(this.helperForm, this.helperBackendData)
+    );
+
+    if (
+      this.formService.isFormChanged(this.helperForm, this.helperBackendData)
+    ) {
+      return;
+    }
+
     this.setDefaultProfilePic();
     this.helperFormDataStageOne.emit(this.helperForm.value);
   }
@@ -454,7 +382,7 @@ export class HelperformComponent implements OnInit {
 
     const dialogRef = this.dialogHost.createComponent(DialogboxComponent);
     dialogRef.setInput('componentType', KycdocumentComponent);
-    dialogRef.setInput('componentData', { name: 'Karthik Varma' });
+    dialogRef.setInput('componentHeading', 'Upload KYC Documents');
 
     dialogRef.instance.onClose.subscribe((data: IkycDocumentDetails) => {
       this.helperForm.get('kycDocumentType')?.setValue(data.documentType);
@@ -478,50 +406,3 @@ interface PhotoUploadedDetails {
   mimeType: string;
   base64: string;
 }
-
-/* 
-
-Backend Data
-
-{
-  "personalDetails": {
-      "kycDocument": {
-          "type": "Voter Id",
-          "url": "https://kyc.example.com/kavya_voter.pdf"
-      },
-      "fullName": "Kavya Patel",
-      "gender": "Female",
-      "languages": [
-          "Gujarati",
-          "English"
-      ],
-      "phone": "9876543232",
-      "email": "kavya.patel@example.com",
-      "additionalDocuments": []
-  },
-  "serviceDetails": {
-      "type": "Cook",
-      "organization": "CityCare",
-      "assignedHouseholds": [
-          "HH-1230",
-          "HH-1231",
-          "HH-1232"
-      ],
-      "joinedOn": "2023-11-07T00:00:00.000Z"
-  },
-  "vehicleDetails": {
-      "type": "None"
-  },
-  "_id": "688c6b6b39a3dd9fdb50b439",
-  "employee": {
-      "_id": "688c6b6a39a3dd9fdb50b41d",
-      "employeeId": "EMP-103",
-      "employeephotoUrl": "https://randomuser.me/api/portraits/women/6.jpg",
-      "identificationCardUrl": "https://cdn.example.com/idcards/emp103.png"
-  },
-  "createdAt": "2025-08-01T07:23:23.319Z",
-  "updatedAt": "2025-08-01T07:23:23.319Z",
-  "__v": 0
-}
-
-*/

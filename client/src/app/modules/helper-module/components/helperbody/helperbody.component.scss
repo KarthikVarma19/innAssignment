@@ -12,13 +12,11 @@
     cursor: pointer;
   }
 }
-
 .headingHortizantalRule {
   border: none;
   height: 1px;
   background-color: lightgray;
 }
-
 // helper filter
 .filterContainer {
   display: flex;
@@ -35,6 +33,7 @@
     .material-symbols-outlined {
       margin-top: 8px;
       font-size: 20px;
+      color: rgb(90, 90, 90);
     }
   }
   .leftContainer {
@@ -83,7 +82,7 @@
       .addHelperButton {
         background-color: blue;
         width: 120px;
-        color: white;
+        color: white !important;
         display: inline-flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -92,6 +91,7 @@
         .material-symbols-outlined {
           margin-top: 2px;
           font-size: 20px;
+          color: white !important;
         }
         p {
           color: white;
@@ -100,7 +100,6 @@
     }
   }
 }
-
 // helper body
 .helperBodyContainer {
   --helper-list-width: 30%;
@@ -108,38 +107,33 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 75vh;
-
+  height: 80vh;
   .helperListContainer {
-    margin: 10px;
+    margin: 0 15px;
     width: var(--helper-list-width);
     text-align: center;
     border: 2px solid lightgray;
     border-radius: 6px;
-    margin: 0px 10px;
     overflow-y: auto;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    height: 100%;
     .helperCardContainer {
       cursor: pointer;
-
       .matCardContainer {
         border: 0px;
         border-radius: 0;
         border-bottom: 1px solid lightgray;
-
         &:hover {
           background-color: var(
             --helperslist-container-hover-background-color
           ) !important;
         }
-
         &.selected {
           cursor: pointer;
           background-color: var(
             --helperslist-container-selected-background-color
           ) !important;
         }
-
         .helperContainer {
           @media screen and (max-width: 480px) {
             .matCardHeader,
@@ -147,36 +141,29 @@
               display: none !important;
             }
           }
-
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           margin: 5px 8px 0px 5px;
-
           .active {
             background-color: #89b5fa;
           }
-
           .helperImage {
             background-size: cover;
             height: 45px;
             width: 45px;
           }
-
           .leftContainer {
             text-align: left;
-
             .matCardHeader {
               padding: 0px;
               margin: 0px;
-
               .helperName {
                 font-size: 14px;
                 padding: 0px;
                 padding-top: 5px;
                 padding-left: 5px;
               }
-
               .helperSubtitle {
                 font-size: small;
                 padding-top: 5px;
@@ -184,12 +171,10 @@
               }
             }
           }
-
           .rightContainer {
             display: flex;
             flex-direction: column;
             justify-content: center;
-
             .households {
               color: gray;
               font-size: smaller;
@@ -199,13 +184,8 @@
       }
     }
   }
-
   .helperDataContainer {
-    margin: 10px;
     width: var(--helper-data-width);
     text-align: center;
-    margin: 0px 10px;
-    overflow-y: auto;
-    scrollbar-width: none;
   }
 }

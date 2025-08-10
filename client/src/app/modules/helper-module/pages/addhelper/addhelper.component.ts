@@ -4,9 +4,10 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HelperdataComponent } from '../../components/helperbody/helperdata/helperdata.component';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HelperService } from '../../services/helper.services';
 import { HelperformComponent } from '../../components/helperform/helperform.component';
+import { HelperUtilityService } from '../../services/helper-utility.services';
 
 @Component({
   selector: 'app-addhelper',
@@ -41,7 +42,9 @@ export class AddhelperComponent implements OnInit {
 
   constructor(
     private helperService: HelperService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private helperUtility: HelperUtilityService,
+    private router: Router
   ) {
     this.compiledHelperFormData = {
       personalDetails: {
@@ -75,185 +78,60 @@ export class AddhelperComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.cdr.detectChanges(); // Manually trigger a safe second check
+    this.cdr.detectChanges();
   }
 
-  addHelperButtonContent: string = 'ADD Helper';
-  createHelper() {
-    this.addHelperButtonContent = 'Loading';
+  addHelperButtonClicked: boolean = false;
+  createHelperUtil() {
+    this.addHelperButtonClicked = true;
 
-    const result = this.storeTheImagesAndDocumentsInTheCloud({
-      kycDocumentBase64:
-        this.compiledHelperFormData.personalDetails.kycDocument.url,
-      kycDocumentFileDivisionType:
-        this.compiledHelperFormData.personalDetails.kycDocument.type,
-      kycDocumentFileName:
-        this.compiledHelperFormData.personalDetails.kycDocument.filename,
-      profilePic: this.compiledHelperFormData.employee.employeephotoUrl,
-      helperFullName: this.compiledHelperFormData.personalDetails.fullName,
-    });
-
-    result.subscribe({
-      next: (res) => {
-        if (
-          res.uploaded &&
-          res.uploaded.profilePic &&
-          res.uploaded.profilePic !== ''
-        ) {
+    this.helperUtility
+      .storeFilesInCloud({
+        kycDocumentBase64:
+          this.compiledHelperFormData.personalDetails.kycDocument.url,
+        kycDocumentFileDivisionType:
+          this.compiledHelperFormData.personalDetails.kycDocument.type,
+        kycDocumentFileName:
+          this.compiledHelperFormData.personalDetails.kycDocument.filename,
+        profilePic: this.compiledHelperFormData.employee.employeephotoUrl,
+        helperFullName: this.compiledHelperFormData.personalDetails.fullName,
+      })
+      .subscribe({
+        next: (res) => {
           this.compiledHelperFormData.employee.employeephotoUrl =
-            res.uploaded.profilePic;
-        } else {
-          this.compiledHelperFormData.employee.employeephotoUrl = `https://ui-avatars.com/api/?name=${this.compiledHelperFormData.personalDetails.fullName}&background=random&color=fff&rounded=true&bold=true&size=32`;
-        }
-        this.compiledHelperFormData.personalDetails.kycDocument.url =
-          res.uploaded.kycDocument;
+            res.uploaded?.profilePic ||
+            `https://ui-avatars.com/api/?name=${this.compiledHelperFormData.personalDetails.fullName}&background=random&color=fff&rounded=true&bold=true&size=32`;
+          this.compiledHelperFormData.personalDetails.kycDocument.url =
+            res.uploaded?.kycDocument;
 
-        this.helperService
-          .createHelper(this.compiledHelperFormData)
-          .subscribe();
-        this.addHelperButtonContent = 'Added';
-      },
-      error: (err) => {
-        // Handle error if needed
-        this.addHelperButtonContent = 'Error';
-      },
-    });
-  }
-
-  storeTheImagesAndDocumentsInTheCloud({
-    kycDocumentBase64,
-    kycDocumentFileDivisionType,
-    kycDocumentFileName,
-    profilePic,
-    helperFullName,
-  }: {
-    kycDocumentBase64: string;
-    kycDocumentFileDivisionType: string;
-    kycDocumentFileName: string;
-    profilePic: string;
-    helperFullName: string;
-  }) {
-    const formData = new FormData();
-
-    const HELPER_NAME = helperFullName.replace(' ', '').toUpperCase();
-
-    const KYC_DOCUMENT_DIVISION_TYPE = kycDocumentFileDivisionType
-      .replaceAll(' ', '')
-      .toUpperCase();
-
-    const KYC_DOCUMENT_FILE_EXTENSION =
-      '.' + kycDocumentFileName.split('.').pop();
-
-    const UNIQUE_NO = Date.now();
-
-    const KYC_DOCUMENT_FILE_NAME =
-      UNIQUE_NO +
-      '-' +
-      HELPER_NAME +
-      '-' +
-      KYC_DOCUMENT_DIVISION_TYPE +
-      KYC_DOCUMENT_FILE_EXTENSION;
-
-    const PROFILE_PIC_FILE_NAME =
-      UNIQUE_NO + '-' + HELPER_NAME + '-' + 'PROFILEPIC';
-
-    const kycFile = this.base64ToFile(
-      kycDocumentBase64,
-      KYC_DOCUMENT_FILE_NAME,
-      kycDocumentFileDivisionType
-    );
-    formData.append('kycDocument', kycFile);
-
-    // Profile Pic (assuming image)
-    if (!this.isValidHttpsUrl(profilePic)) {
-      const profilePicType = this.guessImageMimeType(profilePic);
-      // Get extension from MIME type
-      let profilePicExtension = '';
-      if (profilePicType && profilePicType.startsWith('image/')) {
-        profilePicExtension = '.' + profilePicType.split('/')[1];
-      }
-      const profilePicFileNameWithExt =
-        PROFILE_PIC_FILE_NAME + profilePicExtension;
-      const profilePicFile = this.base64ToFile(
-        profilePic,
-        profilePicFileNameWithExt,
-        profilePicType
-      );
-      formData.append('profilePic', profilePicFile);
-    }
-
-    return this.helperService.uploadMultipleFilesToCloud(formData);
-  }
-
-  guessImageMimeType(base64: string): string {
-    try {
-      const actualBase64 = base64.includes(',') ? base64.split(',')[1] : base64;
-      const binary = atob(actualBase64.slice(0, 30)); // Decode slightly longer chunk
-      if (binary.startsWith('\x89PNG')) return 'image/png';
-      if (binary.startsWith('\xFF\xD8\xFF')) return 'image/jpeg';
-      if (binary.startsWith('GIF87a') || binary.startsWith('GIF89a'))
-        return 'image/gif';
-      if (binary.startsWith('BM')) return 'image/bmp';
-      if (binary.startsWith('RIFF') && binary.includes('WEBP'))
-        return 'image/webp';
-    } catch (err) {
-      console.error('Invalid base64 for MIME guessing:', err);
-    }
-    return 'application/stream'; // Default fallback
-  }
-
-  parseBase64DataUrl(dataUrl: string, defaultFilename = 'file'): Base64Meta {
-    const matches = dataUrl.match(/^data:(.+);base64,(.*)$/);
-
-    if (!matches || matches.length !== 3) {
-      throw new Error('Invalid base64 data URL');
-    }
-
-    const mimeType = matches[1];
-    const base64 = matches[2];
-    const extension = mimeType.split('/')[1];
-    const filename = `${defaultFilename}.${extension}`;
-
-    return { mimeType, base64, filename };
-  }
-
-  isValidHttpsUrl(url: string): boolean {
-    try {
-      const parsed = new URL(url);
-      return parsed.protocol === 'https:';
-    } catch (err) {
-      return false; // Invalid URL
-    }
-  }
-
-  base64ToFile(base64: string, filename: string, mimeType: string): File {
-    let actualBase64: string;
-
-    if (base64.includes(',')) {
-      // Data URL format: "data:image/png;base64,..."
-      actualBase64 = base64.split(',')[1];
-    } else {
-      // Raw base64 (no prefix)
-      actualBase64 = base64;
-    }
-
-    try {
-      const byteString = atob(actualBase64);
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-
-      if (!filename) {
-        filename = 'randomfile_' + Math.random().toFixed(10);
-      }
-
-      return new File([ab], filename, { type: mimeType });
-    } catch (err) {
-      console.error('Error decoding base64:', err);
-      throw new Error('Invalid base64 string');
-    }
+          let HELPER_MONGODB_ID: string = '';
+          this.helperService
+            .createHelper(this.compiledHelperFormData)
+            .subscribe((res) => {
+              // Navigate to the helper ID card page after successful creation
+              HELPER_MONGODB_ID = res.data.helper._id;
+              // You can use HELPER_MONGODB_ID as needed here
+              this.helperService
+                .getIdCard(HELPER_MONGODB_ID)
+                .subscribe((res) => {
+                  const identificationCardUrl = res.data.identificationCardUrl;
+                  if (identificationCardUrl) {
+                    window.open(identificationCardUrl, '_blank');
+                  } else {
+                    console.error('Identification Card URL not found');
+                  }
+                  this.router.navigate([
+                    '/dashboard',
+                    'staff-management',
+                    'helpers',
+                  ]);
+                });
+            });
+        },
+        error: () => {
+          console.log('Error in Creating Helper');
+        },
+      });
   }
 
   ngOnInit() {}
@@ -539,6 +417,7 @@ export class AddhelperComponent implements OnInit {
   helperData: any;
 
   goToNextStageOfAddingHelper() {
+    console.log(this.buttonClicked);
     if (this.currentStageOfAddingHelper === 1) {
       // call to the submit triggered
       this.buttonClicked++;
@@ -549,36 +428,12 @@ export class AddhelperComponent implements OnInit {
 
   handleStageOneHelperFormData(data: any) {
     this.helperData = data;
-    this.compiledHelperFormData = {
-      personalDetails: {
-        kycDocument: {
-          type: this.helperData.kycDocumentType || '',
-          url: this.helperData.kycDocumentUrl || '',
-          filesize: this.helperData.kycDocumentSize || 0,
-          filename: this.helperData.kycDocumentFileName || '',
-        },
-        fullName: this.helperData.fullName || '',
-        gender: this.helperData.gender || '',
-        languages: this.helperData.languages || [],
-        phone: `${this.helperData.countryCode}${this.helperData.phone}` || '',
-        email: this.helperData.email || '',
-        additionalDocuments: [], // Assuming no mapping for additionalDocuments in the provided data
-      },
-      serviceDetails: {
-        type: this.helperData.typeOfService || '',
-        organization: this.helperData.organizationName || '',
-        assignedHouseholds: [], // Assuming no mapping for assignedHouseholds in the provided data
-        joinedOn: new Date().toLocaleDateString('en-GB'), // Using the current date as a placeholder
-      },
-      vehicleDetails: {
-        type: this.helperData.vehicleType || '',
-        number: this.helperData.vehicleNumber || '',
-      },
-      employee: {
-        employeephotoUrl: this.helperData.profilePic || '',
-      },
-    };
-    console.log(this.compiledHelperFormData);
+
+    this.compiledHelperFormData = this.helperUtility.compileFormData(
+      data,
+      false
+    );
+
     this.helperPresentationData = {
       context: 'preview',
       data: this.compiledHelperFormData,

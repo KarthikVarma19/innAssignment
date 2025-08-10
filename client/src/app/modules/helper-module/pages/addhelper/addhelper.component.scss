@@ -90,7 +90,9 @@
         .stage-dot-complete {
           height: 18px;
           width: 18px;
-          background-color: var(--dashboard-treeview-child-selected-hover-color);
+          background-color: var(
+            --dashboard-treeview-child-selected-hover-color
+          );
           border-radius: 50%;
           text-align: center;
           box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
@@ -99,7 +101,9 @@
         .stage-line-complete {
           height: 75px;
           width: 2px;
-          background-color: var(--dashboard-treeview-child-selected-hover-color);
+          background-color: var(
+            --dashboard-treeview-child-selected-hover-color
+          );
         }
       }
 
@@ -132,7 +136,7 @@
           }
         }
       }
-      
+
       @media screen and (max-width: 768px) {
         .stage-stepper {
           .stage-line-incomplete {
@@ -141,11 +145,8 @@
           .stage-line-complete {
             height: 120px;
           }
-        
         }
       }
-      
-      
     }
 
     .add-helper-form-container {
@@ -198,6 +199,23 @@
         .add-helper-final-stage-submit-button {
           background-color: blue;
           color: white;
+          .loader {
+            border: 4px solid #e0e0e0; /* Light grey */
+            border-top: 4px solid #fff; /* White */
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+          }
+
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
         }
       }
 

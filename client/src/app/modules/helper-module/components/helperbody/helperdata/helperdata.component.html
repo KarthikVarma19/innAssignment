@@ -33,30 +33,34 @@
         </div>
       </mat-card>
     </div>
-    <div class="headerDetailsContainer" *ngFor="let section of helperSections">
-      <div class="detailsContainer">
-        <span class="heading">{{ section.sectionTitle }}</span>
-        <hr />
-      </div>
-      <div class="detailsContainer detailsPropertyContainer" *ngFor="let sectionLabel of section.fields">
-        <span class="helperProperty">
-          {{ sectionLabel.label }}
-        </span>
-        <span class="helperPropertyValue">
-          <span class="helperPropertyValue">
-            <ng-container *ngIf="isDataIsValidUrl(sectionLabel.data); else plainText">
-              <a [href]="sectionLabel.data" target="_blank">
-                <span class="material-symbols-outlined visibility-view-icon">visibility</span>
-                View
-              </a>
-            </ng-container>
+    <div class="headerDetailsContainer">
+      <div>
+        <ng-container *ngFor="let section of helperSections">
+          <div class="detailsContainer">
+            <span class="heading">{{ section.sectionTitle }}</span>
+            <hr />
+          </div>
+          <div class="detailsContainer detailsPropertyContainer" *ngFor="let sectionLabel of section.fields">
+            <span class="helperProperty">
+              {{ sectionLabel.label }}
+            </span>
+            <span class="helperPropertyValue">
+              <span class="helperPropertyValue">
+                <ng-container *ngIf="isDataIsValidUrl(sectionLabel.data); else plainText">
+                  <a [href]="sectionLabel.data" target="_blank">
+                    <span class="material-symbols-outlined visibility-view-icon">visibility</span>
+                    View
+                  </a>
+                </ng-container>
 
-            <ng-template #plainText>
-              {{ sectionLabel.data }}
-            </ng-template>
-          </span>
+                <ng-template #plainText>
+                  {{ sectionLabel.data }}
+                </ng-template>
+              </span>
 
-        </span>
+            </span>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

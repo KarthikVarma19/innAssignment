@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { HelperService } from '../../services/helper.services';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { ExcelService } from '../../services/excel.services';
 
 @Component({
@@ -18,6 +19,7 @@ import { ExcelService } from '../../services/excel.services';
     CommonModule,
     FormsModule,
     RouterLink,
+    MatPaginatorModule,
   ],
   templateUrl: './helperbody.component.html',
   styleUrl: './helperbody.component.scss',
@@ -53,11 +55,35 @@ export class HelperbodyComponent implements OnInit {
     };
   }
 
+  // Pagination properties
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25, 100];
+
+  // Called when the paginator changes page
+  onPageChange(event: any) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.fetchPagedHelpers();
+  }
+
+  pagedHelperData: any[] = [];
+
+  fetchPagedHelpers() {
+    this.helperService
+      .getHelpersPaged(this.pageIndex, this.pageSize)
+      .subscribe((response) => {
+        this.helpersData = [...response.data];
+        this.helperDetails = { data: this.helpersData[0], context: 'admin' };
+      });
+  }
+
   ngOnInit(): void {
-    this.helperService.getAllHelpers().subscribe((subdata) => {
-      this.helpersData = subdata;
-      this.helperDetails = { data: this.helpersData[0], context: 'admin' };
-    });
+    this.fetchPagedHelpers();
+    // this.helperService.getAllHelpers().subscribe((subdata) => {
+    //   this.helpersData = subdata;
+    //   this.helperDetails = { data: this.helpersData[0], context: 'admin' };
+    // });
   }
 
   getSafeImageUrl(helper: any) {
@@ -87,9 +113,9 @@ export class HelperbodyComponent implements OnInit {
         helper.personalDetails?.fullName
           .toLowerCase()
           .includes(this.searchText.toLowerCase()) ||
-        helper.employee?.employeeId
-          .toLowerCase()
-          .includes(this.searchText.toLowerCase()) ||
+        (this.searchText &&
+          !isNaN(Number(this.searchText)) &&
+          Number(helper.employee?.employeeId) === Number(this.searchText)) ||
         helper.personalDetails?.phone
           .toLowerCase()
           .includes(this.searchText.toLowerCase())

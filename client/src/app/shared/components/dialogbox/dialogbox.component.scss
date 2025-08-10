@@ -17,14 +17,19 @@
   padding: 20px;
   min-width: 30vw;
   width: fit-content;
-  height: 50vh;
+  height: 60vh;
   overflow-y: scroll;
   position: relative;
 }
 
 .modal-header {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
+  .modal-heading {
+    font-size: 15px;
+    font-weight: 700;
+  }
 }
 
 .close-btn {

@@ -2,7 +2,7 @@
   padding: 10px;
   width: var(--dashboard-view-width);
   background-color: var(--dashboard-backgroundcolor);
-  height: 95vh;
+  height: 100vh;
   overflow: hidden;
 
   .companyLogoContainer {
@@ -96,6 +96,7 @@
   overflow-y: auto;
   height: 90vh;
   scrollbar-color: #ececec;
+  scrollbar-base-color: #555;
   scrollbar-width: thin;
   margin-left: 10px;
 
@@ -167,6 +168,7 @@
   position: absolute;
   bottom: 0;
   width: inherit;
+  z-index: 200;
 }
 
 .matCardContainer {
@@ -179,6 +181,7 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
+    border-top: 1px solid lightgray !important;
 
     .active {
       background-color: #89b5fa;
