@@ -48,11 +48,7 @@ export class HelperDataAdapter {
             },
             {
               label: 'Joined On',
-              data: data.serviceDetails?.joinedOn
-                ? new Date(data.serviceDetails.joinedOn).toLocaleDateString(
-                    'en-GB'
-                  )
-                : '',
+              data: data.serviceDetails?.joinedOn,
             },
           ],
         },
@@ -188,16 +184,19 @@ export class HelperDataAdapter {
             .find((section) => section.sectionTitle === 'SERVICE DETAILS')
             ?.fields.find((field) => field.label === 'Organization')?.data ||
           '',
-        joinedOn: data.sections
-          .find((section) => section.sectionTitle === 'SERVICE DETAILS')
-          ?.fields.find((field) => field.label === 'Joined On')?.data
-          ? new Date(
-              data.sections
-                .find((section) => section.sectionTitle === 'SERVICE DETAILS')
-                ?.fields.find((field) => field.label === 'Joined On')?.data ??
-                ''
-            ).toISOString()
-          : '',
+        joinedOn: (() => {
+          const joinedOnField = data.sections
+            .find((section) => section.sectionTitle === 'SERVICE DETAILS')
+            ?.fields.find((field) => field.label === 'Joined On')?.data;
+          if (
+            joinedOnField &&
+            joinedOnField !== '-' &&
+            !isNaN(Date.parse(joinedOnField))
+          ) {
+            return new Date(joinedOnField).toISOString();
+          }
+          return '';
+        })(),
         households: data.helperHeaderInfo.helperHouseholds || 0,
       },
     };

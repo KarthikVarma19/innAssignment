@@ -1,104 +1,181 @@
-<!-- Header Component -->
-<header>
-  <div class="headingContainer">
-    <h1 class="headingName">
-      Helpers
-    </h1>
-    <span class="material-symbols-outlined">more_vert</span>
-  </div>
-  <hr class="headingHortizantalRule" />
-</header>
-
-<!-- Filter Component -->
-<div class="filterContainer">
-  <div class="leftContainer">
-    <div class="iconContainer">
-      <ng-container>
+<ng-container *ngIf="helpersData.length > 0; else skeleton">
+  <!-- Header Component -->
+  <header>
+    <div class="headingContainer">
+      <h1 class="headingName">
+        Helpers
+      </h1>
+      <span class="material-symbols-outlined">more_vert</span>
+    </div>
+    <hr class="headingHortizantalRule" />
+  </header>
+  <!-- Filter Component -->
+  <div class="filterContainer">
+    <div class="leftContainer">
+      <div class="iconContainer" mat-icon-button [matMenuTriggerFor]="sortby">
         <span class="material-symbols-outlined big-icon">import_export</span>
-      </ng-container>
-    </div>
-    <div class="iconContainer">
-      <span class="material-symbols-outlined">filter_alt</span>
 
-    </div>
-    <div class="iconContainer">
-      <span class="material-symbols-outlined">calendar_today</span>
-    </div>
-    <div class="iconContainer iconSearchContainer">
-      <ng-container>
-        <div class="searchContainer">
-          <div class="searchIcon">
-            <span class="material-symbols-outlined">search</span>
+        <!-- Sorting -->
+        <mat-menu #sortby="matMenu" class="sort-custom-mat-menu">
+          <span class="sort-custom-menu-title">Sort By</span>
+          <button mat-menu-item class="sort-custom-menu-item">
+            <span>Helper Name (A-Z)</span>
+          </button>
+          <button mat-menu-item class="sort-custom-menu-item">
+            <span>Employee ID</span>
+          </button>
+        </mat-menu>
+      </div>
+
+
+      <div class="iconContainer">
+        <span class="material-symbols-outlined">filter_alt</span>
+      </div>
+      <div class="iconContainer">
+        <label for="ngx-data-range-picker">
+          <span class="material-symbols-outlined">calendar_today</span>
+        </label>
+        <ng-container *ngIf="isBrowser">
+          <input id="ngx-data-range-picker" type="text" ngxDaterangepickerMd startKey="start" endKey="end"
+            [ranges]="ranges" [(ngModel)]="model" [linkedCalendars]="true" [opens]="'right'" class="date-range-input"
+            [alwaysShowCalendars]="true" [customRangeDirection]="true" placeholder="Select date range"
+            [showCancel]="true" [showCustomRangeLabel]="true" style="display: none;" [closeOnAutoApply]="true"
+            (datesUpdated)="datesUpdated($event)" />
+        </ng-container>
+      </div>
+      <div class="iconContainer iconSearchContainer">
+        <ng-container>
+          <div class="searchContainer">
+            <div class="searchIcon">
+              <span class="material-symbols-outlined">search</span>
+            </div>
+            <div class="searchInputContainer">
+              <input type="text" placeholder="Name, Employee Id, Phone" [(ngModel)]="searchText"
+                (keyup)="searchForHelper()" />
+            </div>
+            <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
+              <span class="material-symbols-outlined">close</span>
+            </div>
           </div>
-          <div class="searchInputContainer">
-            <input type="text" placeholder="Name, Employee Id, Phone" [(ngModel)]="searchText"
-              (keyup)="searchForHelper()" />
-          </div>
-          <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
-            <span class="material-symbols-outlined">close</span>
-          </div>
-        </div>
-      </ng-container>
-    </div>
-    <div>
-      <mat-paginator [length]="helpersData.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+        </ng-container>
+      </div>
+      <div>
+        <!-- <mat-paginator [length]="helpersData.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
         [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" (page)="onPageChange($event)"
         [showFirstLastButtons]="false">
-      </mat-paginator>
+      </mat-paginator> -->
+      </div>
+      <span class="helperResultData">
+        @if (searchText.length > 0) {
+        {{filteredHelperData.length + " of"}}
+        }
+        {{ helpersData.length + " helpers"  }}
+      </span>
     </div>
-    <span class="helperResultData">
-      @if (searchText.length > 0) {
-      {{filteredHelperData.length + " of"}}
-      }
-      {{ helpersData.length + " helpers"  }}
-    </span>
-  </div>
-  <div class="rightContainer">
-    <a (click)="downloadClicked()">
-      <div class="iconContainer">
-        <span class="material-symbols-outlined">download</span>
-      </div>
-    </a>
-    <a routerLink="./add-helper">
-      <div class="iconContainer addHelperButton">
-        <span class="material-symbols-outlined">add</span>
-        <span>Add Helper</span>
-      </div>
-    </a>
-  </div>
-</div>
 
-<!-- Body Component -->
-<div class="helperBodyContainer">
-  <div class="helperListContainer">
-    <ng-container *ngFor="let helper of searchText.length > 0 ? filteredHelperData : helpersData">
-      <div class="helperCardContainer" (click)="getHelperDetails(helper._id)">
-        <mat-card class="matCardContainer" [class.selected]="helper._id === helperDetails.data._id">
-          <div class="helperContainer">
-            <div class="leftContainer">
-              <mat-card-header class="matCardHeader">
-                <div mat-card-avatar class="helperImage" [ngStyle]="{
+    <div class="rightContainer">
+      <a (click)="downloadClicked()">
+        <div class="iconContainer">
+          <span class="material-symbols-outlined">download</span>
+        </div>
+      </a>
+      <a routerLink="./add-helper">
+        <div class="iconContainer addHelperButton">
+          <span class="material-symbols-outlined">add</span>
+          <span>Add Helper</span>
+        </div>
+      </a>
+    </div>
+  </div>
+  <!-- Body Component -->
+  <div class="helperBodyContainer">
+    <div class="helperListContainer" infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="500"
+      (scrolled)="onScroll()" [scrollWindow]="false">
+      <ng-container *ngFor="let helper of searchText.length > 0 ? filteredHelperData : helpersData">
+        <div class="helperCardContainer" (click)="getHelperDetails(helper._id)">
+          <mat-card class="matCardContainer" [class.selected]="helper._id === helperDetails.data._id">
+            <div class="helperContainer">
+              <div class="leftContainer">
+                <mat-card-header class="matCardHeader">
+                  <div mat-card-avatar class="helperImage" [ngStyle]="{
                     'background-image': 'url(' + getSafeImageUrl(helper) + ')',
                     'background-size': 'cover',
                     'background-position': 'center'
                   }"></div>
-                <mat-card-title class="helperName">{{
+                  <mat-card-title class="helperName">{{
                   helper.personalDetails.fullName
                 }}</mat-card-title>
-                <mat-card-subtitle class="helperSubtitle">{{
+                  <mat-card-subtitle class="helperSubtitle">{{
                   helper.serviceDetails.type
                 }}</mat-card-subtitle>
-              </mat-card-header>
+                </mat-card-header>
+              </div>
+              <div class="rightContainer">
+                <p class="households">{{ helper.serviceDetails.assignedHouseholds.length }} Households</p>
+              </div>
             </div>
-            <div class="rightContainer">
-              <p class="households">{{ helper.serviceDetails.assignedHouseholds.length }} Households</p>
+          </mat-card>
+        </div>
+      </ng-container>
+    </div>
+    <div class="helperDataContainer">
+      <app-helperdata [helperDisplayData]="helperDetails"> </app-helperdata>
+    </div>
+  </div>
+
+</ng-container>
+<!-- Skeleton -->
+<ng-template #skeleton>
+  <div class="headingContainer">
+    <ngx-skeleton-loader
+      [theme]="{ 'border-radius': '10px', height: '20px', width: '300px', 'background-color': '#E0E0E0', 'margin-top': '6px', 'margin-left': '15px'}" />
+  </div>
+  <div class="filterContainer" style="padding: 10px 10px;">
+    <div>
+      <ngx-skeleton-loader
+        [theme]="{ 'border-radius': '5px', height: '30px', width: '30px', 'background-color': '#E0E0E0', 'margin-top': '6px'}" />
+      <ngx-skeleton-loader
+        [theme]="{ 'border-radius': '5px', height: '30px', width: '30px', 'background-color': '#E0E0E0', 'margin-top': '6px', 'margin-left': '15px'}" />
+      <ngx-skeleton-loader
+        [theme]="{ 'border-radius': '5px', height: '30px', width: '30px', 'background-color': '#E0E0E0', 'margin-top': '6px', 'margin-left': '15px'}" />
+      <ngx-skeleton-loader
+        [theme]="{ 'border-radius': '5px', height: '30px', width: '100px', 'background-color': '#E0E0E0', 'margin-top': '6px', 'margin-left': '15px'}" />
+    </div>
+    <div>
+      <ngx-skeleton-loader
+        [theme]="{ 'border-radius': '5px', height: '30px', width: '30px', 'background-color': '#E0E0E0', 'margin-top': '6px', 'margin-left': '15px'}" />
+      <ngx-skeleton-loader
+        [theme]="{ 'border-radius': '5px', height: '30px', width: '80px', 'background-color': '#E0E0E0', 'margin-top': '6px', 'margin-left': '15px',}" />
+    </div>
+  </div>
+  <div class="helperBodyContainer">
+    <div class="helperListContainer helper-list-container-skeleton">
+      <ng-container *ngFor="let i of [1,2,3,4,5,6,7,8]">
+        <div class="stage-container-skeleton">
+          <div class="stage-container-circle">
+            <ngx-skeleton-loader appearance="circle"
+              [theme]="{height: '40px', width: '40px', 'background-color': '#E0E0E0',}" />
+          </div>
+          <div>
+            <div class="stage-heading">
+              <ngx-skeleton-loader [theme]="{ 
+              'border-radius': '10px',
+              height: '15px',
+              width: '180px', 
+              'background-color': '#E0E0E0',
+              'margin-top': '6px'
+            }" />
+            </div>
+            <div class="stage-description">
+              <ngx-skeleton-loader
+                [theme]="{ 'border-radius': '10px',height: '10px',width: '80px', 'background-color': '#E0E0E0', 'margin-top': '-10px'}" />
             </div>
           </div>
-        </mat-card>
-      </div>
-    </ng-container>
+        </div>
+      </ng-container>
+    </div>
+    <div class="helperDataContainer">
+      <app-helperdata [helperDisplayData]="helperDetails"> </app-helperdata>
+    </div>
   </div>
-  <div class="helperDataContainer">
-    <app-helperdata [helperDisplayData]="helperDetails"> </app-helperdata>
-  </div>
-</div>
+</ng-template>

@@ -1,26 +1,18 @@
 .main-container {
-    text-align: center; 
-    font-family: Arial, sans-serif; 
-    margin-top: 10%;
-    .error-number {
-        font-size: 60px; 
-        color: #ff6b6b;
-    }
-    .error-message {
-        font-size: 40px; 
-        color: #555;
-    }
-    .error-description {
-        font-size: 20px; 
-        color: #777; 
-        margin: 20px 0;
-    }
-    .goback-button {
-        text-decoration: none; 
-        color: white; 
-        background-color: #007bff; 
-        padding: 10px 20px; 
-        border-radius: 5px; 
-        font-size: 10px;
-    }
+  text-align: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  margin-top: 10%;
+  .image-404 {
+    height: 400px;
+    width: 400px;
+  }
+  .goback-button {
+    text-decoration: none;
+    color: white;
+    background-color: #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 10px;
+  }
 }

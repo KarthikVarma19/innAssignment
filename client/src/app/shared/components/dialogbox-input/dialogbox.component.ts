@@ -9,7 +9,7 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core';
-import IkycDocumentDetails from '../../../modules/helper-module/components/kycdocument/kycdocument.component';
+import IkycDocumentDetails from '../../../modules/helper-module/components/kycdocument-dialogbox-input/kycdocument.component';
 
 @Component({
   selector: 'app-dialogbox',
@@ -39,7 +39,6 @@ export class DialogboxComponent implements OnInit, OnDestroy {
     }
     if (this.componentRef.instance.dataFromDialog instanceof EventEmitter) {
       this.componentRef.instance.dataFromDialog.subscribe((data: any) => {
-        console.log('Received from child:', data);
         this.close(data);
       });
     }

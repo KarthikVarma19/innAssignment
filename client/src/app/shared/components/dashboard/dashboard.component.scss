@@ -40,7 +40,7 @@
     margin-top: -130px;
     margin-left: -45px;
 
-    @media (max-width: 1000px) {
+    @media (max-width: 1050px) {
       margin-top: -145px;
       margin-left: -50px;
     }
@@ -94,7 +94,7 @@
 
 .treeView {
   overflow-y: auto;
-  height: 90vh;
+  height: 75vh;
   scrollbar-color: #ececec;
   scrollbar-base-color: #555;
   scrollbar-width: thin;

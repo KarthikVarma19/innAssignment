@@ -10,11 +10,11 @@
         </div>
         <span class="material-symbols-outlined heading-icons">more_vert</span>
       </div>
-      <hr class="headingHortizantalRule" />
     </header>
   </div>
-  <!-- Stages -->
-  <div class="edit-helper-body-container">
+
+  <div class="edit-helper-body-container" *ngIf="helperData; else skeleton">
+    <!-- Stages -->
     <div class="edit-helper-stages-container">
       <div *ngFor="let c of editHelperSidebar" class="child-container">
         <a (click)="onChildClick(c.name)">
@@ -42,4 +42,58 @@
     </div>
   </div>
 
+  <ng-template #skeleton>
+    <div class="edit-helper-body-container">
+      <div class="edit-helper-stages-container edit-helper-stages-container-skeleton">
+        <div class="child-container">
+          <ngx-skeleton-loader [theme]="{ 
+            'border-radius': '5px',
+            height: '30px',
+            'margin-top':'-25px',
+            'background-color': '#E0E0E0',
+          }" />
+          <ngx-skeleton-loader [theme]="{ 
+            'border-radius': '5px',
+            height: '30px',
+            'background-color': '#E0E0E0',
+            'margin-top': '-5px',
+          }" />
+        </div>
+      </div>
+      <div class="edit-helper-form-container">
+        <ngx-skeleton-loader [theme]="{ 
+          'border-radius': '10px',
+          height: '15px', 
+          width: '150px',
+          'background-color': '#E0E0E0',
+        }" />
+        <br>
+        <ngx-skeleton-loader [theme]="{ 
+          'border-radius': '10px',
+          height: '10px',
+          width: '250px', 
+          'margin-top': '-10px',
+          'background-color': '#E0E0E0',
+        }" />
+        <br>
+        <ngx-skeleton-loader appearance="circle"
+          [theme]="{height: '100px', width: '100px', 'background-color': '#E0E0E0',}" />
+        <br>
+        <ng-container *ngFor="let i of [1, 2, 3, 4, 5, 6, 7]">
+          <ngx-skeleton-loader [theme]="{ 
+          'border-radius': '10px',
+          height: '10px',
+          width: '130px', 
+          'margin-top': '15px',
+          'background-color': '#E0E0E0',
+        }" />
+          <ngx-skeleton-loader [theme]="{ 
+          height: '30px', 
+          'margin-top': '-10px',
+          'background-color': '#E0E0E0',
+        }" />
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
 </div>

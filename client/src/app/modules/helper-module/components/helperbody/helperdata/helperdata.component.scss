@@ -4,6 +4,7 @@
   border-radius: 6px;
   margin: 0 15px 0 0;
   height: 100%;
+
   .headerContainer {
     height: 12%;
     position: sticky;
@@ -114,6 +115,13 @@
           sans-serif;
         color: black;
         width: 75%;
+        .view-dialog {
+          cursor: pointer;
+          color: blue;
+          .visibility-view-icon {
+            margin-top: 1px;
+          }
+        }
         a {
           display: inline-flex;
           flex-direction: row;
@@ -128,4 +136,15 @@
       }
     }
   }
+}
+
+.stage-container-skeleton {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 25px;
+}
+
+.helper-data-container-skeleton {
+  background-color: white I !important;
+  border: none !important;
 }

@@ -17,10 +17,13 @@
           color: black;
           cursor: pointer;
           margin-top: -14px;
-          font-size: 40px;
+          margin-left: -10px;
+          font-size: 30px;
+          font-weight: 100;
         }
         .headingName {
           font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          font-size: 20px;
         }
       }
 
@@ -90,6 +93,10 @@
           }
         }
       }
+    }
+    .edit-helper-stages-container-skeleton {
+      background-color: white !important;
+      border: none !important;
     }
 
     .edit-helper-form-container {

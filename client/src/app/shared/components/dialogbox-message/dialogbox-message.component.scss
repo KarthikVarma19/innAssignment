@@ -1,0 +1,74 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  min-width: 30vw;
+  width: fit-content;
+  height: 60vh;
+  position: relative;
+  text-align: center;
+  .modal-horizontal-divider {
+    background-color: lightgray;
+    height: 1px;
+    width: 100%;
+    margin: 20px 0;
+    border: none;
+  }
+}
+
+.modal-center-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+    .message-logo {
+      height: 100px;
+      width: 100px;
+    }
+    .message-text {
+      color: rgb(83, 83, 227);
+      font-weight: bold;
+    }
+    .message-status {
+      color: black;
+      font-weight: bold;
+    }
+  }
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: sticky;
+  .modal-heading {
+    font-size: 15px;
+    font-weight: 700;
+  }
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}

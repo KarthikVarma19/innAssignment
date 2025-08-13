@@ -1,5 +1,4 @@
 <form [formGroup]="kycDocumentForm" *ngIf="kycDocumentForm">
-  <hr class="add-helper-footer-horizontal-divider" />
   <div class="kycBodyContainer">
     <!-- Choose Document Type -->
     <div class="field-container">
@@ -25,20 +24,22 @@
     <!-- KYC Document -->
     <div class="field-container">
       <span>Please ensure both sides of the document are uploaded.<span class="asterisk">*</span></span>
-      <div class="kyc-document-upload-container">
-        <div class="kyc-document-upload-icon-container">
-          <div class="upload-box" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
-            (drop)="onFileDropped($event)" [class.dragging]="isDragging">
-            <label for="kyc-document-label">
+      <input type="file" accept="application/pdf" (change)="onFileSelected($event)" style="display: none"
+        id="kyc-document-label">
+      <label for="kyc-document-label">
+        <div class="kyc-document-upload-container" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+          (drop)="onFileDropped($event)" [class.dragging]="isDragging">
+
+          <div class="kyc-document-upload-icon-container">
+            <div class="upload-box">
+
               <span class="material-symbols-outlined cloud-upload">cloud_upload</span>
               <br />
               <span class="cloud-upload-description">Click to upload <span class="normal">or drag and drop</span></span>
-            </label>
-            <input type="file" accept="application/pdf" (change)="onFileSelected($event)" style="display: none"
-              id="kyc-document-label">
+            </div>
           </div>
         </div>
-      </div>
+      </label>
       <div *ngIf="
             kycDocumentForm.get('pdfFileUrl')?.invalid &&
             (kycDocumentForm.get('pdfFileUrl')?.dirty ||
@@ -47,9 +48,11 @@
         <span *ngIf="kycDocumentForm.get('pdfFileUrl')?.errors?.['required']">PDF File is required.</span>
       </div>
     </div>
-    <div class="file-uploaded-container" *ngIf="kycDocumentDetails.base64 !== ''">
+    <div class="file-uploaded-container" *ngIf="kycDocumentDetails.base64">
       <div class="file-uploaded-left-container">
-        <img src="../../../../../assets/pdf-icon.png" alt="PDF" height="30" width="30">
+        <img
+          src="https://res.cloudinary.com/karthikvarma/image/upload/v1755058732/inn-assignement/helpers/assets/pdf-icon_tmod0w.png"
+          alt="PDF" height="30" width="30">
         <p class="file-uploaded-file-name">{{kycDocumentDetails.fileName}}</p>
         <span *ngIf="!kycDocumentViewClicked" (click)="kycDocumentViewClicked = true"
           class="material-symbols-outlined view-button-icon">visibility</span>
@@ -61,7 +64,7 @@
       </div>
     </div>
     <ng-container *ngIf="kycDocumentViewClicked === true">
-      <ngx-extended-pdf-viewer [base64Src]="pdfData" backgroundColor="#ffffff" [height]="'auto'" [handTool]="false"
+      <ngx-extended-pdf-viewer [base64Src]="pdfData" backgroundColor="#ffffff" [height]="'500px'" [handTool]="false"
         [showHandToolButton]="false" [showDownloadButton]="false" [showPrintButton]="false"
         [showPresentationModeButton]="true" [showOpenFileButton]="false">
       </ngx-extended-pdf-viewer>

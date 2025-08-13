@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExcelService {
-  constructor() {}
+  constructor(private loaderService: LoaderService) {}
 
   downloadExcel(data: any[], fileName: string = 'helpers_data.xlsx'): void {
+    this.loaderService.showLoader();
     const flattenedDataIntoJSON = flattenHelperData(data);
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(flattenedDataIntoJSON);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -20,6 +22,7 @@ export class ExcelService {
     });
     const blob = new Blob([wbout], { type: 'application/octet-stream' });
     saveAs(blob, fileName);
+    this.loaderService.hideLoader();
   }
 }
 

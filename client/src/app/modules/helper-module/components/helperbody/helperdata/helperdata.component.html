@@ -1,4 +1,4 @@
-<ng-container *ngIf="helperDisplayData">
+<ng-container *ngIf="helperDisplayData.data !== null; else skeleton">
   <div class="helperDataContainer">
     <div class="headerContainer">
       <mat-card class="matCardContainer">
@@ -47,7 +47,7 @@
             <span class="helperPropertyValue">
               <span class="helperPropertyValue">
                 <ng-container *ngIf="isDataIsValidUrl(sectionLabel.data); else plainText">
-                  <a [href]="sectionLabel.data" target="_blank">
+                  <a (click)="openDocumentDialog(sectionLabel.label, sectionLabel.data)" class="view-dialog">
                     <span class="material-symbols-outlined visibility-view-icon">visibility</span>
                     View
                   </a>
@@ -63,5 +63,60 @@
         </ng-container>
       </div>
     </div>
+    <ng-template #documentDialog></ng-template>
   </div>
 </ng-container>
+
+<ng-template #skeleton>
+  <div class="helperDataContainer helper-data-container-skeleton">
+    <div class="headerContainer">
+      <div class="stage-container-skeleton">
+        <div class="stage-container-circle">
+          <ngx-skeleton-loader appearance="circle"
+            [theme]="{height: '40px', width: '40px', 'background-color': '#E0E0E0',}" />
+        </div>
+        <div>
+          <div class="stage-heading">
+            <ngx-skeleton-loader [theme]="{ 
+            'border-radius': '10px',
+            height: '15px',
+            width: '180px', 
+            'background-color': '#E0E0E0',
+            'margin-top': '6px'
+          }" />
+          </div>
+          <div class="stage-description">
+            <ngx-skeleton-loader [theme]="{ 'border-radius': '10px',height: '10px', 'background-color'
+              : '#E0E0E0' , 'margin-top' : '-10px' }" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="headerDetailsContainer">
+      <ng-container *ngFor="let i of [1, 2, 3, 4, 5]">
+        <div class="detailsContainer">
+          <ngx-skeleton-loader [theme]="{ 'border-radius': '10px',height: '10px', width: '70px', 'background-color'
+        : '#E0E0E0'}" />
+          <ngx-skeleton-loader [theme]="{ 'border-radius': '10px',height: '2px', width: '700px', 'background-color'
+        : '#E0E0E0', 'margin-left': '15px'}" />
+
+        </div>
+        <ng-container *ngFor="let j of [1, 2]">
+          <div class="detailsContainer detailsPropertyContainer">
+            <span class="helperProperty">
+              <ngx-skeleton-loader [theme]="{ 'border-radius': '10px',height: '10px',width: '160px', 'background-color'
+          : '#E0E0E0' , 'margin-top' : '-10px' }" />
+            </span>
+            <span class="helperPropertyValue">
+              <span class="helperPropertyValue">
+                <ngx-skeleton-loader [theme]="{ 'border-radius': '10px',height: '10px', width: '80px', 'background-color'
+            : '#E0E0E0' , 'margin-top' : '-10px' }" />
+              </span>
+            </span>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+
+  </div>
+</ng-template>

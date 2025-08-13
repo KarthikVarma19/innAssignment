@@ -10,24 +10,35 @@
 
         <div class="photo-upload-main-container">
           <div class="photo-upload-icon-container">
-            <label for="photo-upload">
-              <span class="material-symbols-outlined">cloud_upload</span>
-              <p>Upload Photo</p>
+            <label for="photo-upload" style="cursor:pointer;">
+              <ng-container *ngIf="!photoUploadedDetails.url">
+                <span class="material-symbols-outlined">cloud_upload</span>
+                <p>Upload Photo</p>
+                <input type="file" id="photo-upload" style="display: none" accept="image/jpeg, image/png"
+                  (change)="profilePicUploaded($event)" />
+              </ng-container>
+              <ng-container>
+                <div *ngIf="photoUploadedDetails.url" class="photo-uploaded-icon-container">
+                  <img [src]=" photoUploadedDetails.url" alt="Uploaded Photo" class="photo-uploaded-image" />
+                  <input type="file" id="photo-upload" style="display: none" accept="image/jpeg, image/png"
+                    (change)="profilePicUploaded($event)" />
+                </div>
+              </ng-container>
             </label>
-            <input type="file" id="photo-upload" style="display: none" accept="image/*"
-              (change)="profilePicUploaded($event)" />
+
           </div>
 
-          <div *ngIf="photoUploadedDetails.url" [ngClass]="
+          <!-- <div *ngIf="photoUploadedDetails.url" [ngClass]="
               photoUploadedDetails.url !== ''
                 ? 'photo-uploaded-active'
                 : 'photo-uploaded-inactive'
             ">
             <img [src]="photoUploadedDetails.url" alt="Uploaded Photo" height="100" width="100"
               class="photo-uploaded-icon-container" />
-          </div>
+          </div> -->
 
-          <span class="photo-upload-description" *ngIf="photoUploadedDetails.fileName !== ''">{{
+          <span class="photo-upload-description photo-uploaded-description"
+            *ngIf="photoUploadedDetails.fileName !== ''">{{
               photoUploadedDetails.fileName +
                 ' (' +
                 (photoUploadedDetails.size / 1024 / 1024).toFixed(2) +
@@ -149,8 +160,9 @@
           </div>
           <div class="phone-number-value-container">
             <label for="phone-number-label"></label>
-            <input type="text" formControlName="phone" placeholder="Phone number" id="phone-number-label"
-              class="custom-input" inputmode="numeric" pattern="[0-9]*" />
+            <input type="tel" formControlName="phone" placeholder="Phone number" id="phone-number-label"
+              class="custom-input" inputmode="numeric" maxlength=10 minlength=10 oninput="this.value =
+              this.value.replace(/[^0-9]/g, '')" />
           </div>
         </div>
         <div *ngIf="
@@ -220,7 +232,9 @@
         <ng-container *ngIf="helperForm.get('kycDocumentUrl')?.value !== ''; else showUpload">
           <div class="kyc-document-uploaded-container" (click)="openDialog()">
             <div>
-              <img src="../../../../../assets/pdf-icon.png" alt="PDF" height="30" width="30">
+              <img
+                src="https://res.cloudinary.com/karthikvarma/image/upload/v1755058732/inn-assignement/helpers/assets/pdf-icon_tmod0w.png"
+                alt="PDF" height="30" width="30">
             </div>
             <div class="kyc-document-uploaded-container-description">
               <span class="kyc-document-uploaded-file-name">

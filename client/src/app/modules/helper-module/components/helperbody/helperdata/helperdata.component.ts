@@ -1,18 +1,34 @@
 import { NgFor, NgStyle, NgIf } from '@angular/common';
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Router, RouterModule } from '@angular/router';
-import { HelperService } from '../../../services/helper.services';
+import { HelperService } from '../../../services/helper.service';
 import {
   HelperSection,
   IHelperProfileSummary,
 } from '../../../adapters/helperdata-adapter';
-
+import { DialogboxDocumentDownloadComponent } from '../../../../../shared/components/dialogbox-document-download/dialogbox-document-download.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 @Component({
   selector: 'app-helperdata',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, NgStyle, NgFor, NgIf, RouterModule],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    NgStyle,
+    NgFor,
+    NgIf,
+    RouterModule,
+    NgxSkeletonLoaderModule,
+  ],
   templateUrl: './helperdata.component.html',
   styleUrl: './helperdata.component.scss',
 })
@@ -59,9 +75,7 @@ export class HelperdataComponent implements OnInit {
   }
 
   deleteHelper(_helperObjectId: string): void {
-    this.helperService
-      .deleteHelper(_helperObjectId)
-      .subscribe((res) => console.log(res));
+    this.helperService.deleteHelper(_helperObjectId).subscribe();
     this.router.navigate([this.router.url]);
   }
 
@@ -72,6 +86,23 @@ export class HelperdataComponent implements OnInit {
     } catch (error) {
       return false;
     }
+  }
+  @ViewChild('documentDialog', { read: ViewContainerRef })
+  documentDialog!: ViewContainerRef;
+
+  openDocumentDialog(documentLabel: string, documentUrl: string) {
+    this.documentDialog.clear();
+    const dialogRef = this.documentDialog.createComponent(
+      DialogboxDocumentDownloadComponent
+    );
+    dialogRef.setInput(
+      'componentHeading',
+      `${this.helperHeaderInfo.helperName + ' ' + documentLabel}`
+    );
+    dialogRef.setInput('documentUrl', documentUrl);
+    dialogRef.instance.close = () => {
+      this.documentDialog.clear();
+    };
   }
 }
 

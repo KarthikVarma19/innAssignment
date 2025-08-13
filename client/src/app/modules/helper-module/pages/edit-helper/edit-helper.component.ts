@@ -1,15 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HelperformComponent } from '../../components/helperform/helperform.component';
-import { HelperService } from '../../services/helper.services';
+import { HelperService } from '../../services/helper.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HelperUtilityService } from '../../services/helper-utility.services';
-
+import { HelperUtilityService } from '../../services/helper-utility.service';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-edit-helper',
   standalone: true,
-  imports: [HelperformComponent, NgFor, NgIf, CommonModule, RouterModule],
+  imports: [
+    HelperformComponent,
+    NgFor,
+    NgIf,
+    CommonModule,
+    RouterModule,
+    NgxSkeletonLoaderModule,
+  ],
   templateUrl: './edit-helper.component.html',
   styleUrl: './edit-helper.component.scss',
 })
@@ -23,7 +31,8 @@ export class EditHelperComponent {
     private helperService: HelperService,
     private route: ActivatedRoute,
     private helperUtility: HelperUtilityService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.id = this.route.snapshot.paramMap.get('id') || '';
     this.editHelperSidebar = [
@@ -47,21 +56,20 @@ export class EditHelperComponent {
 
   saveButtonClicked() {
     const currentFormData = this.helperFormComp.helperForm.value;
-    if (this.helperFormComp.helperForm.invalid) {
-      this.helperFormComp.helperForm.markAllAsTouched();
-      return;
-    }
+    // if (this.helperFormComp.helperForm.invalid) {
+    //   this.helperFormComp.helperForm.markAllAsTouched();
+    //   return;
+    // }
 
-    if (!this.helperFormComp.helperForm.touched) {
-      return;
-    }
+    // if (!this.helperFormComp.helperForm.touched) {
+    //   return;
+    // }
 
     const childData = this.helperFormComp.getEditHelperSaveButtonGetData();
     const compiledHelperFormData =
       this.helperUtility.compileFormData(childData);
 
     if (this.id === '') {
-      console.error('Helper Parameter ID Not Found');
       return;
     }
 
@@ -88,17 +96,30 @@ export class EditHelperComponent {
 
           this.helperService
             .updateHelper(this.id!, compiledHelperFormData)
-            .subscribe((res) => {
-              this.saveButton = 'Changes Saved';
-              this.router.navigate([
-                '/dashboard',
-                'staff-management',
-                'helpers',
-              ]);
+            .subscribe({
+              next: () => {
+                this.saveButton = 'Changes Saved';
+
+                this.router.navigate([
+                  '/dashboard',
+                  'staff-management',
+                  'helpers',
+                ]);
+              },
+              error: () => {
+                this.toastr.error('everything is broken', 'Major Error', {
+                  timeOut: 1500,
+                });
+              },
+              complete: () => {
+                this.toastr.success(
+                  'Helper details updated successfully!',
+                  'Success'
+                );
+              },
             });
         },
       });
-    console.log(childData);
   }
 
   saveButton: string = 'Save';

@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './shared/components/dashboard/dashboard.component';
-import { HelperhomeComponent } from './modules/helper-module/pages/helperhome/helperhome.component';
+import { HelperhomeComponent } from './modules/helper-module/pages/home-helper/helperhome.component';
 import { PagenotfoundComponent } from './shared/components/pagenotfound/pagenotfound.component';
-import { AddhelperComponent } from './modules/helper-module/pages/addhelper/addhelper.component';
+import { AddhelperComponent } from './modules/helper-module/pages/add-helper/addhelper.component';
 import { EditHelperComponent } from './modules/helper-module/pages/edit-helper/edit-helper.component';
 
 export const routes: Routes = [

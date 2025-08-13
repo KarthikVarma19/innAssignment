@@ -11,11 +11,11 @@
         </div>
         <span class="material-symbols-outlined heading-icons">more_vert</span>
       </div>
-      <hr class="headingHortizantalRule" />
+      <!-- <hr class="headingHortizantalRule" /> -->
     </header>
   </div>
   <!-- Body -->
-  <div class="add-helper-body-container">
+  <div class="add-helper-body-container" *ngIf="!skeletonA; else skeleton">
     <!-- Stages -->
     <div class="add-helper-stages-container">
       <div class="stage-stepper">
@@ -101,20 +101,20 @@
       <div class="add-helper-footer-button-container">
         <ng-container>
           <button *ngIf="currentStageOfAddingHelper > 1 && !addHelperButtonClicked"
-            (click)="goToPreviousStageOfAddingHelper()" class="previousButton">
+            (click)="goToPreviousStageOfAddingHelper()" class="previousButton" type="button">
             <span class="material-symbols-outlined">chevron_left</span>
             Previous
           </button>
         </ng-container>
         <ng-container>
-          <button type="submit" *ngIf="currentStageOfAddingHelper < finalStageOfAddingHelper"
+          <button type="button" *ngIf="currentStageOfAddingHelper < finalStageOfAddingHelper"
             (click)="goToNextStageOfAddingHelper()" class="nextButton">
             Next
             <span class="material-symbols-outlined">chevron_right</span>
           </button>
           <button *ngIf="currentStageOfAddingHelper === finalStageOfAddingHelper"
             class="add-helper-final-stage-submit-button" [disabled]="addHelperButtonClicked"
-            (click)="createHelperUtil()">
+            (click)="createHelperUtil()" type="submit">
             <ng-container *ngIf="!addHelperButtonClicked">
               <span class="material-symbols-outlined">add</span>
               Add Helper
@@ -122,9 +122,77 @@
             <ng-container *ngIf="addHelperButtonClicked">
               <div class="loader"></div>
             </ng-container>
+
           </button>
         </ng-container>
       </div>
     </div>
+    <!-- Place your templates here, outside the main container for fullscreen dialogs -->
+    <ng-template #addHelperSuccessDialog></ng-template>
+    <ng-template #addHelperIdentificationCard></ng-template>
   </div>
+
+  <ng-template #skeleton>
+    <div class="add-helper-body-container">
+      <div class="add-helper-stages-container add-helper-stages-container-skeleton" style="margin-top: -25px;">
+        <ng-container *ngFor="let i of [1,2,3]">
+          <div class="stage-container-skeleton">
+            <div class="stage-container-circle">
+              <ngx-skeleton-loader appearance="circle"
+                [theme]="{height: '40px', width: '40px', 'background-color': '#E0E0E0',}" />
+            </div>
+            <div>
+              <div class="stage-heading">
+                <ngx-skeleton-loader [theme]="{ 
+              'border-radius': '10px',
+              height: '15px',
+              width: '180px', 
+              'background-color': '#E0E0E0',
+              'margin-top': '6px'
+            }" />
+              </div>
+              <div class="stage-description">
+                <ngx-skeleton-loader
+                  [theme]="{ 'border-radius': '10px',height: '10px',width: '80px', 'background-color': '#E0E0E0', 'margin-top': '-10px'}" />
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="add-helper-form-container">
+        <ngx-skeleton-loader [theme]="{ 
+          'border-radius': '10px',
+          height: '15px', 
+          width: '150px',
+          'background-color': '#E0E0E0',
+        }" />
+        <br>
+        <ngx-skeleton-loader [theme]="{ 
+          'border-radius': '10px',
+          height: '10px',
+          width: '250px', 
+          'margin-top': '-10px',
+          'background-color': '#E0E0E0',
+        }" />
+        <br>
+        <ngx-skeleton-loader appearance="circle"
+          [theme]="{height: '100px', width: '100px', 'background-color': '#E0E0E0',}" />
+        <br>
+        <ng-container *ngFor="let i of [1, 2, 3, 4, 5, 6, 7]">
+          <ngx-skeleton-loader [theme]="{ 
+          'border-radius': '10px',
+          height: '10px',
+          width: '130px', 
+          'margin-top': '15px',
+          'background-color': '#E0E0E0',
+        }" />
+          <ngx-skeleton-loader [theme]="{ 
+          height: '30px', 
+          'margin-top': '-10px',
+          'background-color': '#E0E0E0',
+        }" />
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
 </div>

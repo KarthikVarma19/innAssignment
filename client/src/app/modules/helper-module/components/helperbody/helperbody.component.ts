@@ -3,11 +3,22 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { HelperService } from '../../services/helper.services';
+import { HelperService } from '../../services/helper.service';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { ExcelService } from '../../services/excel.services';
+import { ExcelService } from '../../services/excel.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-helperbody',
@@ -20,18 +31,42 @@ import { ExcelService } from '../../services/excel.services';
     FormsModule,
     RouterLink,
     MatPaginatorModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+    NgxSkeletonLoaderModule,
+    InfiniteScrollModule,
+    NgxDaterangepickerMd,
   ],
+  providers: [],
   templateUrl: './helperbody.component.html',
   styleUrl: './helperbody.component.scss',
 })
 export class HelperbodyComponent implements OnInit {
-  helpersData: any[];
+  helpersData: any[] = [];
   filteredHelperData: any[];
   helperDetails: any;
 
+  ranges: any = {
+    Today: [dayjs(), dayjs()],
+    Yesterday: [dayjs().subtract(1, 'days'), dayjs().subtract(1, 'days')],
+    'Last 7 Days': [dayjs().subtract(6, 'days'), dayjs()],
+    'Last 30 Days': [dayjs().subtract(29, 'days'), dayjs()],
+    'This Month': [dayjs().startOf('month'), dayjs().endOf('month')],
+    'Last Month': [
+      dayjs().subtract(1, 'month').startOf('month'),
+      dayjs().subtract(1, 'month').endOf('month'),
+    ],
+  };
+  model: any = { start: Date, end: new Date() };
+  isBrowser: boolean;
+  datesUpdated(event: any) {
+    console.log(event);
+  }
   constructor(
     private helperService: HelperService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.helpersData = [];
     this.filteredHelperData = [];
@@ -39,6 +74,7 @@ export class HelperbodyComponent implements OnInit {
       context: 'admin',
       data: null,
     };
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   getHelperDetails(_helperObjectId: string) {
@@ -56,35 +92,81 @@ export class HelperbodyComponent implements OnInit {
   }
 
   // Pagination properties
-  pageSize = 10;
-  pageIndex = 0;
+  pageSize = 100;
+  pageIndex = 1;
   pageSizeOptions = [5, 10, 25, 100];
+  isLoading = false;
 
-  // Called when the paginator changes page
-  onPageChange(event: any) {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.fetchPagedHelpers();
-  }
+  toggleLoading = () => (this.isLoading = !this.isLoading);
 
-  pagedHelperData: any[] = [];
-
-  fetchPagedHelpers() {
+  loadData() {
+    this.toggleLoading();
     this.helperService
       .getHelpersPaged(this.pageIndex, this.pageSize)
-      .subscribe((response) => {
-        this.helpersData = [...response.data];
-        this.helperDetails = { data: this.helpersData[0], context: 'admin' };
+      .subscribe({
+        next: (response) => {
+          this.helpersData = response.data;
+          this.helperDetails = { data: this.helpersData[0], context: 'admin' };
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+          this.toggleLoading();
+        },
       });
   }
 
+  // // Called when the paginator changes page
+  // onPageChange(event: any) {
+  //   this.pageIndex = event.pageIndex;
+  //   this.pageSize = event.pageSize;
+  //   this.fetchPagedHelpers();
+  // }
+
+  // pagedHelperData: any[] = [];
+
+  // fetchPagedHelpers() {
+  //   this.helperService
+  //     .getHelpersPaged(this.pageIndex, this.pageSize)
+  //     .subscribe((response) => {
+  //       this.helpersData = [...this.helpersData, ...response.data];
+  //       this.helperDetails = { data: this.helpersData[0], context: 'admin' };
+  //     });
+  // }
+
   ngOnInit(): void {
-    this.fetchPagedHelpers();
+    // this.fetchPagedHelpers();
     // this.helperService.getAllHelpers().subscribe((subdata) => {
     //   this.helpersData = subdata;
     //   this.helperDetails = { data: this.helpersData[0], context: 'admin' };
     // });
+    this.pageIndex = 1;
+    this.loadData();
   }
+
+  appendData = () => {
+    this.toggleLoading();
+    this.helperService
+      .getHelpersPaged(this.pageIndex, this.pageSize)
+      .subscribe({
+        next: (response) => {
+          this.helpersData = [...this.helpersData, ...response.data];
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+          this.toggleLoading();
+        },
+      });
+  };
+
+  onScroll = () => {
+    console.log(this.pageIndex);
+    this.pageIndex++;
+    this.appendData();
+  };
 
   getSafeImageUrl(helper: any) {
     const image = helper.employee?.employeephotoUrl;

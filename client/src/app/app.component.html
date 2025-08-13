@@ -1,7 +1,12 @@
-<div class="appContainer">
-  <app-dashboard>
-  </app-dashboard>
-  <div class="appBodyContainer">
+<div class="app-container">
+  <div class="app-dashboard">
+    <app-dashboard>
+    </app-dashboard>
+  </div>
+  <div class="app-body-container">
+    <ng-container *ngIf="isLoading$ | async">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </ng-container>
     <router-outlet></router-outlet>
   </div>
 </div>

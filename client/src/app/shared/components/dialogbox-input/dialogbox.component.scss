@@ -12,20 +12,25 @@
 }
 
 .modal {
+  border-radius: 10px;
   background: white;
-  border-radius: 8px;
   padding: 20px;
-  min-width: 30vw;
-  width: fit-content;
-  height: 60vh;
-  overflow-y: scroll;
+  width: 30vw;
   position: relative;
+  .modal-horizontal-divider {
+    background-color: lightgray;
+    height: 1px;
+    width: 100%;
+    margin: 20px 0;
+    border: none;
+  }
 }
 
 .modal-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  position: sticky;
   .modal-heading {
     font-size: 15px;
     font-weight: 700;
@@ -37,4 +42,8 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+.modal-body {
+  overflow-y: scroll;
 }

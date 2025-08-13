@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import {
@@ -12,7 +19,6 @@ import {
 } from '@angular/forms';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-
 
 @Component({
   selector: 'app-kycdocument',
@@ -52,8 +58,9 @@ export class KycdocumentComponent implements OnInit {
         this.pdfData = base64String.split(',')[1];
         this.kycDocumentDetails.base64 = base64String;
         this.kycDocumentDetails.fileName = file.name;
+        this.cdr.detectChanges();
       };
-      reader.readAsDataURL(file); // Converts PDF to base64 data URL
+      reader.readAsDataURL(file);
     } else {
       this.kycDocumentDetails.base64 = '';
       this.kycDocumentDetails.fileName = '';
@@ -77,7 +84,7 @@ export class KycdocumentComponent implements OnInit {
 
   kycDocumentDetails: IkycDocumentDetails;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.kycDocumentForm = this.fb.group({
       documentType: ['', Validators.required],
       pdfFileUrl: ['', Validators.required],
@@ -94,27 +101,32 @@ export class KycdocumentComponent implements OnInit {
   ngOnInit(): void {}
 
   onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0];
     this.isDragging = false;
     if (file && file.type === 'application/pdf') {
       const reader = new FileReader();
       this.kycDocumentDetails.fileSize = file.size;
-      (reader.onload = () => {
-          const base64String = reader.result as string;
-          this.kycDocumentForm.patchValue({ pdfFileUrl: base64String });
-          this.pdfData = base64String.split(',')[1];
-          this.kycDocumentDetails.base64 = base64String;
-          this.kycDocumentDetails.fileName = file.name;
-        });
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        this.kycDocumentForm.patchValue({ pdfFileUrl: base64String });
+        this.pdfData = base64String.split(',')[1];
+        this.kycDocumentDetails.base64 = base64String;
+        this.kycDocumentDetails.fileName = file.name;
+        this.cdr.detectChanges();
+      };
       reader.readAsDataURL(file);
     } else {
       this.kycDocumentDetails.base64 = '';
       this.kycDocumentDetails.fileName = '';
       this.kycDocumentDetails.documentType = '';
       this.pdfData = '';
+      this.clearThekycDocument();
       alert('Please upload a valid PDF file.');
     }
+    input.value = '';
   }
+
   deleteUploadedkycDocument(): void {
     this.kycDocumentDetails.base64 = '';
     this.kycDocumentDetails.fileName = '';
@@ -131,7 +143,7 @@ export class KycdocumentComponent implements OnInit {
       return;
     }
     this.kycDocumentDetails.documentType =
-    this.kycDocumentForm.get('documentType')?.value;
+      this.kycDocumentForm.get('documentType')?.value;
     this.dataFromDialog.emit(this.kycDocumentDetails);
   }
   clearThekycDocument(): void {

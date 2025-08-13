@@ -2,6 +2,9 @@
   overflow-y: auto;
   height: 350px;
   z-index: 1000;
+  .kyc-document-upload-container {
+    cursor: pointer;
+  }
   .kyc-document-upload-icon-container {
     display: flex;
     flex-direction: column;
@@ -84,13 +87,13 @@
   z-index: 100;
   width: 100%;
   background: #fff;
-  .add-helper-footer-horizontal-divider {
-    background-color: lightgray;
-    height: 1px;
-    width: 100%;
-    margin: 20px 0;
-    border: none;
-  }
+  // .add-helper-footer-horizontal-divider {
+  //   background-color: lightgray;
+  //   height: 1px;
+  //   width: 100%;
+  //   margin: 20px 0;
+  //   border: none;
+  // }
 
   .add-helper-footer-button-container {
     display: flex;

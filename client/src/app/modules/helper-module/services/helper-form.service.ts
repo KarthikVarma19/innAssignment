@@ -1,62 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { LoaderService } from './loader.service';
 
 @Injectable({ providedIn: 'root' })
 export class HelperFormService {
   readonly PHOTO_LIMIT = 5242880; // 5MB
 
-  constructor(private fb: FormBuilder) {}
-
-  /** Create empty form for Add mode */
-  /* helperForm = new FormGroup({
-    profilePic: new FormControl(''),
-    typeOfService: new FormControl('', Validators.required),
-    organizationName: new FormControl('', Validators.required),
-    fullName: new FormControl(
-      '',
-      Validators.compose([
-        Validators.minLength(4),
-        Validators.pattern('[a-zA-Z ]*'),
-      ])
-    ),
-    languages: new FormControl(
-      [],
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(3),
-      ])
-    ),
-    gender: new FormControl('', Validators.required),
-    countryCode: new FormControl(91, Validators.required),
-    phone: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.maxLength(15),
-        Validators.minLength(10),
-        Validators.pattern('^[0-9]{10,15}$'),
-      ])
-    ),
-    email: new FormControl(
-      '',
-      Validators.compose([Validators.email, Validators.required])
-    ),
-    vehicleType: new FormControl('None', Validators.required),
-    vehicleNumber: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(10),
-        Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}'),
-      ])
-    ),
-    kycDocumentType: new FormControl('', Validators.required),
-    kycDocumentUrl: new FormControl('', Validators.required),
-    kycDocumentFileName: new FormControl('', Validators.required),
-    kycDocumentSize: new FormControl(0, Validators.required),
-  });
-  */
+  constructor(private fb: FormBuilder, private loaderService: LoaderService) {}
 
   createHelperForm(): FormGroup {
     return this.fb.group({
@@ -132,34 +82,40 @@ export class HelperFormService {
   patchBackendData(form: FormGroup, backendData: any) {
     if (!backendData) return;
 
-    const personal = backendData.personalDetails || {};
-    const service = backendData.serviceDetails || {};
-    const vehicle = backendData.vehicleDetails || {};
-    const kyc = personal.kycDocument || {};
-    const employee = backendData.employee || {};
+    this.loaderService.showLoader();
 
-    const phoneNumber = personal.phone || '';
+    try {
+      const personal = backendData.personalDetails || {};
+      const service = backendData.serviceDetails || {};
+      const vehicle = backendData.vehicleDetails || {};
+      const kyc = personal.kycDocument || {};
+      const employee = backendData.employee || {};
 
-    let { countryCode, localNumber } =
-      this.extractCountryCodeAndLocalNumber(phoneNumber);
+      const phoneNumber = personal.phone || '';
 
-    form.patchValue({
-      profilePic: employee.employeephotoUrl || '',
-      typeOfService: service.type || '',
-      organizationName: service.organization || '',
-      fullName: personal.fullName || '',
-      languages: personal.languages || [],
-      gender: personal.gender || '',
-      countryCode,
-      phone: localNumber,
-      email: personal.email || '',
-      vehicleType: vehicle.type || '',
-      vehicleNumber: vehicle.number || '',
-      kycDocumentType: kyc.type || '',
-      kycDocumentUrl: kyc.url || '',
-      kycDocumentFileName: kyc.filename || '',
-      kycDocumentSize: kyc.filesize || 0,
-    });
+      let { countryCode, localNumber } =
+        this.extractCountryCodeAndLocalNumber(phoneNumber);
+
+      form.patchValue({
+        profilePic: employee.employeephotoUrl || '',
+        typeOfService: service.type || '',
+        organizationName: service.organization || '',
+        fullName: personal.fullName || '',
+        languages: personal.languages || [],
+        gender: personal.gender || '',
+        countryCode,
+        phone: localNumber,
+        email: personal.email || '',
+        vehicleType: vehicle.type || '',
+        vehicleNumber: vehicle.number || '',
+        kycDocumentType: kyc.type || '',
+        kycDocumentUrl: kyc.url || '',
+        kycDocumentFileName: kyc.filename || '',
+        kycDocumentSize: kyc.filesize || 0,
+      });
+    } finally {
+      this.loaderService.hideLoader();
+    }
   }
   /**
    * Checks if the form has any changes compared to the initial backend data.

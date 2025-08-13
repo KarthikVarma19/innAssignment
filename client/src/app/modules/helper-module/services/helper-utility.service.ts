@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HelperService } from './helper.services';
+import { HelperService } from './helper.service';
 
 @Injectable({ providedIn: 'root' })
 export class HelperUtilityService {

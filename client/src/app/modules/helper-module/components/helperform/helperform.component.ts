@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  NgZone,
   OnInit,
   Output,
   SimpleChanges,
@@ -20,11 +21,11 @@ import {
 } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
-import { DialogboxComponent } from '../../../../shared/components/dialogbox/dialogbox.component';
+import { DialogboxComponent } from '../../../../shared/components/dialogbox-input/dialogbox.component';
 import IkycDocumentDetails, {
   KycdocumentComponent,
-} from '../kycdocument/kycdocument.component';
-import { HelperFormService } from '../../services/helper-form.services';
+} from '../kycdocument-dialogbox-input/kycdocument.component';
+import { HelperFormService } from '../../services/helper-form.service';
 
 @Component({
   selector: 'app-helperform',
@@ -235,10 +236,10 @@ export class HelperformComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private formService: HelperFormService
+    private formService: HelperFormService,
+    private zone: NgZone
   ) {
     this.helperForm = this.formService.createHelperForm();
-
     this.photoUploadedDetails = {
       fileName: '',
       url: '',
@@ -261,7 +262,7 @@ export class HelperformComponent implements OnInit {
     } else {
       this.formService.patchHelperFormData(this.helperForm, this.helperData);
       setTimeout(() => {
-        this.photoUploadedDetails.url = this.helperData?.profilePic || '';
+        this.photoUploadedDetails.url = this.helperData?.profilePic;
       });
     }
     this.cdr.detectChanges(); // Force trigger change detection
@@ -283,6 +284,7 @@ export class HelperformComponent implements OnInit {
   }
 
   profilePicUploaded(event: Event): void {
+    console.log('photo uploaded');
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length === 1) {
       const file = target.files[0];
@@ -296,16 +298,11 @@ export class HelperformComponent implements OnInit {
 
       const reader = new FileReader();
       reader.onload = () => {
-        setTimeout(() => {
-          const base64 = reader.result as string;
-          this.photoUploadedDetails.base64 = base64.split(',')[1];
-          this.photoUploadedDetails.url = base64;
-          setTimeout(() => {
-            this.helperForm.get('profilePic')?.setValue(base64);
-            this.helperForm.get('profilePic')?.markAsDirty();
-            this.cdr.detectChanges();
-          });
-        });
+        const base64 = reader.result as string;
+        this.photoUploadedDetails.base64 = base64.split(',')[1];
+        this.photoUploadedDetails.url = base64;
+        this.helperForm.get('profilePic')?.setValue(base64);
+        this.helperForm.get('profilePic')?.markAsDirty();
       };
 
       reader.onerror = (err) => console.error('FileReader error:', err);
@@ -346,12 +343,6 @@ export class HelperformComponent implements OnInit {
       this.helperForm.markAllAsTouched();
       return;
     }
-    // If form did not change compared to backend data, do nothing
-    console.log(
-      'Is form changed?',
-      this.formService.isFormChanged(this.helperForm, this.helperBackendData)
-    );
-
     if (
       this.formService.isFormChanged(this.helperForm, this.helperBackendData)
     ) {
@@ -359,7 +350,9 @@ export class HelperformComponent implements OnInit {
     }
 
     this.setDefaultProfilePic();
-    this.helperFormDataStageOne.emit(this.helperForm.value);
+    this.zone.run(() => {
+      this.helperFormDataStageOne.emit(this.helperForm.value);
+    });
   }
 
   // if user did not upload the helper image we will call the ui avatar api using full name and set to that while submitting
@@ -368,7 +361,6 @@ export class HelperformComponent implements OnInit {
     const userImageApiUrl = `https://ui-avatars.com/api/?name=${userName}&background=random&color=fff&rounded=true&bold=true&size=32`;
     const profilePicControl = this.helperForm.get('profilePic');
     if (profilePicControl && profilePicControl.value === '') {
-      console.log('profile pic setted');
       profilePicControl.setValue(userImageApiUrl);
     }
   }
