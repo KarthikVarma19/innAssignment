@@ -13,9 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-dayjs.extend(utc);
+import dayjs from 'dayjs/esm';
+import relativeTime from 'dayjs/esm/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
