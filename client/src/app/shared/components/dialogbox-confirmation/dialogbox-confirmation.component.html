@@ -1,0 +1,35 @@
+<div class="backdrop" (click)="close()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <span class="modal-heading"></span>
+      </div>
+      <div>
+        <button class="close-button" (click)="close()">
+          <span class="material-symbols-outlined" style="font-size: 20px;">close</span>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <img [src]="data.logo" alt="{{data.confirmationType + 'Logo'}}" class="confirmation-logo" />
+      <div class="confirmation-message-container">
+        <span class="confirmation-type">{{data.confirmationType}}</span>
+        <span class="confirmation-description">{{data.confirmationDescription}}</span>
+      </div>
+      <span class="confirmation-warning">{{data.confirmationWarning}}</span>
+    </div>
+    <hr class="modal-horizontal-divider" />
+    <div class="modal-footer">
+      <div class="button-container">
+        <button class="print-button" type="button" (click)="cancelButtonClicked()">
+          Cancel
+        </button>
+        <button type="submit" (click)="confirmButtonClicked()"
+          [ngClass]="data.confirmationType === 'Delete' ? 'delete-button' : 'confirm-button'">
+          <span class="material-symbols-outlined" style="font-size: 18px; color: white">delete</span>
+          {{data.confirmationType}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

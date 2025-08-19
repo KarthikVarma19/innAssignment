@@ -21,7 +21,7 @@ import {
 } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
-import { DialogboxComponent } from '../../../../shared/components/dialogbox-input/dialogbox.component';
+import { DialogboxComponent } from '../../../../shared/components/dialogbox-input/dialogbox-input.component';
 import IkycDocumentDetails, {
   KycdocumentComponent,
 } from '../kycdocument-dialogbox-input/kycdocument.component';

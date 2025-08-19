@@ -50,14 +50,16 @@ export class HelperUtilityService {
     const formData = new FormData();
 
     const UNIQUE_NO = Date.now();
-    const HELPER_NAME = payload.helperFullName.replace(' ', '').toUpperCase();
+    const HELPER_NAME = payload.helperFullName
+      .replaceAll(' ', '')
+      .toUpperCase();
 
     if (!this.isValidHttpsUrl(payload.kycDocumentBase64)) {
       const KYC_TYPE = payload.kycDocumentFileDivisionType
         .replaceAll(' ', '')
         .toUpperCase();
       const KYC_EXT = '.' + payload.kycDocumentFileName.split('.').pop();
-      const KYC_NAME = `${UNIQUE_NO}-${HELPER_NAME}-${KYC_TYPE}${KYC_EXT}`;
+      const KYC_NAME = `${UNIQUE_NO}-${HELPER_NAME}-KYC-${KYC_TYPE}${KYC_EXT}`;
       const kycFile = this.base64ToFile(
         payload.kycDocumentBase64,
         KYC_NAME,

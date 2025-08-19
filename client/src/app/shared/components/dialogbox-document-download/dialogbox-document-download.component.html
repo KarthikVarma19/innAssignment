@@ -5,7 +5,9 @@
         <span class="modal-heading">{{componentHeading}}</span>
       </div>
       <div>
-        <button class="close-btn" (click)="close()">×</button>
+        <button class="close-button" (click)="close()">
+          <span class="material-symbols-outlined" style="font-size: 20px;">close</span>
+        </button>
       </div>
     </div>
     <hr class="modal-horizontal-divider" />
@@ -17,22 +19,19 @@
       <div *ngIf="!documentUrl">
         PDF URL not provided.
       </div>
+
     </div>
     <hr class="modal-horizontal-divider" />
     <!-- <div class="modal-footer">
-      <div class="add-helper-footer-button-container">
-        <ng-container>
-          <button class="previousButton" type="button" (click)="print()">
+      <div class="button-container">
+          <button class="print-button" type="button" (click)="print()">
             <span class="material-symbols-outlined">print</span>
             Print
           </button>
-        </ng-container>
-        <ng-container>
-          <button class="add-helper-final-stage-submit-button" type="submit" (click)="download()">
+          <button class="download-button" type="submit" (click)="download()">
             <span class="material-symbols-outlined">download</span>
             Download
           </button>
-        </ng-container>
       </div>
     </div> -->
   </div>

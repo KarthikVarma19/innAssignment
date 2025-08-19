@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogboxComponent } from './dialogbox.component';
+import { DialogboxComponent } from './dialogbox-input.component';
 
 describe('DialogboxComponent', () => {
   let component: DialogboxComponent;
@@ -8,10 +8,9 @@ describe('DialogboxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DialogboxComponent]
-    })
-    .compileComponents();
-    
+      imports: [DialogboxComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(DialogboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

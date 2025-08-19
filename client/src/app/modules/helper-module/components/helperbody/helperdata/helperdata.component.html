@@ -26,7 +26,8 @@
                 <span class="material-symbols-outlined">edit</span>
               </div>
             </a>
-            <div class="iconContainer" (click)="deleteHelper(helperDisplayData.data._id)">
+            <div class="iconContainer"
+              (click)="deleteHelper({_id: helperDisplayData.data._id, helperName: helperHeaderInfo.helperName})">
               <span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
             </div>
           </div>
@@ -64,6 +65,7 @@
       </div>
     </div>
     <ng-template #documentDialog></ng-template>
+    <ng-template #deleteDialog></ng-template>
   </div>
 </ng-container>
 

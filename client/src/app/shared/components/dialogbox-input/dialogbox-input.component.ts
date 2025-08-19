@@ -12,11 +12,11 @@ import {
 import IkycDocumentDetails from '../../../modules/helper-module/components/kycdocument-dialogbox-input/kycdocument.component';
 
 @Component({
-  selector: 'app-dialogbox',
+  selector: 'app-dialogbox-input',
   standalone: true,
   imports: [],
-  templateUrl: './dialogbox.component.html',
-  styleUrl: './dialogbox.component.scss',
+  templateUrl: './dialogbox-input.component.html',
+  styleUrl: './dialogbox-input.component.scss',
 })
 export class DialogboxComponent implements OnInit, OnDestroy {
   @ViewChild('container', { read: ViewContainerRef, static: true })

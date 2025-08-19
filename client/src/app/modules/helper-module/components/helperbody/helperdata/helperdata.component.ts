@@ -3,6 +3,7 @@ import {
   Component,
   Input,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
   ViewContainerRef,
@@ -17,6 +18,8 @@ import {
 } from '../../../adapters/helperdata-adapter';
 import { DialogboxDocumentDownloadComponent } from '../../../../../shared/components/dialogbox-document-download/dialogbox-document-download.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { DialogboxConfirmationComponent } from '../../../../../shared/components/dialogbox-confirmation/dialogbox-confirmation.component';
+import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-helperdata',
   standalone: true,
@@ -74,10 +77,35 @@ export class HelperdataComponent implements OnInit {
     }
   }
 
-  deleteHelper(_helperObjectId: string): void {
-    this.helperService.deleteHelper(_helperObjectId).subscribe();
-    this.router.navigate([this.router.url]);
+  @ViewChild('deleteDialog', { read: ViewContainerRef })
+  deleteDialog!: ViewContainerRef;
+
+  deleteHelper(data: { _id: string; helperName: string }): void {
+    this.deleteDialog.clear();
+    const dialogRef = this.deleteDialog.createComponent(
+      DialogboxConfirmationComponent
+    );
+    dialogRef.setInput('data', {
+      logo: 'https://res.cloudinary.com/karthikvarma/image/upload/v1755586880/inn-assignement/helpers/assets/warning_ijpqst.png',
+      confirmationType: 'Delete',
+      confirmationDescription: data.helperName,
+      confirmationWarning: 'You can`t undo this action.',
+    });
+    dialogRef.instance.close = () => {
+      this.deleteDialog.clear();
+    };
+
+    dialogRef.instance.cancelButtonClicked = () => {
+      this.deleteDialog.clear();
+    };
+    dialogRef.instance.confirmButtonClicked = () => {
+      this.helperService.deleteHelper(data._id).subscribe();
+      this.deleteButtonEvent.emit(true);
+      this.deleteDialog.clear();
+    };
   }
+
+  @Output() deleteButtonEvent = new EventEmitter<boolean>();
 
   isDataIsValidUrl(data: string): boolean {
     try {

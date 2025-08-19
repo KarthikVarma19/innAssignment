@@ -14,7 +14,7 @@ export class ExcelService {
     const flattenedDataIntoJSON = flattenHelperData(data);
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(flattenedDataIntoJSON);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.utils.book_append_sheet(wb, ws, 'Helpers');
 
     const wbout: ArrayBuffer = XLSX.write(wb, {
       bookType: 'xlsx',

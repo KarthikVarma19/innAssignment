@@ -15,7 +15,6 @@ import { Router, RouterModule } from '@angular/router';
 import { HelperService } from '../../services/helper.service';
 import { HelperformComponent } from '../../components/helperform/helperform.component';
 import { HelperUtilityService } from '../../services/helper-utility.service';
-import { DialogboxComponent } from '../../../../shared/components/dialogbox-input/dialogbox.component';
 import { DialogboxMessageComponent } from '../../../../shared/components/dialogbox-message/dialogbox-message.component';
 import { DialogboxDocumentDownloadComponent } from '../../../../shared/components/dialogbox-document-download/dialogbox-document-download.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -117,28 +116,33 @@ export class AddhelperComponent implements OnInit {
           this.compiledHelperFormData.personalDetails.kycDocument.url =
             res.uploaded?.kycDocument;
 
-          let HELPER_MONGODB_ID: string = '';
           this.helperService
             .createHelper(this.compiledHelperFormData)
             .subscribe((res) => {
-              HELPER_MONGODB_ID = res.data.helper._id;
-
-              this.openDialogOfAddedHelperSuccess(
-                res.data.helper.personalDetails.fullName
-              );
-
-              this.helperService
-                .getIdCard(HELPER_MONGODB_ID)
-                .subscribe((res) => {
-                  const identificationCardUrl = res.data.identificationCardUrl;
-                  this.openDialogOfAddedHelperIdentificationCard(
-                    identificationCardUrl
-                  );
-                });
+              const helper_id = res.data.helper._id;
+              this.openDialogAfterAddHelperClicked({
+                dialogHeading: 'Helper Added Successfully',
+                success: true,
+                contextData: res.data.helper.personalDetails.fullName,
+                status: 'Added',
+                logo: 'https://res.cloudinary.com/karthikvarma/image/upload/v1755583092/inn-assignement/helpers/assets/tomoto-success_qcueea.gif',
+              });
+              this.helperService.getIdCard(helper_id).subscribe((res) => {
+                const identificationCardUrl = res.data.identificationCardUrl;
+                this.openDialogOfAddedHelperIdentificationCard(
+                  identificationCardUrl
+                );
+              });
             });
         },
         error: () => {
-          console.log('Error in Creating Helper');
+            this.openDialogAfterAddHelperClicked({
+            dialogHeading: 'Failed to Add Helper',
+            success: false,
+            contextData: this.compiledHelperFormData.personalDetails.fullName,
+            status: 'Add Failed',
+            logo: 'https://res.cloudinary.com/karthikvarma/image/upload/v1755583129/inn-assignement/helpers/assets/tomato-error_zivier.gif',
+            });
         },
       });
   }
@@ -457,20 +461,20 @@ export class AddhelperComponent implements OnInit {
   @ViewChild('addHelperSuccessDialog', { read: ViewContainerRef })
   addHelperSuccessDialog!: ViewContainerRef;
 
-  openDialogOfAddedHelperSuccess(helperName: string) {
+  openDialogAfterAddHelperClicked(message: {
+    dialogHeading: string;
+    success: boolean;
+    contextData: string;
+    status: string;
+    logo: string;
+  }) {
     // Clear any previous dialog
     this.addHelperSuccessDialog.clear();
 
     const dialogRef = this.addHelperSuccessDialog.createComponent(
       DialogboxMessageComponent
     );
-
-    const tick_logo =
-      'https://res.cloudinary.com/karthikvarma/image/upload/v1754979672/inn-assignement/helpers/assets/check-tick_febmqs.gif';
-
-    dialogRef.setInput('componentHeading', 'Helper Added Successfully');
-    dialogRef.setInput('messageLogo', tick_logo);
-    dialogRef.setInput('message', helperName);
+    dialogRef.setInput('message', message);
 
     // Listen for dialog close event if available, otherwise handle close via a button or similar in DialogboxComponent
     dialogRef.instance.close = () => {

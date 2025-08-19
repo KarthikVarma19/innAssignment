@@ -1,16 +1,27 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule, NgStyle } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-dialogbox-message',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgStyle],
   templateUrl: './dialogbox-message.component.html',
   styleUrl: './dialogbox-message.component.scss',
 })
 export class DialogboxMessageComponent {
-  @Input() componentHeading!: string;
-  @Input() messageLogo!: string;
-  @Input() message!: string;
+  @Input() message!: {
+    dialogHeading: string;
+    success: boolean;
+    contextData: string;
+    status: string;
+    logo: string;
+  };
   close: () => void = () => {};
+  id: any;
+
+  ngOnInit(): void {
+    this.id = setTimeout(() => {
+      this.close();
+    }, 1500);
+  }
 }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="helpersData.length > 0; else skeleton">
+<ng-container *ngIf="helpersMetaData.total >= 0; else skeleton">
   <!-- Header Component -->
   <header>
     <div class="headingContainer">
@@ -12,36 +12,92 @@
   <!-- Filter Component -->
   <div class="filterContainer">
     <div class="leftContainer">
-      <div class="iconContainer" mat-icon-button [matMenuTriggerFor]="sortby">
-        <span class="material-symbols-outlined big-icon">import_export</span>
-
-        <!-- Sorting -->
-        <mat-menu #sortby="matMenu" class="sort-custom-mat-menu">
-          <span class="sort-custom-menu-title">Sort By</span>
-          <button mat-menu-item class="sort-custom-menu-item">
-            <span>Helper Name (A-Z)</span>
-          </button>
-          <button mat-menu-item class="sort-custom-menu-item">
-            <span>Employee ID</span>
-          </button>
-        </mat-menu>
-      </div>
-
-
-      <div class="iconContainer">
-        <span class="material-symbols-outlined">filter_alt</span>
-      </div>
-      <div class="iconContainer">
-        <label for="ngx-data-range-picker">
-          <span class="material-symbols-outlined">calendar_today</span>
+      <!-- Sorting -->
+      <div class="iconContainer" (click)="toggleSortDropDown($event)">
+        <label for="sortby">
+          <span class="material-symbols-outlined big-icon">import_export</span>
         </label>
-        <ng-container *ngIf="isBrowser">
+        <div *ngIf="showSortBy" class="sortByDropdown" id="sortby">
+          <span class="sort-by-heading">Sort By</span>
+          <ng-container *ngFor="let item of sortDropDownItems">
+            <button (click)="sortHelpers($event,item.value)" class="sort-by-button" value={{item.value}}
+              ngClass="{{ this.filterOptions.sortby === item.value?'active' :'sort-by-button'}}">
+              <span class="sort-by-label">
+                {{item.label}}
+              </span>
+              <span class="material-symbols-outlined">check</span>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Filtering -->
+      <div class="iconContainer" (click)="toggleFilterByDropDown($event)" [matBadge]="badgeNumber" matBadgeSize="small"
+        [matBadgeHidden]="filterBadgeHidden">
+        <label for="filterby">
+          <span class="material-symbols-outlined big-icon">filter_alt</span>
+        </label>
+        <div *ngIf="showFilterByDropDown" class="filterByDropDown" id="filterby"
+          (click)="filterContainerDropDown($event)">
+          <span class="filter-by-heading">Filter By</span>
+          <form [formGroup]="helperFilterForm" *ngIf="helperFilterForm" (ngSubmit)="filtersApplied($event)">
+            <div class="form-group">
+              <!-- Type of Service -->
+              <div class="field-container">
+                <div class="field-heading-container">
+                  <span for="type-of-service-label" class="field-label">Service</span>
+                  <span (click)="this.helperFilterForm.get('typeOfService')?.setValue([])"
+                    *ngIf="this.helperFilterForm.get('typeOfService')?.value?.length > 0"
+                    class="field-reset">Reset</span>
+                </div>
+                <ng-select [items]="typeOfServiceOptions" bindLabel="label" bindValue="value"
+                  placeholder="Select Service" formControlName="typeOfService" [searchable]="false" [clearable]="false"
+                  [multiple]="true" [searchable]="true">
+                </ng-select>
+              </div>
+              <!-- Organization Name -->
+              <div class="field-container">
+                <div class="field-heading-container">
+                  <span for="organization-name-label" class="field-label">Organization</span>
+                  <span class="field-reset" *ngIf="this.helperFilterForm.get('organizationName')?.value?.length > 0"
+                    (click)="this.helperFilterForm.get('organizationName')?.setValue([])">Reset</span>
+                </div>
+                <ng-select [items]="organizationNameOptions" bindLabel="label" bindValue="value"
+                  placeholder="Select Organization" formControlName="organizationName" [searchable]="false"
+                  [clearable]="false" [multiple]="true" [searchable]="true">
+                </ng-select>
+              </div>
+            </div>
+            <div class="button-container">
+              <button class="btn-reset" (click)="filtersReset($event)">
+                <span class="material-symbols-outlined">restart_alt</span>
+                <span>
+                  Reset
+                </span>
+              </button>
+              <button class="btn-apply" (submit)="filtersApplied($event)">Apply</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+      <div class="date-icon-container">
+        <label for="ngx-data-range-picker">
+          <div class="date-container">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span [ngClass]="displayFilteredDateRangeText.length > 0 ? 'date-range has-text' : 'date-range'">
+              {{ displayFilteredDateRangeText }}
+            </span>
+          </div>
+        </label>
+        <div class="ngx-data-range-picker-container" *ngIf="isBrowser">
           <input id="ngx-data-range-picker" type="text" ngxDaterangepickerMd startKey="start" endKey="end"
-            [ranges]="ranges" [(ngModel)]="model" [linkedCalendars]="true" [opens]="'right'" class="date-range-input"
+            [ranges]="ranges" [(ngModel)]="model" [opens]="'right'" drops="'down'" class="date-range-input"
             [alwaysShowCalendars]="true" [customRangeDirection]="true" placeholder="Select date range"
-            [showCancel]="true" [showCustomRangeLabel]="true" style="display: none;" [closeOnAutoApply]="true"
-            (datesUpdated)="datesUpdated($event)" />
-        </ng-container>
+            [showCancel]="true" [showCustomRangeLabel]="true" [showRangeLabelOnInput]="true" style="display: none;"
+            [closeOnAutoApply]="true" (datesUpdated)="datesUpdated($event)" [showClearButton]="true"
+            (clearClicked)="datesCleared()" />
+        </div>
       </div>
       <div class="iconContainer iconSearchContainer">
         <ng-container>
@@ -50,8 +106,8 @@
               <span class="material-symbols-outlined">search</span>
             </div>
             <div class="searchInputContainer">
-              <input type="text" placeholder="Name, Employee Id, Phone" [(ngModel)]="searchText"
-                (keyup)="searchForHelper()" />
+              <input type="text" placeholder="Name, Employee Id, Phone" (input)="onSearchInputChange()"
+                [(ngModel)]="searchText" name="searchText" />
             </div>
             <div class="searchIcon" *ngIf="searchText" (click)="removeSearchText()">
               <span class="material-symbols-outlined">close</span>
@@ -64,12 +120,11 @@
         [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" (page)="onPageChange($event)"
         [showFirstLastButtons]="false">
       </mat-paginator> -->
+
       </div>
       <span class="helperResultData">
-        @if (searchText.length > 0) {
-        {{filteredHelperData.length + " of"}}
-        }
-        {{ helpersData.length + " helpers"  }}
+        {{helpersMetaData.filteredTotal + " of"}}
+        {{ helpersMetaData.total + " helpers"  }}
       </span>
     </div>
 
@@ -91,7 +146,7 @@
   <div class="helperBodyContainer">
     <div class="helperListContainer" infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="500"
       (scrolled)="onScroll()" [scrollWindow]="false">
-      <ng-container *ngFor="let helper of searchText.length > 0 ? filteredHelperData : helpersData">
+      <ng-container *ngFor="let helper of helpersData">
         <div class="helperCardContainer" (click)="getHelperDetails(helper._id)">
           <mat-card class="matCardContainer" [class.selected]="helper._id === helperDetails.data._id">
             <div class="helperContainer">
@@ -119,7 +174,8 @@
       </ng-container>
     </div>
     <div class="helperDataContainer">
-      <app-helperdata [helperDisplayData]="helperDetails"> </app-helperdata>
+      <app-helperdata [helperDisplayData]="helperDetails" (deleteButtonEvent)="deleteHelperEventReceived($event)">
+      </app-helperdata>
     </div>
   </div>
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { finalize, Observable } from 'rxjs';
+import { filter, finalize, Observable } from 'rxjs';
 
 import {
   HelperDataAdapter,
@@ -49,14 +49,20 @@ export class HelperService {
     );
   }
 
-  getHelpersPaged(offset: number, limit: number): Observable<any> {
+  getHelpersPaged(
+    offset: number,
+    limit: number,
+    filterOptions: any
+  ): Observable<any> {
     this.loaderService.showLoader();
     const params = { offset: offset.toString(), limit: limit.toString() };
-    return this.http.get(`${this.baseUrl}/page`, { params }).pipe(
-      finalize(() => {
-        this.loaderService.hideLoader();
-      })
-    );
+    return this.http
+      .post(`${this.baseUrl}/page`, {filterOptions}, { params })
+      .pipe(
+        finalize(() => {
+          this.loaderService.hideLoader();
+        })
+      );
   }
 
   getHelperById(id: string): Observable<any> {

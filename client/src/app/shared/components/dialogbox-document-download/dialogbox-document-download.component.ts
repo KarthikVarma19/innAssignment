@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
@@ -9,17 +9,13 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   templateUrl: './dialogbox-document-download.component.html',
   styleUrl: './dialogbox-document-download.component.scss',
 })
-export class DialogboxDocumentDownloadComponent implements OnInit, OnChanges {
+export class DialogboxDocumentDownloadComponent implements OnInit {
   @Input() componentHeading!: string;
   @Input() documentUrl!: string;
   close: () => void = () => {};
   sanitizedUrl!: SafeResourceUrl | null;
 
   constructor(private sanitizer: DomSanitizer) {}
-
-  ngOnChanges() {
-    this.sanitizeUrl();
-  }
 
   ngOnInit() {
     this.sanitizeUrl();
@@ -34,7 +30,4 @@ export class DialogboxDocumentDownloadComponent implements OnInit, OnChanges {
       this.sanitizedUrl = null;
     }
   }
-  // print() {}
-
-  // download() {}
 }

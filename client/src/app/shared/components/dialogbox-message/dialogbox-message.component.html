@@ -1,17 +1,18 @@
 <div class="backdrop" (click)="close()">
   <div class="modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <span class="modal-heading">{{ componentHeading }}</span>
+      <span class="modal-heading">{{ message.dialogHeading }}</span>
     </div>
     <hr class="modal-horizontal-divider" />
     <div class="modal-center-content">
       <div class="modal-body">
         <div>
-          <img *ngIf="messageLogo" [src]="messageLogo" alt="Logo" class="message-logo" />
+          <img *ngIf="message.logo" [src]="message.logo" alt="Logo" class="message-logo" />
         </div>
         <div>
-          <span class="message-text">{{message}}</span>
-          <span class="message-status">&nbsp;Added&nbsp;!</span>
+          <span class="message-text">{{message.contextData}}</span>
+          <span class="message-status"
+            [ngStyle]="{ color: message.success ? 'green' : 'red' }">{{" " + message.status + " "}}!</span>
         </div>
       </div>
     </div>

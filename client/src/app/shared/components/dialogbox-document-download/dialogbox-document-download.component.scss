@@ -8,89 +8,77 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-}
+  z-index: 7001;
 
-.modal-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow-y: scroll;
-  .modal-document-iframe {
-    height: 400px;
-    width: 400px;
-  }
-}
-
-.modal {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  min-width: 20vw;
-  width: fit-content;
-  position: relative;
-  .modal-horizontal-divider {
-    background-color: lightgray;
-    height: 1px;
-    width: 100%;
-    margin: 20px 0;
-    border: none;
-  }
-}
-
-.modal-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  .modal-heading {
-    font-size: 15px;
-    font-weight: 700;
-  }
-}
-
-.close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.add-helper-footer-button-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: right;
-
-  button {
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 5px;
-    text-align: center;
-    border-width: 1px;
-    border-color: gray;
-    margin: 10px;
-    padding: 5px 20px;
-
-    span {
-      padding: 0px;
-      margin: 0px;
+  .modal {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    min-width: 20vw;
+    width: fit-content;
+    position: relative;
+    .modal-horizontal-divider {
+      background-color: lightgray;
+      height: 1px;
+      width: 100%;
+      margin: 20px 0;
+      border: none;
+    }
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-y: scroll;
+      .modal-document-iframe {
+        height: 400px;
+        width: 400px;
+      }
+    }
+    .modal-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .modal-heading {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .close-button {
+        background: transparent;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
     }
   }
 
-  .previousButton {
-    color: black;
-    background-color: white;
-  }
-
-  .nextButton {
-    color: white;
-    background-color: black;
-  }
-
-  .add-helper-final-stage-submit-button {
-    background-color: blue;
-    color: white;
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    button {
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      border-radius: 5px;
+      text-align: center;
+      border-width: 1px;
+      border-color: gray;
+      margin: 10px;
+      padding: 5px 20px;
+      span {
+        padding: 0px;
+        margin: 0px;
+      }
+    }
+    .print-button {
+      color: black;
+      background-color: white;
+    }
+    .download-button {
+      background-color: blue;
+      color: white;
+    }
   }
 }
