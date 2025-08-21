@@ -2,16 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, Observable } from 'rxjs';
 import { LoaderService } from './loader.service';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HelperService {
-  private baseUrl = 'http://localhost:5555/api/helpers';
-  private uploadUrl = 'http://localhost:5555/api/upload';
-
-  // private baseUrl = 'https://helpers-backend.onrender.com/api/helpers';
-  // private uploadUrl = 'https://helpers-backend.onrender.com/api/upload';
+  private baseUrl = environment.apiBaseUrl;
+  private uploadUrl = environment.apiUploadUrl;
 
   constructor(private http: HttpClient, private loaderService: LoaderService) {}
 
