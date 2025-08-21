@@ -1,4 +1,4 @@
-import { ApplicationRef, Injectable, NgZone } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -8,12 +8,11 @@ export class LoaderService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
   private requestCount = 0;
-  constructor(private appRef: ApplicationRef, private ngZone: NgZone) {}
+  constructor(private appRef: ApplicationRef) {}
   showLoader() {
     this.requestCount++;
     if (this.requestCount === 1) {
-      this.ngZone.run(() => this.loadingSubject.next(true));
-      // this.loadingSubject.next(true);
+      setTimeout(() => this.loadingSubject.next(true), 0);
     }
   }
   hideLoader() {
@@ -21,8 +20,7 @@ export class LoaderService {
       this.requestCount--;
     }
     if (this.requestCount === 0) {
-      this.ngZone.run(() => this.loadingSubject.next(false));
-      // this.loadingSubject.next(false);
+      setTimeout(() => this.loadingSubject.next(false), 0);
     }
   }
 }

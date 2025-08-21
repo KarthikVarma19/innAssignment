@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './shared/components/dashboard/dashboard.component';
-import { HelperhomeComponent } from './modules/helper-module/pages/home-helper/helperhome.component';
+import { HelperhomeComponent } from './modules/helper-module/pages/helper-home/helper-home.component';
 import { PagenotfoundComponent } from './shared/components/pagenotfound/pagenotfound.component';
-import { AddhelperComponent } from './modules/helper-module/pages/add-helper/addhelper.component';
+import { AddhelperComponent } from './modules/helper-module/pages/add-helper/add-helper.component';
 import { EditHelperComponent } from './modules/helper-module/pages/edit-helper/edit-helper.component';
-
+import { pendingChangesGuard } from './shared/guards/pending-changes.guard';
 export const routes: Routes = [
   {
     path: '',
@@ -31,16 +30,17 @@ export const routes: Routes = [
               {
                 path: 'add-helper',
                 component: AddhelperComponent,
+                canDeactivate: [pendingChangesGuard],
               },
               {
                 path: 'edit-helper/:id',
                 component: EditHelperComponent,
-
+                canDeactivate: [pendingChangesGuard],
               },
             ],
-          }
+          },
         ],
-      }
+      },
     ],
   },
   {

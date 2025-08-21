@@ -1,61 +1,88 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { HelperformComponent } from '../../components/helperform/helperform.component';
-import { HelperService } from '../../services/helper.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { HelperUtilityService } from '../../services/helper-utility.service';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ToastrService } from 'ngx-toastr';
+import { HelperformComponent } from '../../components/helperform/helperform.component';
+import { HelperService } from '../../services/helper.service';
+import { HelperUtilService } from '../../services/helper-util.service';
 @Component({
   selector: 'app-edit-helper',
   standalone: true,
   imports: [
-    HelperformComponent,
-    NgFor,
-    NgIf,
     CommonModule,
     RouterModule,
+    HelperformComponent,
     NgxSkeletonLoaderModule,
   ],
   templateUrl: './edit-helper.component.html',
   styleUrl: './edit-helper.component.scss',
 })
-export class EditHelperComponent {
+export class EditHelperComponent implements OnInit, OnDestroy {
   helperData: any;
-  editHelperSidebar: any;
+  editHelperSidebar: Array<{ name: string; icon: string }>;
   selectedChild: string;
-  id: string | undefined = '';
+  id: string | undefined;
+  @ViewChild(HelperformComponent) helperFormComp!: HelperformComponent;
+  saveButton: string;
 
   constructor(
     private helperService: HelperService,
     private route: ActivatedRoute,
-    private helperUtility: HelperUtilityService,
+    private helperUtilService: HelperUtilService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private renderer: Renderer2
   ) {
     this.id = this.route.snapshot.paramMap.get('id') || '';
     this.editHelperSidebar = [
       { name: 'Helper Details', icon: 'handyman' },
       { name: 'Documents', icon: 'description' },
     ];
-
     this.selectedChild = 'Helper Details';
-
     if (this.id) {
       this.helperService.getHelperById(this.id).subscribe((d) => {
         this.helperData = d.data;
       });
     }
+    this.saveButton = 'Save';
   }
+
+  ngOnInit(): void {
+    this.removeListenerFn = this.renderer.listen(
+      'window',
+      'beforeunload',
+      (event: BeforeUnloadEvent) => {
+        event.preventDefault();
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this.removeListenerFn) {
+      this.removeListenerFn();
+    }
+  }
+  //TODO: You Should Request the helper-form did the user made any changes then only reutrn confirm else return true
+  // after the edit helper button is clicked the confirm message should not be showed
+  canDeactivate(): boolean {
+    return confirm('Changes you made may not be saved.');
+  }
+
   onChildClick(childName: string) {
     this.selectedChild = childName;
   }
 
-  @ViewChild(HelperformComponent) helperFormComp!: HelperformComponent;
-
+  private removeListenerFn!: () => void;
+  // TODO: Save Only If user Has Done Changes
   saveButtonClicked() {
-    const currentFormData = this.helperFormComp.helperForm.value;
+    // const currentFormData = this.helperFormComp.helperForm.value;
     // if (this.helperFormComp.helperForm.invalid) {
     //   this.helperFormComp.helperForm.markAllAsTouched();
     //   return;
@@ -67,13 +94,12 @@ export class EditHelperComponent {
 
     const childData = this.helperFormComp.getEditHelperSaveButtonGetData();
     const compiledHelperFormData =
-      this.helperUtility.compileFormData(childData);
-
+      this.helperUtilService.compileFormData(childData);
     if (this.id === '') {
       return;
     }
 
-    this.helperUtility
+    this.helperUtilService
       .storeFilesInCloud({
         kycDocumentBase64:
           compiledHelperFormData.personalDetails.kycDocument.url,
@@ -107,21 +133,13 @@ export class EditHelperComponent {
                 ]);
               },
               error: () => {
-                this.toastr.error('everything is broken', 'Major Error', {
-                  timeOut: 1500,
-                });
+                this.toastr.error('', 'Error while Saving!');
               },
               complete: () => {
-                this.toastr.success(
-                  'Helper details updated successfully!',
-                  'Success'
-                );
+                this.toastr.success('', 'Changes Saved!');
               },
             });
         },
       });
   }
-
-  saveButton: string = 'Save';
-  ngOnInit(): void {}
 }

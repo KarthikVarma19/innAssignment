@@ -4,33 +4,27 @@
   background-color: var(--dashboard-backgroundcolor);
   height: 100vh;
   overflow: hidden;
-
   .companyLogoContainer {
     display: flex;
     flex-direction: row;
     cursor: pointer;
-
     .abslHomesLogo {
       height: 50px;
       width: 50px;
       background-color: var(--dashboard-asbl-logo);
       border-radius: 50%;
     }
-
     .companyDetails {
       padding-left: 10px;
-
       .companyTitle {
         font-family: Tahoma, sans-serif;
       }
-
       .companySubTitle {
         margin-top: -20px;
         font-size: small;
       }
     }
   }
-
   .redBanner {
     background-color: #ff4500;
     position: absolute;
@@ -39,12 +33,10 @@
     transform: rotate(320deg);
     margin-top: -130px;
     margin-left: -45px;
-
     @media (max-width: 1050px) {
       margin-top: -145px;
       margin-left: -50px;
     }
-
     p {
       color: white;
       font-size: medium;
@@ -53,7 +45,6 @@
     }
   }
 }
-
 .iconContainer {
   text-align: center;
   border: 1px solid lightgray;
@@ -64,18 +55,15 @@
   height: 15px;
   cursor: pointer;
   background-color: white;
-
   .searchIconContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
   }
-
   .searchContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
     .searchInputContainer {
       margin-top: -3px;
       input {
@@ -87,11 +75,9 @@
     }
   }
 }
-
 .iconSearchContainer {
   width: auto;
 }
-
 .treeView {
   overflow-y: auto;
   height: 75vh;
@@ -99,28 +85,23 @@
   scrollbar-base-color: #555;
   scrollbar-width: thin;
   margin-left: 10px;
-
   .headingContainer {
     cursor: pointer;
     display: flex;
     flex-direction: row;
     color: gray;
     padding-top: 10px;
-
     lucide-icon {
       cursor: pointer;
     }
-
     h5 {
       margin: 0px 0px 5px 5px;
     }
   }
-
   .childContainer {
     padding-left: 3px;
     a {
       text-decoration: none;
-
       p {
         display: flex;
         margin: 0px;
@@ -153,7 +134,6 @@
           margin: 0px;
           color: black;
         }
-
         .material-symbols-outlined {
           font-size: 18px;
           color: #555;
@@ -163,30 +143,25 @@
     }
   }
 }
-
 .userDataContainer {
   position: absolute;
   bottom: 0;
   width: inherit;
   z-index: 200;
 }
-
 .matCardContainer {
   background-color: var(--dashboard-backgroundcolor) !important;
   margin: -10px;
   border-top: #555;
-
   .helperContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
     border-top: 1px solid lightgray !important;
-
     .active {
       background-color: #89b5fa;
     }
-
     .helperImage {
       background-size: cover;
       height: 45pxs;
@@ -196,14 +171,11 @@
         width: 35px;
       }
     }
-
     .leftContainer {
       text-align: left;
-
       .matCardHeader {
         padding: 0px;
         margin: 0px;
-
         .mat-mdc-card {
           border: 1px solid red;
         }
@@ -213,7 +185,6 @@
           padding-top: 5px;
           padding-left: 5px;
         }
-
         .helperSubtitle {
           font-size: small;
           padding-top: 5px;
@@ -221,12 +192,10 @@
         }
       }
     }
-
     .rightContainer {
       display: flex;
       flex-direction: column;
       justify-content: center;
-
       .rightIcon {
         color: gray;
         cursor: pointer;

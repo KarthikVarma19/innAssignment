@@ -1,0 +1,202 @@
+<ng-container *ngIf="helperDisplayData.data !== null; else skeleton">
+  <div class="helperDataContainer">
+    <ng-container *ngIf="helperDisplayData.data === undefined">
+      <div class="nothing-found-container">
+        <img
+          src="https://res.cloudinary.com/karthikvarma/image/upload/v1755753971/inn-assignement/helpers/assets/nothing-found_crn1jk.png"
+          alt="Nothing Found"
+          class="nothing-found-image"
+        />
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="helperDisplayData.data !== undefined">
+      <div class="headerContainer">
+        <mat-card class="matCardContainer">
+          <div class="helperContainer">
+            <div class="leftContainer">
+              <mat-card-header class="matCardHeader">
+                <div
+                  mat-card-avatar
+                  class="helperImage"
+                  [ngStyle]="{
+                    'background-image':
+                      'url(' + this.helperHeaderInfo.helperImage + ')',
+                    'background-size': 'cover',
+                    'background-position': 'center'
+                  }"
+                ></div>
+                <mat-card-title class="helperName">{{
+                  helperHeaderInfo.helperName
+                }}</mat-card-title>
+                <mat-card-subtitle class="helperSubtitle">{{
+                  helperHeaderInfo.helperSubtitle
+                }}</mat-card-subtitle>
+              </mat-card-header>
+            </div>
+            <div
+              class="rightContainer"
+              *ngIf="
+                helperDisplayData.context === 'admin' && helperDisplayData.data
+              "
+            >
+              <a [routerLink]="['./edit-helper', helperDisplayData.data?._id]">
+                <div class="iconContainer">
+                  <span class="material-symbols-outlined">edit</span>
+                </div>
+              </a>
+              <div
+                class="iconContainer"
+                (click)="
+                  deleteHelper({
+                    _id: helperDisplayData.data._id,
+                    helperName: helperHeaderInfo.helperName
+                  })
+                "
+              >
+                <span class="material-symbols-outlined" style="font-size: 18px"
+                  >delete</span
+                >
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div class="headerDetailsContainer">
+        <div>
+          <ng-container *ngFor="let section of helperSections">
+            <div class="detailsContainer">
+              <span class="heading">{{ section.sectionTitle }}</span>
+              <hr />
+            </div>
+            <div
+              class="detailsContainer detailsPropertyContainer"
+              *ngFor="let sectionLabel of section.fields"
+            >
+              <span class="helperProperty">
+                {{ sectionLabel.label }}
+              </span>
+              <span class="helperPropertyValue">
+                <span class="helperPropertyValue">
+                  <ng-container
+                    *ngIf="isDataIsValidUrl(sectionLabel.data); else plainText"
+                  >
+                    <a
+                      (click)="
+                        openDocumentDialog(
+                          sectionLabel.label,
+                          sectionLabel.data
+                        )
+                      "
+                      class="view-dialog"
+                    >
+                      <span
+                        class="material-symbols-outlined visibility-view-icon"
+                        >visibility</span
+                      >
+                      View
+                    </a>
+                  </ng-container>
+
+                  <ng-template #plainText>
+                    {{ sectionLabel.data }}
+                  </ng-template>
+                </span>
+              </span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <ng-template #documentDialog></ng-template>
+      <ng-template #deleteDialog></ng-template>
+    </ng-container>
+  </div>
+</ng-container>
+<ng-template #skeleton>
+  <div class="helperDataContainer helper-data-container-skeleton">
+    <div class="headerContainer">
+      <div class="stage-container-skeleton">
+        <div class="stage-container-circle">
+          <ngx-skeleton-loader
+            appearance="circle"
+            [theme]="{height: '40px', width: '40px', 'background-color': '#E0E0E0',}"
+          />
+        </div>
+        <div>
+          <div class="stage-heading">
+            <ngx-skeleton-loader
+              [theme]="{
+                'border-radius': '10px',
+                height: '15px',
+                width: '180px',
+                'background-color': '#E0E0E0',
+                'margin-top': '6px'
+              }"
+            />
+          </div>
+          <div class="stage-description">
+            <ngx-skeleton-loader
+              [theme]="{
+                'border-radius': '10px',
+                height: '10px',
+                'background-color': '#E0E0E0',
+                'margin-top': '-10px'
+              }"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="headerDetailsContainer">
+      <ng-container *ngFor="let i of [1, 2, 3, 4, 5]">
+        <div class="detailsContainer">
+          <ngx-skeleton-loader
+            [theme]="{
+              'border-radius': '10px',
+              height: '10px',
+              width: '70px',
+              'background-color': '#E0E0E0'
+            }"
+          />
+          <ngx-skeleton-loader
+            [theme]="{
+              'border-radius': '10px',
+              height: '2px',
+              width: '700px',
+              'background-color': '#E0E0E0',
+              'margin-left': '15px'
+            }"
+          />
+        </div>
+        <ng-container *ngFor="let j of [1, 2]">
+          <div class="detailsContainer detailsPropertyContainer">
+            <span class="helperProperty">
+              <ngx-skeleton-loader
+                [theme]="{
+                  'border-radius': '10px',
+                  height: '10px',
+                  width: '160px',
+                  'background-color': '#E0E0E0',
+                  'margin-top': '-10px'
+                }"
+              />
+            </span>
+            <span class="helperPropertyValue">
+              <span class="helperPropertyValue">
+                <ngx-skeleton-loader
+                  [theme]="{
+                    'border-radius': '10px',
+                    height: '10px',
+                    width: '80px',
+                    'background-color': '#E0E0E0',
+                    'margin-top': '-10px'
+                  }"
+                />
+              </span>
+            </span>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>

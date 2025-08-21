@@ -1,4 +1,4 @@
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
@@ -9,9 +9,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './dialogbox-confirmation.component.scss',
 })
 export class DialogboxConfirmationComponent {
-  close() {}
-  cancelButtonClicked() {}
-  confirmButtonClicked() {}
+  close(): void {}
+  cancelButtonClicked(): void {}
+  confirmButtonClicked(): void {}
   @Input() data!: {
     logo: string;
     confirmationType: string;

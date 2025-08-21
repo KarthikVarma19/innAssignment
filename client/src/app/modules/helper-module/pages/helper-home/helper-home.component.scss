@@ -450,6 +450,7 @@
   --helper-data-width: 70%;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   width: 100%;
   height: 80vh;
   .helperListContainer {
@@ -537,6 +538,14 @@
   .helperDataContainer {
     width: var(--helper-data-width);
     text-align: center;
+  }
+  .nothing-found-image {
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    max-height: 50vh;
+    object-fit: contain;
+    margin: 0 auto;
   }
 }
 

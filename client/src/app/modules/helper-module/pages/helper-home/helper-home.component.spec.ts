@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HelperhomeComponent } from './helperhome.component';
+import { HelperhomeComponent } from './helper-home.component';
 
 describe('HelperhomeComponent', () => {
   let component: HelperhomeComponent;
@@ -8,10 +8,9 @@ describe('HelperhomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HelperhomeComponent]
-    })
-    .compileComponents();
-    
+      imports: [HelperhomeComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(HelperhomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

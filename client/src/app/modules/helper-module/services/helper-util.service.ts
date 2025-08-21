@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HelperService } from './helper.service';
+import {
+  HelperDataAdapter,
+  IHelperDetailsDisplay,
+} from '../adapters/helperdata-adapter';
 
 @Injectable({ providedIn: 'root' })
-export class HelperUtilityService {
+export class HelperUtilService {
   constructor(private helperService: HelperService) {}
 
   compileFormData(helperData: any, isEdit = false) {
@@ -121,5 +125,28 @@ export class HelperUtilityService {
       ia[i] = byteString.charCodeAt(i);
     }
     return new File([ab], filename, { type: mimeType });
+  }
+
+  getDataTransformed(
+    context: 'edit' | 'preview' | 'admin',
+    rawData: any
+  ): IHelperDetailsDisplay {
+    let adapter: (data: any) => IHelperDetailsDisplay;
+
+    switch (context) {
+      case 'edit':
+        adapter = HelperDataAdapter.fromBackend;
+        break;
+
+      case 'preview':
+        adapter = HelperDataAdapter.fromAddHelperPageFinalStage;
+        break;
+      case 'admin':
+        adapter = HelperDataAdapter.fromBackend;
+        break;
+      default:
+        throw new Error(`Unsupported context: ${context}`);
+    }
+    return adapter(rawData);
   }
 }

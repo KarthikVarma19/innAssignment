@@ -34,10 +34,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
     provideToastr({
-      positionClass: 'toast-top-right',
+      positionClass: 'toast-bottom-right',
       timeOut: 3000,
       closeButton: true,
-      progressBar: true,
       newestOnTop: true,
       preventDuplicates: false,
       maxOpened: 5,

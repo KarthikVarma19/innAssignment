@@ -7,17 +7,14 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { NgSelectModule } from '@ng-select/ng-select';
-
 import {
   FormBuilder,
   FormGroup,
   FormsModule,
-  FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 @Component({
@@ -25,63 +22,27 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     NgSelectModule,
     NgxExtendedPdfViewerModule,
-    ReactiveFormsModule,
-    FormsModule,
   ],
   templateUrl: './kycdocument.component.html',
   styleUrl: './kycdocument.component.scss',
 })
 export class KycdocumentComponent implements OnInit {
-  isDragging = false;
-  kycDocumentViewClicked: boolean = false;
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-    this.isDragging = true;
-  }
-
-  onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    this.isDragging = false;
-  }
-
-  onFileDropped(event: DragEvent) {
-    event.preventDefault();
-    this.isDragging = false;
-    const file = event.dataTransfer?.files?.[0];
-    if (file && file.type === 'application/pdf') {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64String = reader.result as string;
-        this.kycDocumentForm.patchValue({ pdfFileUrl: base64String });
-        this.pdfData = base64String.split(',')[1];
-        this.kycDocumentDetails.base64 = base64String;
-        this.kycDocumentDetails.fileName = file.name;
-        this.cdr.detectChanges();
-      };
-      reader.readAsDataURL(file);
-    } else {
-      this.kycDocumentDetails.base64 = '';
-      this.kycDocumentDetails.fileName = '';
-      this.pdfData = '';
-      alert('Please upload a valid PDF file.');
-    }
-  }
-
-  @Input() name!: string;
-
   kycDocumentForm: FormGroup;
-
   pdfData: string;
-
+  isDragging: boolean;
+  kycDocumentViewClicked: boolean;
+  @Input() name!: string;
+  @Output() dataFromDialog: EventEmitter<IkycDocumentDetails>;
   documentTypeOptions = [
     { label: 'Aadhar Card', value: 'Aadhar Card' },
     { label: 'PAN Card', value: 'PAN Card' },
     { label: 'Passport', value: 'Passport' },
     { label: 'Voter ID', value: 'Voter ID' },
   ];
-
   kycDocumentDetails: IkycDocumentDetails;
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
@@ -96,6 +57,9 @@ export class KycdocumentComponent implements OnInit {
       fileSize: 0,
     };
     this.pdfData = '';
+    this.dataFromDialog = new EventEmitter<IkycDocumentDetails>();
+    this.isDragging = false;
+    this.kycDocumentViewClicked = false;
   }
 
   ngOnInit(): void {}
@@ -134,8 +98,6 @@ export class KycdocumentComponent implements OnInit {
     this.kycDocumentForm.patchValue({ pdfFileUrl: '' });
   }
 
-  @Output() dataFromDialog = new EventEmitter<IkycDocumentDetails>();
-
   saveThekycDocument(event: Event) {
     event.preventDefault();
     if (this.kycDocumentForm.invalid) {
@@ -146,9 +108,43 @@ export class KycdocumentComponent implements OnInit {
       this.kycDocumentForm.get('documentType')?.value;
     this.dataFromDialog.emit(this.kycDocumentDetails);
   }
+
   clearThekycDocument(): void {
     this.kycDocumentForm.patchValue({ pdfFileUrl: '', documentType: '' });
     this.deleteUploadedkycDocument();
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+  }
+
+  onFileDropped(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    const file = event.dataTransfer?.files?.[0];
+    if (file && file.type === 'application/pdf') {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        this.kycDocumentForm.patchValue({ pdfFileUrl: base64String });
+        this.pdfData = base64String.split(',')[1];
+        this.kycDocumentDetails.base64 = base64String;
+        this.kycDocumentDetails.fileName = file.name;
+        this.cdr.detectChanges();
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.kycDocumentDetails.base64 = '';
+      this.kycDocumentDetails.fileName = '';
+      this.pdfData = '';
+      alert('Please upload a valid PDF file.');
+    }
   }
 }
 

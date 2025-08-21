@@ -1,5 +1,5 @@
-import { CommonModule, NgStyle } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { CommonModule, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-dialogbox-message',

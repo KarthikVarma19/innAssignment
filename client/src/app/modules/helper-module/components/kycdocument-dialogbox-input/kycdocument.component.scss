@@ -30,7 +30,6 @@
       font-weight: bold;
     }
   }
-
   .field-container {
     margin-top: 15px;
     .asterisk {
@@ -40,13 +39,11 @@
       color: red;
     }
   }
-
   .upload-box {
     text-align: center;
     cursor: pointer;
     transition: 0.3s ease;
   }
-
   .file-uploaded-container {
     margin: 20px 0px;
     display: flex;
@@ -78,7 +75,6 @@
     }
   }
 }
-
 .footer-button-container {
   position: absolute;
   left: 0;
@@ -87,19 +83,10 @@
   z-index: 100;
   width: 100%;
   background: #fff;
-  // .add-helper-footer-horizontal-divider {
-  //   background-color: lightgray;
-  //   height: 1px;
-  //   width: 100%;
-  //   margin: 20px 0;
-  //   border: none;
-  // }
-
   .add-helper-footer-button-container {
     display: flex;
     flex-direction: row;
     justify-content: right;
-
     button {
       cursor: pointer;
       display: flex;
@@ -111,13 +98,11 @@
       border-color: gray;
       margin: 10px;
       padding: 5px 20px;
-
       span {
         padding: 0px;
         margin: 0px;
       }
     }
-
     .cancel-button {
       color: black;
       background-color: white;

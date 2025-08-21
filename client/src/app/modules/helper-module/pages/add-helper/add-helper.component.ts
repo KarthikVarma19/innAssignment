@@ -1,23 +1,24 @@
 import {
   Component,
-  OnInit,
   ChangeDetectorRef,
-  NgZone,
   ViewContainerRef,
   ViewChild,
+  OnInit,
+  OnDestroy,
+  Renderer2,
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HelperdataComponent } from '../../components/helperbody/helperdata/helperdata.component';
 import { Router, RouterModule } from '@angular/router';
 import { HelperService } from '../../services/helper.service';
 import { HelperformComponent } from '../../components/helperform/helperform.component';
-import { HelperUtilityService } from '../../services/helper-utility.service';
+import { HelperUtilService } from '../../services/helper-util.service';
 import { DialogboxMessageComponent } from '../../../../shared/components/dialogbox-message/dialogbox-message.component';
 import { DialogboxDocumentDownloadComponent } from '../../../../shared/components/dialogbox-document-download/dialogbox-document-download.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { HelperdataComponent } from '../../components/helperdata/helperdata.component';
 
 @Component({
   selector: 'app-addhelper',
@@ -32,31 +33,29 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     RouterModule,
     NgxSkeletonLoaderModule,
   ],
-  templateUrl: './addhelper.component.html',
-  styleUrl: './addhelper.component.scss',
+  templateUrl: './add-helper.component.html',
+  styleUrl: './add-helper.component.scss',
 })
-export class AddhelperComponent implements OnInit {
-  currentStageOfAddingHelper: number = 1;
-  finalStageOfAddingHelper: number = 3;
-
-  selectTypeOfServiceOptions: { fieldName: string; fieldIcon: string }[] = [
-    { fieldName: 'Maid', fieldIcon: 'cleaning_services' },
-    { fieldName: 'Cook', fieldIcon: 'restaurant' },
-    { fieldName: 'Nurse', fieldIcon: 'medical_services' },
-    { fieldName: 'Driver', fieldIcon: 'directions_car' },
-  ];
-  organizationNameOptions: string[] = ['ASBL', 'Springs Helper'];
-  vehicleTypeOptions: string[] = ['None', 'Auto', 'Car', 'Bike'];
-
+export class AddhelperComponent implements OnInit, OnDestroy {
+  currentStageOfAddingHelper: number;
+  finalStageOfAddingHelper: number;
   compiledHelperFormData: IHelperData;
   helperPresentationData: any;
+  skeletonA: boolean;
+  addHelperButtonClicked: boolean;
+  buttonClicked: number;
+  helperData: any;
+  @ViewChild('addHelperSuccessDialog', { read: ViewContainerRef })
+  addHelperSuccessDialog!: ViewContainerRef;
+  @ViewChild('addHelperIdentificationCard', { read: ViewContainerRef })
+  addHelperIdentificationCard!: ViewContainerRef;
 
   constructor(
     private helperService: HelperService,
     private cdr: ChangeDetectorRef,
-    private helperUtility: HelperUtilityService,
+    private helperUtilService: HelperUtilService,
     private router: Router,
-    private zone: NgZone
+    private renderer: Renderer2
   ) {
     this.compiledHelperFormData = {
       personalDetails: {
@@ -87,17 +86,46 @@ export class AddhelperComponent implements OnInit {
         employeephotoUrl: '',
       },
     };
+    this.currentStageOfAddingHelper = 1;
+    this.finalStageOfAddingHelper = 3;
+    this.skeletonA = false;
+    this.addHelperButtonClicked = false;
+    this.buttonClicked = 0;
+  }
+
+  private removeListenerFn!: () => void;
+
+  ngOnInit(): void {
+    this.removeListenerFn = this.renderer.listen(
+      'window',
+      'beforeunload',
+      (event: BeforeUnloadEvent) => {
+        event.preventDefault();
+      }
+    );
   }
 
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
   }
-  skeletonA = false;
-  addHelperButtonClicked: boolean = false;
+
+  ngOnDestroy(): void {
+    if (this.removeListenerFn) {
+      this.removeListenerFn();
+    }
+  }
+
+  // TODO: should only show this if the user has updated any field in the form
+  canDeactivate(): boolean {
+    if (this.addHelperButtonClicked) {
+      return true;
+    }
+    return confirm('Changes you made may not be saved.');
+  }
+
   createHelperUtil() {
     this.addHelperButtonClicked = true;
-
-    this.helperUtility
+    this.helperUtilService
       .storeFilesInCloud({
         kycDocumentBase64:
           this.compiledHelperFormData.personalDetails.kycDocument.url,
@@ -136,330 +164,47 @@ export class AddhelperComponent implements OnInit {
             });
         },
         error: () => {
-            this.openDialogAfterAddHelperClicked({
+          this.openDialogAfterAddHelperClicked({
             dialogHeading: 'Failed to Add Helper',
             success: false,
             contextData: this.compiledHelperFormData.personalDetails.fullName,
             status: 'Add Failed',
             logo: 'https://res.cloudinary.com/karthikvarma/image/upload/v1755583129/inn-assignement/helpers/assets/tomato-error_zivier.gif',
-            });
+          });
         },
       });
   }
 
-  ngOnInit() {}
-
-  LangugagesList: string[] = ['English', 'Telugu', 'Hindi'];
-
-  countryCallingCodes = [
-    '1', // NANP (USA, Canada, many Caribbean territories)
-    '20',
-    '27',
-    '210',
-    '211',
-    '212',
-    '213',
-    '216',
-    '218',
-    '220',
-    '221',
-    '222',
-    '223',
-    '224',
-    '225',
-    '226',
-    '227',
-    '228',
-    '229',
-    '230',
-    '231',
-    '232',
-    '233',
-    '234',
-    '235',
-    '236',
-    '237',
-    '238',
-    '239',
-    '240',
-    '241',
-    '242',
-    '243',
-    '244',
-    '245',
-    '246',
-    '247',
-    '248',
-    '249',
-    '250',
-    '251',
-    '252',
-    '253',
-    '254',
-    '255',
-    '256',
-    '257',
-    '258',
-    '260',
-    '261',
-    '262',
-    '263',
-    '264',
-    '265',
-    '266',
-    '267',
-    '268',
-    '269',
-    '290',
-    '291',
-    '297',
-    '298',
-    '299',
-    '30',
-    '31',
-    '32',
-    '33',
-    '34',
-    '350',
-    '351',
-    '352',
-    '353',
-    '354',
-    '355',
-    '356',
-    '357',
-    '358',
-    '359',
-    '370',
-    '371',
-    '372',
-    '373',
-    '374',
-    '375',
-    '376',
-    '377',
-    '378',
-    '379',
-    '380',
-    '381',
-    '382',
-    '383',
-    '385',
-    '386',
-    '387',
-    '389',
-    '39', // Italy & Vatican share print
-    '40',
-    '41',
-    '42',
-    '43',
-    '44',
-    '45',
-    '46',
-    '47',
-    '48',
-    '49',
-    '51',
-    '52',
-    '53',
-    '54',
-    '55',
-    '56',
-    '57',
-    '58',
-    '59',
-    '590',
-    '591',
-    '592',
-    '593',
-    '594',
-    '595',
-    '596',
-    '597',
-    '598',
-    '599',
-    '60',
-    '61',
-    '62',
-    '63',
-    '64',
-    '65',
-    '66',
-    '670',
-    '671',
-    '672',
-    '673',
-    '674',
-    '675',
-    '676',
-    '677',
-    '678',
-    '679',
-    '680',
-    '681',
-    '682',
-    '683',
-    '685',
-    '686',
-    '687',
-    '688',
-    '689',
-    '690',
-    '691',
-    '692',
-    '7', // Russia & Kazakhstan share +7
-    '81',
-    '82',
-    '84',
-    '86',
-    '850',
-    '852',
-    '853',
-    '855',
-    '856',
-    '880',
-    '886',
-    '90',
-    '91',
-    '92',
-    '93',
-    '94',
-    '95',
-    '98',
-    '212',
-    '213',
-    '216',
-    '218',
-    '220',
-    '221',
-    '222',
-    '223',
-    '224',
-    '225',
-    '226',
-    '227',
-    '228',
-    '229',
-    '230',
-    '231',
-    '232',
-    '233',
-    '234',
-    '235',
-    '236',
-    '237',
-    '238',
-    '239',
-    '240',
-    '241',
-    '242',
-    '243',
-    '244',
-    '245',
-    '246',
-    '247',
-    '248',
-    '249',
-    '250',
-    '251',
-    '252',
-    '253',
-    '254',
-    '255',
-    '256',
-    '257',
-    '258',
-    '260',
-    '261',
-    '262',
-    '263',
-    '264',
-    '265',
-    '266',
-    '267',
-    '268',
-    '269',
-    '290',
-    '291',
-    '297',
-    '298',
-    '299',
-    '380',
-    '381',
-    '385',
-    '386',
-    '420',
-    '421',
-    '423',
-    '852',
-    '853',
-    '855',
-    '856',
-    '880',
-    '886',
-    '960',
-    '961',
-    '962',
-    '963',
-    '964',
-    '965',
-    '966',
-    '967',
-    '968',
-    '970',
-    '971',
-    '972',
-    '973',
-    '974',
-    '975',
-    '976',
-    '977',
-    '992',
-    '993',
-    '994',
-    '995',
-    '996',
-    '998',
-  ];
-
   goToPreviousStageOfAddingHelper() {
     this.currentStageOfAddingHelper -= 1;
-    this.cdr.markForCheck(); // tell Angular to re-check view
+    this.cdr.markForCheck();
   }
-
-  buttonClicked: number = 0;
-  helperData: any;
 
   goToNextStageOfAddingHelper() {
     if (this.currentStageOfAddingHelper === 1) {
       this.buttonClicked++;
       return;
     }
-    this.zone.run(() => {
+    setTimeout(() => {
       this.currentStageOfAddingHelper++;
-      this.cdr.markForCheck();
     });
   }
 
   handleStageOneHelperFormData(data: any) {
     this.helperData = data;
-
-    this.compiledHelperFormData = this.helperUtility.compileFormData(
+    this.compiledHelperFormData = this.helperUtilService.compileFormData(
       data,
       false
     );
-
     this.helperPresentationData = {
       context: 'preview',
       data: this.compiledHelperFormData,
     };
-    this.zone.run(() => {
+    setTimeout(() => {
       this.currentStageOfAddingHelper++;
-      this.cdr.markForCheck();
     });
+    this.cdr.detectChanges();
   }
-  @ViewChild('addHelperSuccessDialog', { read: ViewContainerRef })
-  addHelperSuccessDialog!: ViewContainerRef;
 
   openDialogAfterAddHelperClicked(message: {
     dialogHeading: string;
@@ -467,23 +212,16 @@ export class AddhelperComponent implements OnInit {
     contextData: string;
     status: string;
     logo: string;
-  }) {
-    // Clear any previous dialog
+  }): void {
     this.addHelperSuccessDialog.clear();
-
     const dialogRef = this.addHelperSuccessDialog.createComponent(
       DialogboxMessageComponent
     );
     dialogRef.setInput('message', message);
-
-    // Listen for dialog close event if available, otherwise handle close via a button or similar in DialogboxComponent
     dialogRef.instance.close = () => {
       this.addHelperSuccessDialog.clear();
     };
   }
-
-  @ViewChild('addHelperIdentificationCard', { read: ViewContainerRef })
-  addHelperIdentificationCard!: ViewContainerRef;
 
   openDialogOfAddedHelperIdentificationCard(helperIdentificationurl: string) {
     this.addHelperIdentificationCard.clear();

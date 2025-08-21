@@ -4,8 +4,11 @@
     <header>
       <div class="headingContainer">
         <div class="heading-left-container">
-          <a class="material-symbols-outlined heading-icons"
-            [routerLink]="'/dashboard/staff-management/helpers'">chevron_left</a>
+          <a
+            class="material-symbols-outlined heading-icons"
+            [routerLink]="'/dashboard/staff-management/helpers'"
+            >chevron_left</a
+          >
           <h1 class="headingName">Edit Helper</h1>
         </div>
         <span class="material-symbols-outlined heading-icons">more_vert</span>
@@ -18,7 +21,10 @@
     <div class="edit-helper-stages-container">
       <div *ngFor="let c of editHelperSidebar" class="child-container">
         <a (click)="onChildClick(c.name)">
-          <p class="child-inner-container" [class.selected]="selectedChild === c.name">
+          <p
+            class="child-inner-container"
+            [class.selected]="selectedChild === c.name"
+          >
             <span class="material-symbols-outlined">{{ c.icon }}</span>
             <span class="childName">{{ c.name }}</span>
           </p>
@@ -35,7 +41,7 @@
         <ng-container>
           <button (click)="saveButtonClicked()" class="save-button">
             <span class="material-symbols-outlined">save</span>
-            <span style="margin-left: 8px;">{{ saveButton }}</span>
+            <span style="margin-left: 8px">{{ saveButton }}</span>
           </button>
         </ng-container>
       </div>
@@ -44,54 +50,70 @@
 
   <ng-template #skeleton>
     <div class="edit-helper-body-container">
-      <div class="edit-helper-stages-container edit-helper-stages-container-skeleton">
+      <div
+        class="edit-helper-stages-container edit-helper-stages-container-skeleton"
+      >
         <div class="child-container">
-          <ngx-skeleton-loader [theme]="{ 
+          <ngx-skeleton-loader
+            [theme]="{ 
             'border-radius': '5px',
             height: '30px',
             'margin-top':'-25px',
             'background-color': '#E0E0E0',
-          }" />
-          <ngx-skeleton-loader [theme]="{ 
+          }"
+          />
+          <ngx-skeleton-loader
+            [theme]="{ 
             'border-radius': '5px',
             height: '30px',
             'background-color': '#E0E0E0',
             'margin-top': '-5px',
-          }" />
+          }"
+          />
         </div>
       </div>
       <div class="edit-helper-form-container">
-        <ngx-skeleton-loader [theme]="{ 
+        <ngx-skeleton-loader
+          [theme]="{ 
           'border-radius': '10px',
           height: '15px', 
           width: '150px',
           'background-color': '#E0E0E0',
-        }" />
-        <br>
-        <ngx-skeleton-loader [theme]="{ 
+        }"
+        />
+        <br />
+        <ngx-skeleton-loader
+          [theme]="{ 
           'border-radius': '10px',
           height: '10px',
           width: '250px', 
           'margin-top': '-10px',
           'background-color': '#E0E0E0',
-        }" />
-        <br>
-        <ngx-skeleton-loader appearance="circle"
-          [theme]="{height: '100px', width: '100px', 'background-color': '#E0E0E0',}" />
-        <br>
+        }"
+        />
+        <br />
+        <ngx-skeleton-loader
+          appearance="circle"
+          [theme]="{height: '100px', width: '100px', 'background-color': '#E0E0E0',}"
+        />
+        <br />
         <ng-container *ngFor="let i of [1, 2, 3, 4, 5, 6, 7]">
-          <ngx-skeleton-loader [theme]="{ 
+          <ngx-skeleton-loader
+            [theme]="{ 
           'border-radius': '10px',
           height: '10px',
           width: '130px', 
           'margin-top': '15px',
           'background-color': '#E0E0E0',
-        }" />
-          <ngx-skeleton-loader [theme]="{ 
+        }"
+          />
+          <ngx-skeleton-loader
+            [theme]="{ 
           height: '30px', 
           'margin-top': '-10px',
           'background-color': '#E0E0E0',
-        }" />
+        }"
+          />
         </ng-container>
       </div>
     </div>

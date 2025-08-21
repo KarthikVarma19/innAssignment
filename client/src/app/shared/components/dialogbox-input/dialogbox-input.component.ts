@@ -21,14 +21,10 @@ import IkycDocumentDetails from '../../../modules/helper-module/components/kycdo
 export class DialogboxComponent implements OnInit, OnDestroy {
   @ViewChild('container', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
-
   @Input() componentType!: Type<any>;
   @Input() componentHeading!: string;
-
   @Output() onClose = new EventEmitter<IkycDocumentDetails>();
-
   dialogBoxData: any;
-
   private componentRef: any;
 
   ngOnInit(): void {
@@ -44,23 +40,23 @@ export class DialogboxComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.componentRef) {
+      this.componentRef.destroy();
+    }
+  }
+
   close(data?: IkycDocumentDetails) {
     this.container.clear();
     if (data && data.documentType !== undefined) {
-      this.onClose.emit(data); // Emit event to parent
+      this.onClose.emit(data);
     } else {
       this.onClose.emit({
         documentType: '',
         fileName: '',
         base64: '',
         fileSize: 0,
-      }); // Emit undefined if data or documentType is undefined
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.componentRef) {
-      this.componentRef.destroy();
+      });
     }
   }
 }

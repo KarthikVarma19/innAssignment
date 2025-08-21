@@ -4,7 +4,10 @@
     <header>
       <div class="headingContainer">
         <div class="heading-left-container">
-          <a class="material-symbols-outlined heading-icons" [routerLink]="'/dashboard/staff-management/helpers'">
+          <a
+            class="material-symbols-outlined heading-icons"
+            [routerLink]="'/dashboard/staff-management/helpers'"
+          >
             chevron_left
           </a>
           <h1 class="headingName">Add Helper</h1>
@@ -19,42 +22,58 @@
     <!-- Stages -->
     <div class="add-helper-stages-container">
       <div class="stage-stepper">
-        <div [ngClass]="
+        <div
+          [ngClass]="
             currentStageOfAddingHelper > 1
               ? 'stage-dot-complete'
               : 'stage-dot-incomplete'
-          ">
-          <span *ngIf="currentStageOfAddingHelper > 1" class="material-symbols-outlined">
+          "
+        >
+          <span
+            *ngIf="currentStageOfAddingHelper > 1"
+            class="material-symbols-outlined"
+          >
             check
           </span>
         </div>
-        <div [ngClass]="
+        <div
+          [ngClass]="
             currentStageOfAddingHelper > 1
               ? 'stage-line-complete'
               : 'stage-line-incomplete'
-          "></div>
+          "
+        ></div>
 
-        <div [ngClass]="
+        <div
+          [ngClass]="
             currentStageOfAddingHelper > 2
               ? 'stage-dot-complete'
               : 'stage-dot-incomplete'
-          ">
-          <span *ngIf="currentStageOfAddingHelper > 2" class="material-symbols-outlined">
+          "
+        >
+          <span
+            *ngIf="currentStageOfAddingHelper > 2"
+            class="material-symbols-outlined"
+          >
             check
           </span>
         </div>
-        <div [ngClass]="
+        <div
+          [ngClass]="
             currentStageOfAddingHelper > 2
               ? 'stage-line-complete'
               : 'stage-line-incomplete'
-          "></div>
+          "
+        ></div>
 
-        <div [ngClass]="
+        <div
+          [ngClass]="
             currentStageOfAddingHelper === finalStageOfAddingHelper
               ? 'stage-dot-complete'
               : 'stage-dot-incomplete'
-          " class="stage-dot-incomplete">
-        </div>
+          "
+          class="stage-dot-incomplete"
+        ></div>
       </div>
       <div class="stages-container">
         <div class="stage-container">
@@ -74,8 +93,11 @@
     <!-- Form Container -->
     <div class="add-helper-form-container">
       <div *ngIf="currentStageOfAddingHelper === 1">
-        <app-helperform [helperData]="helperData" [buttonClicked]="buttonClicked"
-          (helperFormDataStageOne)="handleStageOneHelperFormData($event)"></app-helperform>
+        <app-helperform
+          [helperData]="helperData"
+          [buttonClicked]="buttonClicked"
+          (helperFormDataStageOne)="handleStageOneHelperFormData($event)"
+        ></app-helperform>
       </div>
       <!-- Stage - 2  -->
       <div *ngIf="currentStageOfAddingHelper === 2">
@@ -92,7 +114,9 @@
       <!-- Stage 3 -->
       <div *ngIf="currentStageOfAddingHelper === 3">
         <div class="add-helper-final-stage-preview-container">
-          <app-helperdata [helperDisplayData]="helperPresentationData"></app-helperdata>
+          <app-helperdata
+            [helperDisplayData]="helperPresentationData"
+          ></app-helperdata>
         </div>
       </div>
 
@@ -100,21 +124,33 @@
       <hr class="add-helper-footer-horizontal-divider" />
       <div class="add-helper-footer-button-container">
         <ng-container>
-          <button *ngIf="currentStageOfAddingHelper > 1 && !addHelperButtonClicked"
-            (click)="goToPreviousStageOfAddingHelper()" class="previousButton" type="button">
+          <button
+            *ngIf="currentStageOfAddingHelper > 1 && !addHelperButtonClicked"
+            (click)="goToPreviousStageOfAddingHelper()"
+            class="previousButton"
+            type="button"
+          >
             <span class="material-symbols-outlined">chevron_left</span>
             Previous
           </button>
         </ng-container>
         <ng-container>
-          <button type="button" *ngIf="currentStageOfAddingHelper < finalStageOfAddingHelper"
-            (click)="goToNextStageOfAddingHelper()" class="nextButton">
+          <button
+            type="button"
+            *ngIf="currentStageOfAddingHelper < finalStageOfAddingHelper"
+            (click)="goToNextStageOfAddingHelper()"
+            class="nextButton"
+          >
             Next
             <span class="material-symbols-outlined">chevron_right</span>
           </button>
-          <button *ngIf="currentStageOfAddingHelper === finalStageOfAddingHelper"
-            class="add-helper-final-stage-submit-button" [disabled]="addHelperButtonClicked"
-            (click)="createHelperUtil()" type="submit">
+          <button
+            *ngIf="currentStageOfAddingHelper === finalStageOfAddingHelper"
+            class="add-helper-final-stage-submit-button"
+            [disabled]="addHelperButtonClicked"
+            (click)="createHelperUtil()"
+            type="submit"
+          >
             <ng-container *ngIf="!addHelperButtonClicked">
               <span class="material-symbols-outlined">add</span>
               Add Helper
@@ -122,7 +158,6 @@
             <ng-container *ngIf="addHelperButtonClicked">
               <div class="loader"></div>
             </ng-container>
-
           </button>
         </ng-container>
       </div>
@@ -134,63 +169,87 @@
 
   <ng-template #skeleton>
     <div class="add-helper-body-container">
-      <div class="add-helper-stages-container add-helper-stages-container-skeleton" style="margin-top: -25px;">
-        <ng-container *ngFor="let i of [1,2,3]">
+      <div
+        class="add-helper-stages-container add-helper-stages-container-skeleton"
+        style="margin-top: -25px"
+      >
+        <ng-container *ngFor="let i of [1, 2, 3]">
           <div class="stage-container-skeleton">
             <div class="stage-container-circle">
-              <ngx-skeleton-loader appearance="circle"
-                [theme]="{height: '40px', width: '40px', 'background-color': '#E0E0E0',}" />
+              <ngx-skeleton-loader
+                appearance="circle"
+                [theme]="{height: '40px', width: '40px', 'background-color': '#E0E0E0',}"
+              />
             </div>
             <div>
               <div class="stage-heading">
-                <ngx-skeleton-loader [theme]="{ 
-              'border-radius': '10px',
-              height: '15px',
-              width: '180px', 
-              'background-color': '#E0E0E0',
-              'margin-top': '6px'
-            }" />
+                <ngx-skeleton-loader
+                  [theme]="{
+                    'border-radius': '10px',
+                    height: '15px',
+                    width: '180px',
+                    'background-color': '#E0E0E0',
+                    'margin-top': '6px'
+                  }"
+                />
               </div>
               <div class="stage-description">
                 <ngx-skeleton-loader
-                  [theme]="{ 'border-radius': '10px',height: '10px',width: '80px', 'background-color': '#E0E0E0', 'margin-top': '-10px'}" />
+                  [theme]="{
+                    'border-radius': '10px',
+                    height: '10px',
+                    width: '80px',
+                    'background-color': '#E0E0E0',
+                    'margin-top': '-10px'
+                  }"
+                />
               </div>
             </div>
           </div>
         </ng-container>
       </div>
       <div class="add-helper-form-container">
-        <ngx-skeleton-loader [theme]="{ 
+        <ngx-skeleton-loader
+          [theme]="{ 
           'border-radius': '10px',
           height: '15px', 
           width: '150px',
           'background-color': '#E0E0E0',
-        }" />
-        <br>
-        <ngx-skeleton-loader [theme]="{ 
+        }"
+        />
+        <br />
+        <ngx-skeleton-loader
+          [theme]="{ 
           'border-radius': '10px',
           height: '10px',
           width: '250px', 
           'margin-top': '-10px',
           'background-color': '#E0E0E0',
-        }" />
-        <br>
-        <ngx-skeleton-loader appearance="circle"
-          [theme]="{height: '100px', width: '100px', 'background-color': '#E0E0E0',}" />
-        <br>
+        }"
+        />
+        <br />
+        <ngx-skeleton-loader
+          appearance="circle"
+          [theme]="{height: '100px', width: '100px', 'background-color': '#E0E0E0',}"
+        />
+        <br />
         <ng-container *ngFor="let i of [1, 2, 3, 4, 5, 6, 7]">
-          <ngx-skeleton-loader [theme]="{ 
+          <ngx-skeleton-loader
+            [theme]="{ 
           'border-radius': '10px',
           height: '10px',
           width: '130px', 
           'margin-top': '15px',
           'background-color': '#E0E0E0',
-        }" />
-          <ngx-skeleton-loader [theme]="{ 
+        }"
+          />
+          <ngx-skeleton-loader
+            [theme]="{ 
           height: '30px', 
           'margin-top': '-10px',
           'background-color': '#E0E0E0',
-        }" />
+        }"
+          />
         </ng-container>
       </div>
     </div>

@@ -22,7 +22,6 @@ export interface IHelperDetailsDisplay {
 }
 
 export class HelperFormAdapter {
-
   static toBackend(data: IHelperDetailsDisplay): any {
     return {
       employee: {

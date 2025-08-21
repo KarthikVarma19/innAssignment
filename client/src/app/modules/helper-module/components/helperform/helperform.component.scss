@@ -6,7 +6,6 @@
     margin: 20px 0;
     border: none;
   }
-
   .add-helper-footer-button-container {
     display: flex;
     flex-direction: row;
@@ -48,7 +47,6 @@
     margin-top: -15px;
     color: gray;
   }
-
   .photo-upload-main-container {
     display: flex;
     flex-direction: row;
@@ -108,7 +106,6 @@
     font-size: 12px;
     font-weight: bold;
   }
-
   .kyc-document-upload-icon-container {
     display: flex;
     flex-direction: column;
@@ -122,7 +119,6 @@
     margin: 10px 0px;
     cursor: pointer;
   }
-
   .kyc-document-uploaded-container {
     display: flex;
     flex-direction: column;
@@ -189,13 +185,12 @@
       width: 100%;
     }
   }
-}
-
-.custom-input {
-  border: 1px solid #ced4da;
-  min-height: 33px;
-  border-radius: 4px;
-  padding-left: 10px;
-  width: 98%;
-  line-height: 1.5;
+  .custom-input {
+    border: 1px solid #ced4da;
+    min-height: 33px;
+    border-radius: 4px;
+    padding-left: 10px;
+    width: 98%;
+    line-height: 1.5;
+  }
 }

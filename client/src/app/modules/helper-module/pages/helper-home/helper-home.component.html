@@ -1,0 +1,437 @@
+<ng-container *ngIf="helpersData.length > 0 || showNothingFound; else skeleton">
+  <!-- Header Component -->
+  <header>
+    <div class="headingContainer">
+      <h1 class="headingName">Helpers</h1>
+      <span class="material-symbols-outlined">more_vert</span>
+    </div>
+    <hr class="headingHortizantalRule" />
+  </header>
+
+  <!-- Filter Component -->
+  <div class="filterContainer">
+    <div class="leftContainer">
+      <!-- Sort Container-->
+      <div class="iconContainer" (click)="toggleSortDropDown($event)">
+        <label for="sortby">
+          <span class="material-symbols-outlined big-icon">import_export</span>
+        </label>
+        <div *ngIf="showSortBy" class="sortByDropdown" id="sortby">
+          <span class="sort-by-heading">Sort By</span>
+          <ng-container *ngFor="let item of sortDropDownItems">
+            <button
+              (click)="sortHelpers($event, item.value)"
+              class="sort-by-button"
+              value="{{ item.value }}"
+              ngClass="{{
+                this.filterOptions.sortby === item.value
+                  ? 'active'
+                  : 'sort-by-button'
+              }}"
+            >
+              <span class="sort-by-label">
+                {{ item.label }}
+              </span>
+              <span class="material-symbols-outlined">check</span>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Filter Container-->
+      <div
+        class="iconContainer"
+        (click)="toggleFilterByDropDown($event)"
+        [matBadge]="badgeNumber"
+        matBadgeSize="small"
+        [matBadgeHidden]="filterBadgeHidden"
+      >
+        <label for="filterby">
+          <span class="material-symbols-outlined big-icon">filter_alt</span>
+        </label>
+        <div
+          *ngIf="showFilterByDropDown"
+          class="filterByDropDown"
+          id="filterby"
+          (click)="filterContainerDropDown($event)"
+        >
+          <span class="filter-by-heading">Filter By</span>
+          <form
+            [formGroup]="helperFilterForm"
+            *ngIf="helperFilterForm"
+            (ngSubmit)="filtersApplied($event)"
+          >
+            <div class="form-group">
+              <!-- Type of Service -->
+              <div class="field-container">
+                <div class="field-heading-container">
+                  <span for="type-of-service-label" class="field-label"
+                    >Service</span
+                  >
+                  <span
+                    (click)="
+                      this.helperFilterForm.get('typeOfService')?.setValue([])
+                    "
+                    *ngIf="
+                      this.helperFilterForm.get('typeOfService')?.value
+                        ?.length > 0
+                    "
+                    class="field-reset"
+                    >Reset</span
+                  >
+                </div>
+                <ng-select
+                  [items]="typeOfServiceOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  placeholder="Select Service"
+                  formControlName="typeOfService"
+                  [searchable]="false"
+                  [clearable]="false"
+                  [multiple]="true"
+                  [searchable]="true"
+                >
+                </ng-select>
+              </div>
+              <!-- Organization Name -->
+              <div class="field-container">
+                <div class="field-heading-container">
+                  <span for="organization-name-label" class="field-label"
+                    >Organization</span
+                  >
+                  <span
+                    class="field-reset"
+                    *ngIf="
+                      this.helperFilterForm.get('organizationName')?.value
+                        ?.length > 0
+                    "
+                    (click)="
+                      this.helperFilterForm
+                        .get('organizationName')
+                        ?.setValue([])
+                    "
+                    >Reset</span
+                  >
+                </div>
+                <ng-select
+                  [items]="organizationNameOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  placeholder="Select Organization"
+                  formControlName="organizationName"
+                  [searchable]="false"
+                  [clearable]="false"
+                  [multiple]="true"
+                  [searchable]="true"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="button-container">
+              <button class="btn-reset" (click)="filtersReset($event)">
+                <span class="material-symbols-outlined">restart_alt</span>
+                <span> Reset </span>
+              </button>
+              <button class="btn-apply" (submit)="filtersApplied($event)">
+                Apply
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Date Picker -->
+      <div class="date-icon-container" (click)="toggleDatePicker($event)">
+        <label for="ngx-data-range-picker">
+          <div class="date-container">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span
+              [ngClass]="
+                displayFilteredDateRangeText.length > 0
+                  ? 'date-range has-text'
+                  : 'date-range'
+              "
+            >
+              {{ displayFilteredDateRangeText }}
+            </span>
+          </div>
+        </label>
+        <div
+          class="ngx-data-range-picker-container"
+          *ngIf="isBrowser && showDatePicker"
+          (click)="datePickerClicked($event)"
+        >
+          <input
+            id="ngx-data-range-picker"
+            type="text"
+            ngxDaterangepickerMd
+            startKey="start"
+            endKey="end"
+            [ranges]="ranges"
+            [(ngModel)]="model"
+            [opens]="'right'"
+            drops="'down'"
+            class="date-range-input"
+            [alwaysShowCalendars]="true"
+            [customRangeDirection]="true"
+            placeholder="Select date range"
+            [showCancel]="true"
+            [showCustomRangeLabel]="true"
+            [showRangeLabelOnInput]="true"
+            style="display: none"
+            [closeOnAutoApply]="true"
+            (datesUpdated)="datesUpdated($event)"
+            [showClearButton]="true"
+            (clearClicked)="datesCleared()"
+          />
+        </div>
+      </div>
+      <!-- Search Container -->
+      <div class="iconContainer iconSearchContainer">
+        <ng-container>
+          <div class="searchContainer">
+            <div class="searchIcon">
+              <span class="material-symbols-outlined">search</span>
+            </div>
+            <div class="searchInputContainer">
+              <input
+                type="text"
+                placeholder="Name, Employee Id, Phone"
+                (input)="onSearchInputChange()"
+                [(ngModel)]="searchText"
+                name="searchText"
+              />
+            </div>
+            <div
+              class="searchIcon"
+              *ngIf="searchText"
+              (click)="removeSearchText()"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="iconContainer" (click)="filterOptionsCleared()">
+        <span class="material-symbols-outlined">restart_alt</span>
+      </div>
+      <!-- Pagination -->
+      <div>
+        <!-- <mat-paginator
+          [length]="helpersData.length"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page"
+          [showFirstLastButtons]="false"
+          [hidePageSize]="true"
+        >
+        </mat-paginator> -->
+      </div>
+      <span class="helperResultData">
+        <span *ngIf="helpersMetaData.total !== helpersMetaData.filteredTotal">
+          {{ helpersMetaData.filteredTotal + " of" }}
+        </span>
+        {{ helpersMetaData.total + " helpers" }}
+      </span>
+    </div>
+
+    <div class="rightContainer">
+      <a (click)="downloadClicked()">
+        <div class="iconContainer">
+          <span class="material-symbols-outlined">download</span>
+        </div>
+      </a>
+      <a routerLink="./add-helper">
+        <div class="iconContainer addHelperButton">
+          <span class="material-symbols-outlined">add</span>
+          <span>Add Helper</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Body Component -->
+  <div class="helperBodyContainer">
+    <ng-container *ngIf="!showNothingFound">
+      <div
+        class="helperListContainer"
+        infiniteScroll
+        [infiniteScrollDistance]="3"
+        [infiniteScrollThrottle]="500"
+        (scrolled)="onScroll()"
+        [scrollWindow]="false"
+      >
+        <ng-container *ngFor="let helper of helpersData">
+          <div
+            class="helperCardContainer"
+            (click)="getHelperDetails(helper._id)"
+          >
+            <mat-card
+              class="matCardContainer"
+              [class.selected]="helper._id === helperDetails.data._id"
+            >
+              <div class="helperContainer">
+                <div class="leftContainer">
+                  <mat-card-header class="matCardHeader">
+                    <div
+                      mat-card-avatar
+                      class="helperImage"
+                      [ngStyle]="{
+                        'background-image':
+                          'url(' + getSafeImageUrl(helper) + ')',
+                        'background-size': 'cover',
+                        'background-position': 'center'
+                      }"
+                    ></div>
+                    <mat-card-title class="helperName">{{
+                      helper.personalDetails.fullName
+                    }}</mat-card-title>
+                    <mat-card-subtitle class="helperSubtitle">{{
+                      helper.serviceDetails.type
+                    }}</mat-card-subtitle>
+                  </mat-card-header>
+                </div>
+                <div class="rightContainer">
+                  <p class="households">
+                    {{ helper.serviceDetails.assignedHouseholds.length }}
+                    Households
+                  </p>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </ng-container>
+      </div>
+      <div class="helperDataContainer">
+        <app-helperdata
+          [helperDisplayData]="helperDetails"
+          (deleteButtonEvent)="deleteHelperEventReceived($event)"
+        >
+        </app-helperdata>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="showNothingFound">
+      <img
+        src="https://res.cloudinary.com/karthikvarma/image/upload/v1755753971/inn-assignement/helpers/assets/nothing-found_crn1jk.png"
+        alt="Nothing Found"
+        class="nothing-found-image"
+      />
+    </ng-container>
+  </div>
+</ng-container>
+<!-- Skeleton -->
+<ng-template #skeleton>
+  <ng-container *ngIf="helpersData.length === 0 && showNothingFound === false">
+    <div class="headingContainer">
+      <ngx-skeleton-loader
+        [theme]="{
+          'border-radius': '10px',
+          height: '20px',
+          width: '300px',
+          'background-color': '#E0E0E0',
+          'margin-top': '6px',
+          'margin-left': '15px'
+        }"
+      />
+    </div>
+    <div class="filterContainer" style="padding: 10px 10px">
+      <div>
+        <ngx-skeleton-loader
+          [theme]="{
+            'border-radius': '5px',
+            height: '30px',
+            width: '30px',
+            'background-color': '#E0E0E0',
+            'margin-top': '6px'
+          }"
+        />
+        <ngx-skeleton-loader
+          [theme]="{
+            'border-radius': '5px',
+            height: '30px',
+            width: '30px',
+            'background-color': '#E0E0E0',
+            'margin-top': '6px',
+            'margin-left': '15px'
+          }"
+        />
+        <ngx-skeleton-loader
+          [theme]="{
+            'border-radius': '5px',
+            height: '30px',
+            width: '30px',
+            'background-color': '#E0E0E0',
+            'margin-top': '6px',
+            'margin-left': '15px'
+          }"
+        />
+        <ngx-skeleton-loader
+          [theme]="{
+            'border-radius': '5px',
+            height: '30px',
+            width: '100px',
+            'background-color': '#E0E0E0',
+            'margin-top': '6px',
+            'margin-left': '15px'
+          }"
+        />
+      </div>
+      <div>
+        <ngx-skeleton-loader
+          [theme]="{
+            'border-radius': '5px',
+            height: '30px',
+            width: '30px',
+            'background-color': '#E0E0E0',
+            'margin-top': '6px',
+            'margin-left': '15px'
+          }"
+        />
+        <ngx-skeleton-loader
+          [theme]="{ 'border-radius': '5px', height: '30px', width: '80px', 'background-color': '#E0E0E0', 'margin-top': '6px', 'margin-left': '15px',}"
+        />
+      </div>
+    </div>
+    <div class="helperBodyContainer">
+      <div class="helperListContainer helper-list-container-skeleton">
+        <ng-container *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8]">
+          <div class="stage-container-skeleton">
+            <div class="stage-container-circle">
+              <ngx-skeleton-loader
+                appearance="circle"
+                [theme]="{height: '40px', width: '40px', 'background-color': '#E0E0E0',}"
+              />
+            </div>
+            <div>
+              <div class="stage-heading">
+                <ngx-skeleton-loader
+                  [theme]="{
+                    'border-radius': '10px',
+                    height: '15px',
+                    width: '180px',
+                    'background-color': '#E0E0E0',
+                    'margin-top': '6px'
+                  }"
+                />
+              </div>
+              <div class="stage-description">
+                <ngx-skeleton-loader
+                  [theme]="{
+                    'border-radius': '10px',
+                    height: '10px',
+                    width: '80px',
+                    'background-color': '#E0E0E0',
+                    'margin-top': '-10px'
+                  }"
+                />
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="helperDataContainer">
+        <app-helperdata [helperDisplayData]="helperDetails"> </app-helperdata>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>

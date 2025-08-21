@@ -4,7 +4,6 @@
   border-radius: 6px;
   margin: 0 15px 0 0;
   height: 100%;
-
   .headerContainer {
     height: 12%;
     position: sticky;
@@ -80,7 +79,6 @@
       align-items: center;
       text-align: left;
       padding: 10px 0px 0px 10px;
-
       .heading {
         color: rgb(65, 63, 63);
         font-size: 12px;
@@ -89,7 +87,6 @@
         font-weight: bold;
         margin-right: 10px;
       }
-
       hr {
         flex-grow: 1;
         border: 0px;
@@ -137,14 +134,20 @@
     }
   }
 }
-
 .stage-container-skeleton {
   display: flex;
   flex-direction: row;
   margin-bottom: 25px;
 }
-
 .helper-data-container-skeleton {
   background-color: white I !important;
   border: none !important;
+}
+
+.nothing-found-container {
+  text-align: center;
+  .nothing-found-image {
+    height: 50%;
+    width: 50%;
+  }
 }

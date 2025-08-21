@@ -15,121 +15,82 @@ import {
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    LucideAngularModule,
-    FormsModule,
-    NgIf,
     NgFor,
+    NgStyle,
+    NgIf,
+    FormsModule,
     RouterLink,
     MatCardModule,
-    NgStyle,
+    LucideAngularModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
-  appEnvironment: string = 'DEV';
+  appEnvironment: string;
+  searchText: string;
+  selectedChild: string | undefined;
+  disabledItems: Set<any>;
+  filteredDashboard: Dashboard[];
+  dashboard: Dashboard[];
   readonly Search = Search;
   readonly X = X;
   readonly ChevronUp = ChevronUp;
   readonly ChevronRight = ChevronRight;
-  searchText: string = '';
-  // choice 1: show total data initially : 8 results
-  // choice 2: show only filteredData : 5 of 8 results
-  resultData: string = '5 of 8 results';
-
-  dashboard: Dashboard[] = [
-    {
-      heading: 'RESIDENT MANAGEMENT',
-      childs: [
-        { name: 'Flats', icon: 'apartment' },
-        { name: 'Helpdesk Setup', icon: 'headset_mic' },
-        { name: 'Helpdesk Tickets', icon: 'confirmation_number' },
-        { name: 'Renovation Works', icon: 'construction' },
-        { name: 'Violation Setup', icon: 'gavel' },
-        { name: 'Violation Tickets', icon: 'report_problem' },
-        { name: 'Amenities', icon: 'self_improvement' },
-      ],
-    },
-    {
-      heading: 'STAFF MANAGEMENT',
-      childs: [
-        { name: 'Roles & Departments', icon: 'account_tree' },
-        { name: 'Staff Directory', icon: 'shield_person' },
-        { name: 'Helpers', icon: 'cleaning_services' },
-      ],
-    },
-
-    {
-      heading: 'WORK MANAGEMENT',
-      childs: [
-        { name: 'Assets', icon: 'inventory_2' },
-        { name: 'Locations', icon: 'location_on' },
-        { name: 'Work Packages', icon: 'check_box' },
-        { name: 'Work Scheduler', icon: 'schedule' },
-        { name: 'Work Logs', icon: 'history' },
-        { name: 'Issues', icon: 'warning' },
-      ],
-    },
-    {
-      heading: 'PROPERTY MANAGEMENT',
-      childs: [
-        { name: 'Apartments', icon: 'apartment' },
-        { name: 'Lease Agreements', icon: 'description' },
-        { name: 'Tenant Directory', icon: 'people' },
-        { name: 'Maintenance Requests', icon: 'build' },
-        { name: 'Parking Allocation', icon: 'local_parking' },
-        { name: 'Visitor Logs', icon: 'assignment_ind' },
-        { name: 'Utility Billing', icon: 'receipt' },
-      ],
-    },
-    {
-      heading: 'CONSTRUCTION PROJECTS',
-      childs: [
-        { name: 'Project Dashboard', icon: 'dashboard' },
-        { name: 'Site Inspections', icon: 'search' },
-        { name: 'Material Inventory', icon: 'inventory' },
-        { name: 'Contractor Directory', icon: 'engineering' },
-        { name: 'Work Orders', icon: 'assignment' },
-        { name: 'Safety Audits', icon: 'verified_user' },
-      ],
-    },
-    {
-      heading: 'FACILITY SERVICES',
-      childs: [
-        { name: 'Cleaning Schedules', icon: 'cleaning_services' },
-        { name: 'Security Staff', icon: 'security' },
-        { name: 'Lift Maintenance', icon: 'elevator' },
-        { name: 'Garden Management', icon: 'park' },
-        { name: 'Swimming Pool', icon: 'pool' },
-      ],
-    },
-    {
-      heading: 'FINANCIAL MANAGEMENT',
-      childs: [
-        { name: 'Expense Tracking', icon: 'account_balance_wallet' },
-        { name: 'Budget Planning', icon: 'pie_chart' },
-        { name: 'Vendor Payments', icon: 'payment' },
-        { name: 'Invoice Management', icon: 'request_quote' },
-      ],
-    },
-    {
-      heading: 'COMMUNITY ENGAGEMENT',
-      childs: [
-        { name: 'Event Calendar', icon: 'event' },
-        { name: 'Notice Board', icon: 'announcement' },
-        { name: 'Feedback & Suggestions', icon: 'feedback' },
-        { name: 'Resident Polls', icon: 'how_to_vote' },
-      ],
-    },
-  ];
-
-  filteredDashboard: Dashboard[];
 
   constructor() {
+    this.appEnvironment = 'DEV';
+    this.dashboard = [
+      {
+        heading: 'RESIDENT MANAGEMENT',
+        childs: [
+          { name: 'Flats', icon: 'apartment' },
+          { name: 'Helpdesk Setup', icon: 'headset_mic' },
+          { name: 'Helpdesk Tickets', icon: 'confirmation_number' },
+          { name: 'Renovation Works', icon: 'construction' },
+          { name: 'Violation Setup', icon: 'gavel' },
+          { name: 'Violation Tickets', icon: 'report_problem' },
+          { name: 'Amenities', icon: 'self_improvement' },
+        ],
+      },
+      {
+        heading: 'STAFF MANAGEMENT',
+        childs: [
+          { name: 'Roles & Departments', icon: 'account_tree' },
+          { name: 'Staff Directory', icon: 'shield_person' },
+          { name: 'Helpers', icon: 'cleaning_services' },
+        ],
+      },
+
+      {
+        heading: 'WORK MANAGEMENT',
+        childs: [
+          { name: 'Assets', icon: 'inventory_2' },
+          { name: 'Locations', icon: 'location_on' },
+          { name: 'Work Packages', icon: 'check_box' },
+          { name: 'Work Scheduler', icon: 'schedule' },
+          { name: 'Work Logs', icon: 'history' },
+          { name: 'Issues', icon: 'warning' },
+        ],
+      },
+      {
+        heading: 'PROPERTY MANAGEMENT',
+        childs: [
+          { name: 'Apartments', icon: 'apartment' },
+          { name: 'Lease Agreements', icon: 'description' },
+          { name: 'Tenant Directory', icon: 'people' },
+          { name: 'Maintenance Requests', icon: 'build' },
+          { name: 'Parking Allocation', icon: 'local_parking' },
+          { name: 'Visitor Logs', icon: 'assignment_ind' },
+          { name: 'Utility Billing', icon: 'receipt' },
+        ],
+      },
+    ];
     this.filteredDashboard = this.dashboard;
+    this.searchText = '';
+    this.disabledItems = new Set();
   }
 
-  selectedChild: string | undefined;
   onChildClick(child: string) {
     this.selectedChild = child;
   }
@@ -148,8 +109,6 @@ export class DashboardComponent {
       }))
       .filter((section) => section.childs.length > 0);
   }
-
-  disabledItems: Set<any> = new Set();
 
   toggleChildContainer(item: any): void {
     if (this.disabledItems.has(item)) {

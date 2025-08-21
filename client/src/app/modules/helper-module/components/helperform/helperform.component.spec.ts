@@ -8,10 +8,9 @@ describe('HelperformComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HelperformComponent]
-    })
-    .compileComponents();
-    
+      imports: [HelperformComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(HelperformComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
