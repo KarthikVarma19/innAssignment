@@ -3,17 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node dist/client/server/server.mjs",
+    "start": "ng serve --port 4200",
     "build": "ng build --configuration=production",
-    "build:dev": "ng build --configuration=development",
-    "build:prod": "ng build --configuration=production",
-    "build:ssr": "ng build --configuration=production && ng run client:server:production",
-    "serve:ssr": "node dist/client/server/server.mjs",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "watch": "ng build --watch --configuration=development"
-  },  
+  },
   "private": true,
   "dependencies": {
     "@angular/cli": "^17.3.17",
