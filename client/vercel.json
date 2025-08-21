@@ -2,18 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/client/server/server.mjs",
+      "src": "client/package.json",
       "use": "@vercel/node"
-    },
-    {
-      "src": "dist/client/browser/**",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/client/server/server.mjs"
+      "dest": "client/$1"
     }
   ]
 }
