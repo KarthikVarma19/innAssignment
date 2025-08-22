@@ -206,35 +206,42 @@
       <!-- Gender -->
       <div class="field-container">
         <label for="gender-label">Gender<span class="asterisk">*</span></label>
-        <div class="gender-radio-group">
-          <label>
+        <div class="gender-radio-group" [formGroup]="helperForm">
+          <label for="male">
             <input
+              id="male"
               type="radio"
-              name="gender"
               value="Male"
               formControlName="gender"
+              labelForId="gender-label"
             />
             Male
           </label>
-          <label>
+
+          <label for="female">
             <input
+              id="female"
               type="radio"
-              name="gender"
               value="Female"
               formControlName="gender"
+              labelForId="gender-label"
             />
             Female
           </label>
-          <label>
+
+          <label for="other">
             <input
+              id="other"
               type="radio"
-              name="gender"
               value="Other"
               formControlName="gender"
+              labelForId="gender-label"
             />
             Other
           </label>
         </div>
+
+        <!-- Error message -->
         <div
           *ngIf="
             helperForm.get('gender')?.invalid &&
@@ -243,9 +250,9 @@
           "
           class="alert-error-message"
         >
-          <span *ngIf="helperForm.get('gender')?.errors?.['required']"
-            >Gender is required.</span
-          >
+          <span *ngIf="helperForm.get('gender')?.errors?.['required']">
+            Gender is required.
+          </span>
         </div>
       </div>
       <!-- Phone -->

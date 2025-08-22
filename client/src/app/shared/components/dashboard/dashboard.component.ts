@@ -70,19 +70,6 @@ export class DashboardComponent {
           { name: 'Work Packages', icon: 'check_box' },
           { name: 'Work Scheduler', icon: 'schedule' },
           { name: 'Work Logs', icon: 'history' },
-          { name: 'Issues', icon: 'warning' },
-        ],
-      },
-      {
-        heading: 'PROPERTY MANAGEMENT',
-        childs: [
-          { name: 'Apartments', icon: 'apartment' },
-          { name: 'Lease Agreements', icon: 'description' },
-          { name: 'Tenant Directory', icon: 'people' },
-          { name: 'Maintenance Requests', icon: 'build' },
-          { name: 'Parking Allocation', icon: 'local_parking' },
-          { name: 'Visitor Logs', icon: 'assignment_ind' },
-          { name: 'Utility Billing', icon: 'receipt' },
         ],
       },
     ];

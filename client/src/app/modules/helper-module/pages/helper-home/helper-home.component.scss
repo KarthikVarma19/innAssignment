@@ -32,6 +32,7 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
+
     .material-symbols-outlined {
       margin-top: 5px;
       font-size: 18px;
@@ -44,7 +45,8 @@
       top: 40px;
       left: 0;
       background: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+        rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
       border-radius: 6px;
       min-width: 220px;
       padding: 8px 5px;
@@ -114,7 +116,8 @@
       top: 30px;
       left: 0;
       background: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+        rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
       border-radius: 6px;
       min-width: 220px;
       padding: 8px 5px;
@@ -148,15 +151,6 @@
       }
     }
   }
-  ::ng-deep {
-    .mat-badge-content {
-      background-color: red !important;
-      color: white !important;
-    }
-    .mat-badge {
-      color: inherit;
-    }
-  }
   .date-icon-container {
     display: flex;
     flex-direction: row;
@@ -168,7 +162,7 @@
     margin: 10px;
     height: 30px;
     min-width: 30px;
-    max-width: 150px;
+    width: fit-content;
     cursor: pointer;
     .date-container {
       display: inline-flex;
@@ -188,7 +182,7 @@
       }
       .date-range.has-text {
         display: inline;
-        font-size: 10px;
+        font-size: 12px;
         margin: 0px 5px;
         font-weight: bold;
         color: rgb(90, 90, 90);
@@ -204,13 +198,15 @@
               min-width: 400px !important;
               top: 35px !important;
               left: -28px !important;
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+              box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+                rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
             }
             .md-drppicker .ranges li button.active {
               color: white;
               border-radius: 5px;
               float: left;
               border-right: 1px solid #eee;
+              background-color: #1976d2;
             }
 
             .md-drppicker .ranges li button:hover {
@@ -248,7 +244,6 @@
               width: 15px;
               height: 15px;
               cursor: pointer;
-              border-radius: 50%;
             }
 
             .md-drppicker .calendar-table th {
@@ -269,6 +264,11 @@
               color: #fff;
             }
 
+            .md-drppicker td.active.start-date,
+            .md-drppicker td.active.end-date {
+              background-color: #1976d2;
+            }
+
             .md-drppicker td.active.start-date span,
             .md-drppicker td.active.end-date span {
               color: #fff;
@@ -284,16 +284,11 @@
 
             .md-drppicker td.today span {
               color: green;
+              font-weight: bold;
             }
 
-            //
             .md-drppicker td.active {
               color: #fff !important;
-            }
-
-            .md-drppicker td.today {
-              font-weight: bold;
-              border: 1px solid;
             }
 
             .md-drppicker .buttons {
@@ -301,7 +296,7 @@
               display: flex;
               justify-content: flex-end;
               border-top: 1px solid #ddd;
-              padding-top: 10px;
+              padding-top: 5px;
               background: #f9f9f9;
             }
 
@@ -339,6 +334,10 @@
             .md-drppicker .btn.btn-default:hover {
               background: #e5e7eb;
             }
+            .md-drppicker .btn {
+              background-color: #1976d2;
+              font-size: 12px;
+            }
 
             .md-drppicker .btn:not(.clear):not(.btn-default) {
               color: white;
@@ -351,6 +350,29 @@
           }
         }
       }
+    }
+  }
+  .icon-button {
+    border: 0;
+    border-radius: 6px;
+    background-color: white;
+    height: inherit;
+    width: inherit;
+
+    &:hover {
+      background-color: var(--helperslist-container-selected-background-color);
+    }
+    &:active {
+      background-color: var(--helperslist-container-selected-background-color);
+    }
+  }
+  ::ng-deep {
+    .mat-badge-content {
+      background-color: red !important;
+      color: white !important;
+    }
+    .mat-badge {
+      color: inherit;
     }
   }
   .leftContainer {

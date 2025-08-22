@@ -35,7 +35,6 @@ export const routes: Routes = [
               {
                 path: 'edit-helper/:id',
                 component: EditHelperComponent,
-                canDeactivate: [pendingChangesGuard],
               },
             ],
           },

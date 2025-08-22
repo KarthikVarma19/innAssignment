@@ -175,7 +175,7 @@ export class HelperhomeComponent implements OnInit, OnDestroy {
       organizationName: [''],
     });
 
-    this.searchInput.pipe(debounceTime(300)).subscribe((searchTerm: string) => {
+    this.searchInput.pipe(debounceTime(500)).subscribe((searchTerm: string) => {
       this.searchForHelper(searchTerm);
     });
     this.showNothingFound = false;
@@ -295,9 +295,6 @@ export class HelperhomeComponent implements OnInit, OnDestroy {
     this.showDatePicker = true;
     event.stopPropagation();
   }
-  onSelected(values: any[]) {
-    console.log('Selected values:', values);
-  }
 
   @HostListener('document:click')
   handleClickOutside() {
@@ -320,7 +317,6 @@ export class HelperhomeComponent implements OnInit, OnDestroy {
     this.clearFiltersData();
     event.stopPropagation();
     event.preventDefault();
-    this.loadInitialData();
   }
 
   clearFiltersData() {
@@ -328,6 +324,8 @@ export class HelperhomeComponent implements OnInit, OnDestroy {
     this.helperFilterForm.get('organizationName')?.setValue('');
     this.badgeNumber = 0;
     this.filterBadgeHidden = true;
+    this.filterOptions.serviceTypes = [];
+    this.filterOptions.organizations = [];
   }
 
   deleteHelperEventReceived(clicked: boolean) {
@@ -358,6 +356,13 @@ export class HelperhomeComponent implements OnInit, OnDestroy {
     this.pageSize = 100;
     this.pageIndex = 1;
     this.toggleLoading();
+    this.helpersMetaData = {
+      total: 0,
+      filteredTotal: 0,
+      page: 0,
+      limit: 0,
+      totalPages: 0,
+    };
     this.helperService
       .getHelpersPaged(this.pageIndex, this.pageSize, this.filterOptions)
       .subscribe({

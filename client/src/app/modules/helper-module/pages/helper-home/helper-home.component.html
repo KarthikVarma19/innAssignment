@@ -13,9 +13,9 @@
     <div class="leftContainer">
       <!-- Sort Container-->
       <div class="iconContainer" (click)="toggleSortDropDown($event)">
-        <label for="sortby">
+        <button class="icon-button">
           <span class="material-symbols-outlined big-icon">import_export</span>
-        </label>
+        </button>
         <div *ngIf="showSortBy" class="sortByDropdown" id="sortby">
           <span class="sort-by-heading">Sort By</span>
           <ng-container *ngFor="let item of sortDropDownItems">
@@ -23,11 +23,11 @@
               (click)="sortHelpers($event, item.value)"
               class="sort-by-button"
               value="{{ item.value }}"
-              ngClass="{{
-                this.filterOptions.sortby === item.value
+              [ngClass]="
+                filterOptions.sortby === item.value
                   ? 'active'
                   : 'sort-by-button'
-              }}"
+              "
             >
               <span class="sort-by-label">
                 {{ item.label }}
@@ -46,9 +46,11 @@
         matBadgeSize="small"
         [matBadgeHidden]="filterBadgeHidden"
       >
-        <label for="filterby">
-          <span class="material-symbols-outlined big-icon">filter_alt</span>
-        </label>
+        <button class="icon-button">
+          <span class="material-symbols-outlined big-icon" id="filterby"
+            >filter_alt</span
+          >
+        </button>
         <div
           *ngIf="showFilterByDropDown"
           class="filterByDropDown"
@@ -141,20 +143,22 @@
       </div>
       <!-- Date Picker -->
       <div class="date-icon-container" (click)="toggleDatePicker($event)">
-        <label for="ngx-data-range-picker">
-          <div class="date-container">
-            <span class="material-symbols-outlined">calendar_today</span>
-            <span
-              [ngClass]="
-                displayFilteredDateRangeText.length > 0
-                  ? 'date-range has-text'
-                  : 'date-range'
-              "
-            >
-              {{ displayFilteredDateRangeText }}
-            </span>
-          </div>
-        </label>
+        <button class="icon-button">
+          <label for="ngx-data-range-picker">
+            <div class="date-container">
+              <span class="material-symbols-outlined">calendar_today</span>
+              <span
+                [ngClass]="
+                  displayFilteredDateRangeText.length > 0
+                    ? 'date-range has-text'
+                    : 'date-range'
+                "
+              >
+                {{ displayFilteredDateRangeText }}
+              </span>
+            </div>
+          </label>
+        </button>
         <div
           class="ngx-data-range-picker-container"
           *ngIf="isBrowser && showDatePicker"
@@ -212,7 +216,9 @@
         </ng-container>
       </div>
       <div class="iconContainer" (click)="filterOptionsCleared()">
-        <span class="material-symbols-outlined">restart_alt</span>
+        <button class="icon-button">
+          <span class="material-symbols-outlined">restart_alt</span>
+        </button>
       </div>
       <!-- Pagination -->
       <div>
@@ -238,7 +244,9 @@
     <div class="rightContainer">
       <a (click)="downloadClicked()">
         <div class="iconContainer">
-          <span class="material-symbols-outlined">download</span>
+          <button class="icon-button">
+            <span class="material-symbols-outlined">download</span>
+          </button>
         </div>
       </a>
       <a routerLink="./add-helper">
