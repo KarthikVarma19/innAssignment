@@ -241,7 +241,15 @@
       </span>
     </div>
 
+    <!-- Scanner Component -->
     <div class="rightContainer">
+      <a (click)="qrScanIconClicked()">
+        <div class="iconContainer">
+          <button class="icon-button">
+            <span class="material-symbols-outlined">qr_code_scanner</span>
+          </button>
+        </div>
+      </a>
       <a (click)="downloadClicked()">
         <div class="iconContainer">
           <button class="icon-button">
@@ -327,6 +335,8 @@
     </ng-container>
   </div>
 </ng-container>
+<!-- ID-Card Scanner Dialog -->
+<ng-template #idcardScannerDialog></ng-template>
 <!-- Skeleton -->
 <ng-template #skeleton>
   <ng-container *ngIf="helpersData.length === 0 && showNothingFound === false">

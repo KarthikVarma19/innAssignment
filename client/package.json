@@ -26,6 +26,9 @@
     "@angular/router": "^17.3.0",
     "@angular/ssr": "^17.3.17",
     "@ng-select/ng-select": "^12.0.7",
+    "@zxing/browser": "^0.1.5",
+    "@zxing/library": "^0.21.3",
+    "@zxing/ngx-scanner": "^20.0.0",
     "axios": "^1.11.0",
     "dayjs": "^1.11.13",
     "express": "^4.18.2",
@@ -38,6 +41,7 @@
     "ngx-toastr": "^19.0.0",
     "npm": "^11.5.1",
     "rxjs": "~7.8.0",
+    "scanbot-web-sdk": "^7.2.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",
     "zone.js": "~0.14.3"

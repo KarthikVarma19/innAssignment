@@ -1,0 +1,55 @@
+<div class="backdrop" (click)="close()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <span class="modal-heading">{{ data.heading }}</span>
+      </div>
+      <div>
+        <button class="close-button" (click)="close()">
+          <span class="material-symbols-outlined" style="font-size: 20px"
+            >close</span
+          >
+        </button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <!-- Area Where Scanning Should Go -->
+      <ng-container *ngIf="!hasPermission">
+        <img [src]="data.logo" class="confirmation-logo" />
+      </ng-container>
+      <ng-container>
+        <zxing-scanner
+          (permissionResponse)="onHasPermission($event)"
+          (camerasFound)="onCamerasFound($event)"
+          (scanError)="onScanError($event)"
+          class="scanner-container"
+        ></zxing-scanner>
+      </ng-container>
+      <div *ngIf="!hasPermission" class="permission-error">
+        Camera permission denied. Please allow camera access to scan QR codes.
+      </div>
+    </div>
+    <hr class="modal-horizontal-divider" />
+    <div class="modal-footer">
+      <div class="button-container">
+        <!-- Cancel Button -->
+        <button
+          class="print-button"
+          type="button"
+          (click)="cancelButtonClicked()"
+        >
+          Cancel
+        </button>
+        <!-- Scan Button -->
+        <button type="submit" (click)="startScanner()" class="confirm-button">
+          <span
+            class="material-symbols-outlined"
+            style="font-size: 18px; color: white"
+            >qr_code_scanner</span
+          >
+          Scan ID-Card QR
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

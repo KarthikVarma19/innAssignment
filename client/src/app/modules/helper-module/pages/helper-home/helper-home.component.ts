@@ -6,6 +6,8 @@ import {
   Inject,
   PLATFORM_ID,
   ChangeDetectorRef,
+  ViewContainerRef,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
@@ -33,6 +35,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { HelperService } from '../../services/helper.service';
 import { ExcelService } from '../../services/excel.service';
 import { HelperdataComponent } from '../../components/helperdata/helperdata.component';
+import { DialogScannerComponent } from '../../../../shared/components/dialog-scanner/dialog-scanner.component';
 @Component({
   selector: 'app-helperhome',
   standalone: true,
@@ -97,6 +100,9 @@ export class HelperhomeComponent implements OnInit, OnDestroy {
   showNothingFound: boolean;
   showSkeleton: boolean;
 
+  @ViewChild('idcardScannerDialog', { read: ViewContainerRef })
+  idcardScannerDialog!: ViewContainerRef;
+
   constructor(
     private helperService: HelperService,
     private excelService: ExcelService,
@@ -130,12 +136,15 @@ export class HelperhomeComponent implements OnInit, OnDestroy {
         value: 'employeeId',
       },
     ];
+    const now = new Date();
+    now.setSeconds(0, 0);
+    now.setMinutes(Math.floor(now.getMinutes() / 5) * 5);
     this.filterOptions = {
       sortby: 'employeeName',
       serviceTypes: [],
       organizations: [],
       joiningStartDate: new Date('2000-01-01'),
-      joiningEndDate: new Date(),
+      joiningEndDate: now,
       searchHelperBasedOnNameEmployeeIdPhone: '',
     };
     this.typeOfServiceOptions = [
@@ -246,7 +255,10 @@ export class HelperhomeComponent implements OnInit, OnDestroy {
   clearDatesData() {
     this.displayFilteredDateRangeText = '';
     this.filterOptions.joiningStartDate = new Date('2000-01-01');
-    this.filterOptions.joiningEndDate = new Date();
+    const now = new Date();
+    now.setSeconds(0, 0);
+    now.setMinutes(Math.floor(now.getMinutes() / 5) * 5);
+    this.filterOptions.joiningEndDate = now;
     this.model = { start: new Date(), end: new Date() };
     this.datesCleared();
     this.cdr.detectChanges();
@@ -414,6 +426,31 @@ export class HelperhomeComponent implements OnInit, OnDestroy {
     this.filterOptions.searchHelperBasedOnNameEmployeeIdPhone =
       searchTerm.toLowerCase();
     this.loadInitialData();
+  }
+
+  qrScanIconClicked(): void {
+    if (this.idcardScannerDialog) {
+      this.idcardScannerDialog.clear();
+    }
+    const dialogRef = this.idcardScannerDialog.createComponent(
+      DialogScannerComponent
+    );
+    dialogRef.setInput('data', {
+      heading: 'Scan Helper ID-Card Here',
+      logo: 'https://res.cloudinary.com/karthikvarma/image/upload/v1755586880/inn-assignement/helpers/assets/warning_ijpqst.png',
+    });
+
+    dialogRef.instance.close = () => {
+      this.idcardScannerDialog.clear();
+    };
+
+    dialogRef.instance.cancelButtonClicked = () => {
+      this.idcardScannerDialog.clear();
+    };
+
+    dialogRef.instance.scanButtonClicked = async () => {
+      this.idcardScannerDialog.clear();
+    };
   }
 
   downloadClicked() {
